@@ -13,6 +13,20 @@ def update_csv(func):
     return _wrapper
 
 
+def write_csv(func):
+    def _wrapper(*args, **kwargs):
+        func(*args, **kwargs)
+        peoples = []
+        self = args[0]
+        for name, phone in self.all_contacts.items():
+            peoples.append({"names": name.title(), "numbers": phone})
+        with open("Contact_book.csv", "w") as contact_book:
+            writer = csv.DictWriter(contact_book, fieldnames=["names", "numbers"])
+            writer.writeheader()
+            writer.writerows(peoples)
+    return _wrapper
+
+
 class ContactBook:
     def __init__(self):
         self.__favorites = {}
@@ -31,28 +45,20 @@ class ContactBook:
         else:
             raise NumberException(number)
 
+    @write_csv
     def change_name(self, old_name, new_name):
         if old_name in self.all_contacts:
-            peoples = []
             for name, phone in self.all_contacts.items():
                 if name == old_name.title():
-                    print(f"Contact \"{old_name.title()}\" was successfully changed to \"{new_name.title()}\".\n")
                     self.all_contacts[new_name.title()] = phone
-                    peoples.append({"names": new_name.title(), "numbers": phone})
                     self.all_contacts.pop(old_name.title())
                     self.changed_names[old_name.title()] = new_name.title()
                     for key, value in self.changed_names.items():
                         if value == old_name.title():
                             self.changed_names.pop(key)
                             break
+                    print(f"Contact \"{old_name.title()}\" was successfully changed to \"{new_name.title()}\".\n")
                     break
-                else:
-                    peoples.append({"names": name, "numbers": phone})
-
-            with open("Contact_book.csv", "w") as contact_book:
-                writer = csv.DictWriter(contact_book, fieldnames=["names", "numbers"])
-                writer.writeheader()
-                writer.writerows(peoples)
 
         elif old_name.title() in self.changed_names:
             print(f"You can't change {old_name} name.\n"
@@ -61,16 +67,10 @@ class ContactBook:
         else:
             print(f"There is no contact with name \"{old_name}\" in your Contact Book.\n")
 
+    @write_csv
     def delete_phone_number(self, name):
         if name in self.all_contacts:
             self.all_contacts.pop(name.title())
-            peoples = []
-            for key, value in self.all_contacts.items():
-                peoples.append({"names": key, "numbers": value})
-            with open("Contact_book.csv", "w") as contact_book:
-                writer = csv.DictWriter(contact_book, fieldnames=["names", "numbers"])
-                writer.writeheader()
-                writer.writerows(peoples)
             print(f"Deleting \"{name.title()}\" from your Contact Book was successfully.\n")
         elif name.title() in self.changed_names:
             print(f"Can't delete \"{name}\".\nThere is no \"{name.title()}\" in the Contact book.\n"
