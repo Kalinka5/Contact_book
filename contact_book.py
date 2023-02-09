@@ -93,35 +93,42 @@ class ContactBook:
         text = ""
         for name, number in sorted(self.__favorites.items()):
             text += f"{name}: {number.replace('-', '')}\n"
-
+            
         data = re.findall(r"(\w+): (\d{3})(\d{3})(\d{4})\n", text)
-
+        
         result = "Your favorites:\n\n"
         for i in data:
             result += f"{i[0]}: ({i[1]})-{i[2]}-{i[3]}\n"
-
+            
         return result
 
     def search_contact(self, letter):
-        result = ""
+        text = ""
         for name, number in self.all_contacts.items():
             if name.startswith(letter):
-                result += f"{name}: {number}\n"
-        if result == "":
+                text += f"{name}: {number.replace('-', '')}\n"
+
+        if text == "":
             print(f"There are no names which starts with \"{letter}\" letter.\n")
+
         else:
-            print(f"Contacts which starts with \"{letter}\" letter:\n")
+            data = re.findall(r"(\w+): (\d{3})(\d{3})(\d{4})\n", text)
+
+            result = f"Contacts which starts with \"{letter}\" letter:\n"
+            for i in data:
+                result += f"{i[0]}: ({i[1]})-{i[2]}-{i[3]}\n"
+
             print(result)
 
     def __str__(self):
         text = ""
         for name, number in sorted(self.all_contacts.items()):
             text += f"{name}: {number.replace('-', '')}\n"
-
+            
         data = re.findall(r"(\w+): (\d{3})(\d{3})(\d{4})\n", text)
-
+        
         result = "Your Contact Book:\n\n"
         for i in data:
             result += f"{i[0]}: ({i[1]})-{i[2]}-{i[3]}\n"
-            
+
         return result
