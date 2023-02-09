@@ -6,10 +6,15 @@ import re
 def write_csv(func):
     def _wrapper(*args, **kwargs):
         func(*args, **kwargs)
-        peoples = []
         self = args[0]
-        for name, phone in sorted(self.all_contacts.items()):
-            peoples.append({"names": name.title(), "numbers": phone})
+        text = ""
+        for name, number in sorted(self.all_contacts.items()):
+            text += f"{name}: {number.replace('-', '')}\n"
+
+        data = re.findall(r"(\w+): (\d{3})(\d{3})(\d{4})\n", text)
+        peoples = []
+        for i in data:
+            peoples.append({"names": i[0], "numbers": f"({i[1]})-{i[2]}-{i[3]}"})
         with open("Contact_book.csv", "w") as contact_book:
             writer = csv.DictWriter(contact_book, fieldnames=["names", "numbers"])
             writer.writeheader()
