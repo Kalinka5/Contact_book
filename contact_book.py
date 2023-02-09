@@ -1,4 +1,5 @@
 from number_exception import NumberException
+from name_exception import NameException
 import csv
 import re
 
@@ -47,11 +48,16 @@ class ContactBook:
 
     @write_csv
     def add_phone_number(self, name, number):
-        if number.replace("-", "").isdigit():
-            self.all_contacts[name.title()] = number
-            print(f"\"{name.title()}\" was successfully added to your Contact Book.\n")
-        else:
-            raise NumberException(number)
+        try:
+            if len(name) < 1 or len(name) > 10:
+                raise NameException(name)
+            if number.replace("-", "").isdigit():
+                self.all_contacts[name.title()] = number
+                print(f"\"{name.title()}\" was successfully added to your Contact Book.\n")
+            else:
+                raise NumberException(number)
+        except NameException as ne:
+            print(ne)
 
     @write_csv
     @check_name
@@ -103,7 +109,7 @@ class ContactBook:
         
         result = "Your favorites:\n\n"
         for i in data:
-            result += f"{i[0]}: ({i[1]})-{i[2]}-{i[3]}\n"
+            result += f"{i[0].ljust(10)} ({i[1]})-{i[2]}-{i[3]}\n"
             
         return result
 
@@ -119,9 +125,9 @@ class ContactBook:
         else:
             data = re.findall(r"(\w+): (\d{3})(\d{3})(\d{4})\n", text)
 
-            result = f"Contacts which starts with \"{letter}\" letter:\n"
+            result = f"Contacts which starts with \"{letter}\" letter:\n\n"
             for i in data:
-                result += f"{i[0]}: ({i[1]})-{i[2]}-{i[3]}\n"
+                result += f"{i[0].ljust(10)} ({i[1]})-{i[2]}-{i[3]}\n"
 
             print(result)
 
@@ -134,6 +140,6 @@ class ContactBook:
         
         result = "Your Contact Book:\n\n"
         for i in data:
-            result += f"{i[0]}: ({i[1]})-{i[2]}-{i[3]}\n"
+            result += f"{i[0].ljust(10)} ({i[1]})-{i[2]}-{i[3]}\n"
 
         return result
