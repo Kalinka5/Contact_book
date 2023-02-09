@@ -1,5 +1,6 @@
 from number_exception import NumberException
 import csv
+import re
 
 
 def write_csv(func):
@@ -51,17 +52,18 @@ class ContactBook:
     @check_name
     def change_name(self, old_name, new_name) -> 0 or 1:
         if old_name in self.all_contacts:
-            for name, phone in self.all_contacts.items():
-                if name == old_name.title():
-                    self.all_contacts[new_name.title()] = phone
-                    self.all_contacts.pop(old_name.title())
-                    self.changed_names[old_name.title()] = new_name.title()
-                    for key, value in self.changed_names.items():
-                        if value == old_name.title():
-                            self.changed_names.pop(key)
-                            break
-                    print(f"Contact \"{old_name.title()}\" was successfully changed to \"{new_name.title()}\".\n")
-                    return 0
+            self.all_contacts[new_name.title()] = self.all_contacts[old_name]
+            self.all_contacts.pop(old_name)
+            if old_name in self.__favorites:
+                self.__favorites[new_name.title()] = self.__favorites[old_name]
+                self.__favorites.pop(old_name)
+            self.changed_names[old_name.title()] = new_name.title()
+            for key, value in self.changed_names.items():
+                if value == old_name.title():
+                    self.changed_names.pop(key)
+                    break
+            print(f"Contact \"{old_name.title()}\" was successfully changed to \"{new_name.title()}\".\n")
+            return 0
         else:
             print(f"Can't change the contact name.")
             return 1
@@ -88,12 +90,16 @@ class ContactBook:
             return 1
 
     def favorites_numbers(self):
+        text = ""
+        for name, number in sorted(self.__favorites.items()):
+            text += f"{name}: {number.replace('-', '')}\n"
+
+        data = re.findall(r"(\w+): (\d{3})(\d{3})(\d{4})\n", text)
+
         result = "Your favorites:\n\n"
-        for name, number in self.__favorites.items():
-            if name not in self.all_contacts:
-                result += f"{self.changed_names[name]}: {number}\n"
-            else:
-                result += f"{name}: {number}\n"
+        for i in data:
+            result += f"{i[0]}: ({i[1]})-{i[2]}-{i[3]}\n"
+
         return result
 
     def search_contact(self, letter):
@@ -108,7 +114,14 @@ class ContactBook:
             print(result)
 
     def __str__(self):
-        result = "Your Contact Book:\n\n"
+        text = ""
         for name, number in sorted(self.all_contacts.items()):
-            result += f"{name}: {number}\n"
+            text += f"{name}: {number.replace('-', '')}\n"
+
+        data = re.findall(r"(\w+): (\d{3})(\d{3})(\d{4})\n", text)
+
+        result = "Your Contact Book:\n\n"
+        for i in data:
+            result += f"{i[0]}: ({i[1]})-{i[2]}-{i[3]}\n"
+            
         return result
