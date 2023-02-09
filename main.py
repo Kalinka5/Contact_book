@@ -15,7 +15,7 @@ if __name__ == '__main__':
         book.add_phone_number("Katya", "093-57-7731")
 
         book.add_to_favorites("eldAr")
-        book.add_to_favorites("darIK")
+        book.add_to_favorites("Darik")
 
         book.change_name("Darik", "Eldar_loh")
 

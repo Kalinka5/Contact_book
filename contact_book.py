@@ -2,28 +2,30 @@ from number_exception import NumberException
 import csv
 
 
-def update_csv(func):
-    def _wrapper(*args, **kwargs):
-        func(*args, **kwargs)
-        self, name, number = args
-        peoples = [{"names": name.title(), "numbers": number}]
-        with open("Contact_book.csv", "a") as contact_book:
-            writer = csv.DictWriter(contact_book, fieldnames=["names", "numbers"])
-            writer.writerows(peoples)
-    return _wrapper
-
-
 def write_csv(func):
     def _wrapper(*args, **kwargs):
         func(*args, **kwargs)
         peoples = []
         self = args[0]
-        for name, phone in self.all_contacts.items():
+        for name, phone in sorted(self.all_contacts.items()):
             peoples.append({"names": name.title(), "numbers": phone})
         with open("Contact_book.csv", "w") as contact_book:
             writer = csv.DictWriter(contact_book, fieldnames=["names", "numbers"])
             writer.writeheader()
             writer.writerows(peoples)
+    return _wrapper
+
+
+def check_name(func):
+    def _wrapper(*args, **kwargs):
+        self, name = args[:2]
+        result = func(*args, **kwargs)
+        if result == 1:
+            if name.title() in self.changed_names:
+                print(f"There is no \"{name}\" in your Contact book.\n"
+                      f"Maybe you mean \"{self.changed_names[name.title()]}\"?\n")
+            else:
+                print(f"There is no \"{name}\" in your Contact book.\n")
     return _wrapper
 
 
@@ -37,7 +39,7 @@ class ContactBook:
             writer.writeheader()
         print(f"Contact Book was created successfully.\n")
 
-    @update_csv
+    @write_csv
     def add_phone_number(self, name, number):
         if number.replace("-", "").isdigit():
             self.all_contacts[name.title()] = number
@@ -46,7 +48,8 @@ class ContactBook:
             raise NumberException(number)
 
     @write_csv
-    def change_name(self, old_name, new_name):
+    @check_name
+    def change_name(self, old_name, new_name) -> 0 or 1:
         if old_name in self.all_contacts:
             for name, phone in self.all_contacts.items():
                 if name == old_name.title():
@@ -58,37 +61,31 @@ class ContactBook:
                             self.changed_names.pop(key)
                             break
                     print(f"Contact \"{old_name.title()}\" was successfully changed to \"{new_name.title()}\".\n")
-                    break
-
-        elif old_name.title() in self.changed_names:
-            print(f"You can't change {old_name} name.\n"
-                  f"There is no contact with name \"{old_name}\" in your Contact Book.\n"
-                  f"Maybe you mean \"{self.changed_names[old_name.title()]}\"?\n")
+                    return 0
         else:
-            print(f"There is no contact with name \"{old_name}\" in your Contact Book.\n")
+            print(f"Can't change the contact name.")
+            return 1
 
     @write_csv
-    def delete_phone_number(self, name):
+    @check_name
+    def delete_phone_number(self, name) -> 0 or 1:
         if name in self.all_contacts:
             self.all_contacts.pop(name.title())
             print(f"Deleting \"{name.title()}\" from your Contact Book was successfully.\n")
-        elif name.title() in self.changed_names:
-            print(f"Can't delete \"{name}\".\nThere is no \"{name.title()}\" in the Contact book.\n"
-                  f"Maybe you mean \"{self.changed_names[name.title()]}\"?\n")
+            return 0
         else:
-            print(f"Can't delete \"{name}\".\nThere is no \"{name.title()}\" in the Contact book.\n")
+            print("Can't remove the contact.")
+            return 1
 
-    def add_to_favorites(self, name):
+    @check_name
+    def add_to_favorites(self, name) -> 0 or 1:
         if name in self.all_contacts:
             self.__favorites[name.title()] = self.all_contacts[name.title()]
             print(f"\"{name.title()}\" was successfully added to the favorites.\n")
-        elif name.title() in self.changed_names:
-            print(f"Can't add \"{name}\" to the favorites."
-                  f"\nThere is no \"{name}\" in your Contact book.\n"
-                  f"Maybe you mean \"{self.changed_names[name.title()]}\"?\n")
+            return 0
         else:
-            print(f"Can't add \"{name}\" to the favorites.\n"
-                  f"There is no \"{name}\" in your Contact book.\n")
+            print("Can't add contact to the favorites.")
+            return 1
 
     def favorites_numbers(self):
         result = "Your favorites:\n\n"
