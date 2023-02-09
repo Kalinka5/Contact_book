@@ -4,7 +4,7 @@ from number_exception import NumberException
 
 if __name__ == '__main__':
     try:
-        book = ContactBook("Daniil", "099-297-7886")
+        book = ContactBook()
 
         book.add_phone_number("eldar", "098-342-8567")
         book.change_name("Eldar", "darik")

@@ -2,29 +2,31 @@ from number_exception import NumberException
 import csv
 
 
+def update_csv(func):
+    def _wrapper(*args, **kwargs):
+        func(*args, **kwargs)
+        self, name, number = args
+        peoples = [{"names": name.title(), "numbers": number}]
+        with open("Contact_book.csv", "a") as contact_book:
+            writer = csv.DictWriter(contact_book, fieldnames=["names", "numbers"])
+            writer.writerows(peoples)
+    return _wrapper
+
+
 class ContactBook:
-    def __init__(self, name: str, number: str):
+    def __init__(self):
         self.__favorites = {}
         self.all_contacts = {}
         self.changed_names = {}
-        if number.replace("-", "").isdigit():
-            self.all_contacts = {name.title(): number}
-            peoples = [{"names": name, "numbers": number}]
-            with open("Contact_book.csv", "w") as contact_book:
-                writer = csv.DictWriter(contact_book, fieldnames=["names", "numbers"])
-                writer.writeheader()
-                writer.writerows(peoples)
-            print(f"Creation Contact Book with contact \"{name.title()}\" was successfully.\n")
-        else:
-            raise NumberException(number)
+        with open("Contact_book.csv", "w") as contact_book:
+            writer = csv.DictWriter(contact_book, fieldnames=["names", "numbers"])
+            writer.writeheader()
+        print(f"Contact Book was created successfully.\n")
 
+    @update_csv
     def add_phone_number(self, name, number):
         if number.replace("-", "").isdigit():
             self.all_contacts[name.title()] = number
-            peoples = [{"names": name.title(), "numbers": number}]
-            with open("Contact_book.csv", "a") as contact_book:
-                writer = csv.DictWriter(contact_book, fieldnames=["names", "numbers"])
-                writer.writerows(peoples)
             print(f"\"{name.title()}\" was successfully added to your Contact Book.\n")
         else:
             raise NumberException(number)
