@@ -34,7 +34,11 @@ class ContactBook(OutputContact):
                 print(f"\"{name.title()}\" was successfully added to your Contact Book.\n")
             else:
                 raise NumberException(number)
+
         except NameException as ne:
+            print(ne)
+
+        except NumberException as ne:
             print(ne)
 
     @write_csv
