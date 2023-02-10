@@ -1,5 +1,5 @@
 from contact_book import ContactBook
-from number_exception import NumberException
+from Exceptions.number_exception import NumberException
 
 
 if __name__ == '__main__':

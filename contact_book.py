@@ -1,5 +1,5 @@
-from number_exception import NumberException
-from name_exception import NameException
+from Exceptions.name_exception import NameException
+from Exceptions.number_exception import NumberException
 from output_contacts import OutputContact
 from decorators import write_csv, check_name
 import csv
