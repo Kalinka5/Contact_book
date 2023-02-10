@@ -37,7 +37,7 @@ if __name__ == '__main__':
         book.search_contact("E")
 
         print(book)
-        print(book.favorites_numbers())
+        print(book.print_favorites())
 
     except NumberException as ne:
         print(ne)
