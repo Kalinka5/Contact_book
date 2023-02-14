@@ -11,6 +11,7 @@ class ContactBook(OutputContact):
         self.__favorites = {}
         self.__all_contacts = {}
         self.changed_names = {}
+        self.pattern = r"(\w+): (\d{3})(\d{3})([\d.]+)\n"
         with open("Contact_book.csv", "w") as contact_book:
             writer = csv.DictWriter(contact_book, fieldnames=["names", "numbers"])
             writer.writeheader()
@@ -89,7 +90,7 @@ class ContactBook(OutputContact):
             print(f"There are no names which starts with \"{letter}\" letter.\n")
 
         else:
-            data = re.findall(r"(\w+): (\d{3})(\d{3})(\d{4})\n", text)
+            data = re.findall(self.pattern, text)
 
             result = f"Contacts which starts with \"{letter}\" letter:\n\n"
             for i in data:
@@ -102,7 +103,7 @@ class ContactBook(OutputContact):
         for name, number in sorted(self.all_contacts.items()):
             text += f"{name}: {number.replace('-', '')}\n"
 
-        data = re.findall(r"(\w+): (\d{3})(\d{3})(\d{4})\n", text)
+        data = re.findall(self.pattern, text)
         peoples = []
         for i in data:
             peoples.append({"names": i[0], "numbers": f"({i[1]})-{i[2]}-{i[3]}"})

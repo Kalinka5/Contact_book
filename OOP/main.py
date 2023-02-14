@@ -5,7 +5,7 @@ if __name__ == '__main__':
     try:
         book = ContactBook()
 
-        book.add_phone_number("eldar", "0983428567")
+        book.add_phone_number("eldar", "09834285679")
         book.change_name("Eldar", "darik")
         book.change_name("Eldar", "loh")
 

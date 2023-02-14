@@ -7,7 +7,7 @@ class OutputContact:
         for name, number in sorted(getattr(self, "favorites").items()):
             text += f"{name}: {number.replace('-', '')}\n"
 
-        data = re.findall(r"(\w+): (\d{3})(\d{3})(\d{4})\n", text)
+        data = re.findall(getattr(self, "pattern"), text)
 
         result = "Your favorites:\n\n"
         for i in data:
@@ -20,7 +20,7 @@ class OutputContact:
         for name, number in sorted(getattr(self, "all_contacts").items()):
             text += f"{name}: {number.replace('-', '')}\n"
 
-        data = re.findall(r"(\w+): (\d{3})(\d{3})(\d{4})\n", text)
+        data = re.findall(getattr(self, "pattern"), text)
 
         result = "Your Contact Book:\n\n"
         for i in data:
