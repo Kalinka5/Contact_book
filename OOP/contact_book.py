@@ -1,7 +1,7 @@
 from Exceptions.name_exception import NameException
 from Exceptions.number_exception import NumberException
 from output_contacts import OutputContact
-from decorators import write_csv, check_name
+from decorators import check_name
 import csv
 import re
 
@@ -24,7 +24,6 @@ class ContactBook(OutputContact):
     def all_contacts(self):
         return self.__all_contacts
 
-    @write_csv
     def add_phone_number(self, name, number):
         try:
             if len(name) < 1 or len(name) > 10:
@@ -41,7 +40,6 @@ class ContactBook(OutputContact):
         except NumberException as ne:
             print(ne)
 
-    @write_csv
     @check_name
     def change_name(self, old_name, new_name) -> 0 or 1:
         if old_name in self.__all_contacts:
@@ -61,7 +59,6 @@ class ContactBook(OutputContact):
             print(f"Can't change the contact name.")
             return 1
 
-    @write_csv
     @check_name
     def delete_phone_number(self, name) -> 0 or 1:
         if name in self.__all_contacts:
@@ -99,3 +96,17 @@ class ContactBook(OutputContact):
                 result += f"{i[0].ljust(10)} ({i[1]})-{i[2]}-{i[3]}\n"
 
             print(result)
+
+    def save_csv_file(self):
+        text = ""
+        for name, number in sorted(self.all_contacts.items()):
+            text += f"{name}: {number.replace('-', '')}\n"
+
+        data = re.findall(r"(\w+): (\d{3})(\d{3})(\d{4})\n", text)
+        peoples = []
+        for i in data:
+            peoples.append({"names": i[0], "numbers": f"({i[1]})-{i[2]}-{i[3]}"})
+        with open("Contact_book.csv", "w") as contact_book:
+            writer = csv.DictWriter(contact_book, fieldnames=["names", "numbers"])
+            writer.writeheader()
+            writer.writerows(peoples)
