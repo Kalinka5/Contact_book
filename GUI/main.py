@@ -1,9 +1,8 @@
-from contact_book import ContactBook
+from contact_book import ContactBookGUI
 
 
 if __name__ == '__main__':
-    contact_book = ContactBook()
+    contact_book = ContactBookGUI()
     contact_book.mainloop()
     contact_book.save_csv_file()
-    print(contact_book)
-    # # print(contact_book.print_favorites())
+    print(contact_book.contact_book)

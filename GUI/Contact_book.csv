@@ -1,7 +1,9 @@
-names,numbers
-Anya,(093)-006-8829
-Daniil,(099)-297-7886
-Eldar,(098)-554-4001
-Gleb,(063)-001-90902
-Katya,(066)-874-4220
-Roma,(066)-297-7226
+first_name,last_name,numbers,department
+Alexandra,Panchenko,(067)-567-1885,Work
+Andrew,Lavrinovych,(095)-443-2189,Friends
+Daniel,Cormier,(023)-451-1885,Stars
+Daniil,Kalinevych,(099)-297-7886,Friends
+Daniil,Kovalev,(050)-012-2331,Friends
+Eldar,Dryga,(066)-120-3884,Friends
+Gleb,Ilyashenko,(044)-124-3669,Work
+Roma,Tkachenko,(066)-001-8772,Friends
