@@ -27,5 +27,8 @@ class ContactBook(OutputContact):
     def delete_contact(self, contact):
         self.contacts.remove(contact)
 
-    def rename_contact(self, contact, new_name):
-        contact.name = new_name
+    def rename_contact(self, contact, new_first_name, new_last_name):
+        if new_first_name:
+            contact.first_name = new_first_name
+        if new_last_name:
+            contact.last_name = new_last_name

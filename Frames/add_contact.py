@@ -9,7 +9,7 @@ import re
 class AddContactFrame(ttk.Frame):
     def __init__(self, container, tab_control, txt, tree, i, dict_departments, contact_book):
         super().__init__(container)
-        
+
         self.tab_control = tab_control
         self.txt = txt
         self.tree = tree
