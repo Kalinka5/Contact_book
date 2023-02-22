@@ -58,12 +58,13 @@ class ImageFrame(ttk.Frame):
 
 
 class ContactsFrame(ttk.Frame):
-    def __init__(self, container, tab_control, contact_book, tree):
+    def __init__(self, container, tab_control, contact_book, tree, department):
         super().__init__(container)
         self.tab_control = tab_control
         self.__create_widgets()
         self.contact_book = contact_book
         self.tree = tree
+        self.department = department
 
     def __create_widgets(self):
         self.tab_control.add(self, text='Contacts')
@@ -86,7 +87,7 @@ class ContactsFrame(ttk.Frame):
 
             if not df.empty:
                 for row in reader:
-                    self.contacts.append((row['first_name'], row['last_name'], row['numbers']))
+                    self.contacts.append((row['first_name'], row['last_name'], row['numbers'], row['department']))
 
             # add data to the treeview
             for contact in self.contacts:
@@ -116,27 +117,35 @@ class ContactsFrame(ttk.Frame):
     def delete_contact(self):
         human = self.txt.item(self.txt.focus())['values']
 
-        index = None
-        for n, user in enumerate(self.contact_book.contacts):
-            if human[2] == user.phone_number:
-                index = n
+        first_name = human[0]
+        last_name = human[1]
+        number = human[2]
 
-        contact = self.contact_book.contacts[index]
+        index_txt = None
+        dep_user = None
+        for n, user in enumerate(self.contact_book.contacts):
+            if number == user.phone_number:
+                index_txt = n
+            if first_name == user.first_name:
+                dep_user = user.department
+
+        # Delete in class the Contact book
+        contact = self.contact_book.contacts[index_txt]
         self.contact_book.delete_contact(contact)
 
-        selected_item = self.txt.selection()[0]  # get selected item
+        # Delete in ContactsFrame
+        selected_item = self.txt.selection()[0]
         self.txt.delete(selected_item)
 
+        found_id = None
         # Search for the row with 'Bob' in the first column
-        for item in self.tree.get_children():
-            print(item)
-            if human[1] in self.tree.item(item, 'values'):
-                self.tree.tag_configure('search', background='yellow')
-                self.tree.tag_add('search', item)
+        for item in self.tree.get_children(self.department[dep_user]):
+            if self.tree.item(item, 'text') == f"{first_name} {last_name}":
+                found_id = item
+                break
 
-        # Get the ID of the row that contains 'Bob'
-        item_id = self.tree.tag_has('search')
-        print(item_id)
+        # Delete in DepartmentsFrame
+        self.tree.delete(found_id)
 
         tk.messagebox.showinfo(title='Update Contact Book',
                                message=f"\"{human[0]} {human[1]}\" was successfully deleted.")
@@ -159,6 +168,57 @@ class ContactsFrame(ttk.Frame):
     def add_to_favorites(self):
         item = self.txt.item(self.txt.focus())['values']
         print(item)
+
+
+class DepartmentsFrame(ttk.Frame):
+    def __init__(self, container, tab_control):
+        super().__init__(container)
+        self.tab_control = tab_control
+        self.dict_departments = {'Work': "0", 'Classmates': "1", 'Friends': "2", 'Relatives': "3", 'Stars': "4"}
+        self.__create_widgets()
+
+    def __create_widgets(self):
+
+        self.tab_control.add(self, text='Departments')
+
+        self.rowconfigure(0, weight=1)
+        self.columnconfigure(0, weight=1)
+
+        # create a treeview
+        self.tree = ttk.Treeview(self)
+        self.tree.heading('#0', text='Departments', anchor=tk.W)
+        headers = ('Work', 'Classmates', 'Friends', 'Relatives', 'Stars')
+
+        self.i = 0
+        for head in headers:
+            self.tree.insert('', tk.END, text=head, iid=str(self.i), open=False)
+            self.i += 1
+
+        # place the Treeview widget on the root window
+        self.tree.grid(row=0, column=0, sticky=tk.NSEW)
+
+        # add a scrollbar
+        scrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL, command=self.tree.yview)
+        self.tree.configure(yscroll=scrollbar.set)
+        scrollbar.grid(row=0, column=1, sticky='ns')
+
+        df = pd.read_csv("Contact_book.csv")
+
+        if os.path.exists("Contact_book.csv"):
+            contact_book_r = open("Contact_book.csv")
+            reader = csv.DictReader(contact_book_r)
+
+            if not df.empty:
+                for row in reader:
+                    self.tree.insert('',
+                                     tk.END,
+                                     text=f'{row["first_name"]} {row["last_name"]}',
+                                     iid=str(self.i),
+                                     open=False)
+                    self.tree.move(str(self.i), self.dict_departments[row["department"]], 0)
+                    self.i += 1
+
+            contact_book_r.close()
 
 
 class AddContactFrame(ttk.Frame):
@@ -257,57 +317,6 @@ class AddContactFrame(ttk.Frame):
         self.btn.state(['!disabled'])
 
 
-class DepartmentsFrame(ttk.Frame):
-    def __init__(self, container, tab_control):
-        super().__init__(container)
-        self.tab_control = tab_control
-        self.dict_departments = {'Work': "0", 'Classmates': "1", 'Friends': "2", 'Relatives': "3", 'Stars': "4"}
-        self.__create_widgets()
-
-    def __create_widgets(self):
-
-        self.tab_control.add(self, text='Departments')
-
-        self.rowconfigure(0, weight=1)
-        self.columnconfigure(0, weight=1)
-
-        # create a treeview
-        self.tree = ttk.Treeview(self)
-        self.tree.heading('#0', text='Departments', anchor=tk.W)
-        headers = ('Work', 'Classmates', 'Friends', 'Relatives', 'Stars')
-
-        self.i = 0
-        for head in headers:
-            self.tree.insert('', tk.END, text=head, iid=str(self.i), open=False)
-            self.i += 1
-
-        # place the Treeview widget on the root window
-        self.tree.grid(row=0, column=0, sticky=tk.NSEW)
-
-        # add a scrollbar
-        scrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL, command=self.tree.yview)
-        self.tree.configure(yscroll=scrollbar.set)
-        scrollbar.grid(row=0, column=1, sticky='ns')
-
-        df = pd.read_csv("Contact_book.csv")
-
-        if os.path.exists("Contact_book.csv"):
-            contact_book_r = open("Contact_book.csv")
-            reader = csv.DictReader(contact_book_r)
-
-            if not df.empty:
-                for row in reader:
-                    self.tree.insert('',
-                                     tk.END,
-                                     text=f'{row["first_name"]} {row["last_name"]}',
-                                     iid=str(self.i),
-                                     open=False)
-                    self.tree.move(str(self.i), self.dict_departments[row["department"]], 0)
-                    self.i += 1
-
-            contact_book_r.close()
-
-
 class ContactBookGUI(tk.Tk):
     def __init__(self):
         print("Open Contact book.")
@@ -358,7 +367,11 @@ class ContactBookGUI(tk.Tk):
 
         departments_frame = DepartmentsFrame(self, self.tab_control)
 
-        contacts_frame = ContactsFrame(self, self.tab_control, self.contact_book, departments_frame.tree)
+        contacts_frame = ContactsFrame(self,
+                                       self.tab_control,
+                                       self.contact_book,
+                                       departments_frame.tree,
+                                       departments_frame.dict_departments)
 
         AddContactFrame(self,
                         self.tab_control,
