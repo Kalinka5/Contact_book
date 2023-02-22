@@ -29,7 +29,7 @@ class ContactBookGUI(tk.Tk):
 
         # set the position of the window to the center of the screen
         self.geometry(f'{self.window_width}x{self.window_height}+{self.center_x}+{self.center_y}')
-        self.resizable(True, True)
+        self.resizable(False, False)
 
         self.iconbitmap('images/receiver.ico')
 

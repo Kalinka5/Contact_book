@@ -115,7 +115,7 @@ class ContactsFrame(ttk.Frame):
         renamer.grid(row=0, column=0, sticky='nsew')
 
         lf = ttk.LabelFrame(master=renamer, text='Rename Window')
-        lf.place(x=75, y=60)
+        lf.place(x=85, y=60)
 
         lbl1 = ttk.Label(master=lf, text=f'You choose the contact \"{item[0]} {item[1]}\".', font=("BOLD", 10))
         lbl1.pack()
