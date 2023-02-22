@@ -1,4 +1,4 @@
-from contact_book import ContactBookGUI
+from contact_book_gui import ContactBookGUI
 
 
 if __name__ == '__main__':
