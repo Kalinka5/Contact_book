@@ -64,7 +64,8 @@ class ContactBookGUI(tk.Tk):
                                        self.tab_control,
                                        self.contact_book,
                                        departments_frame.tree,
-                                       departments_frame.dict_departments)
+                                       departments_frame.dict_departments,
+                                       departments_frame.i)
 
         AddContactFrame(self,
                         self.tab_control,

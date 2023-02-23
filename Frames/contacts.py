@@ -6,7 +6,7 @@ import pandas as pd
 
 
 class ContactsFrame(ttk.Frame):
-    def __init__(self, container, tab_control, contact_book, tree, department):
+    def __init__(self, container, tab_control, contact_book, tree, department, i):
         super().__init__(container)
 
         self.text2 = None
@@ -14,7 +14,8 @@ class ContactsFrame(ttk.Frame):
         self.tab_control = tab_control
         self.contact_book = contact_book
         self.tree = tree
-        self.department = department
+        self.dict_department = department
+        self.i = i
 
         self.__create_widgets()
 
@@ -93,14 +94,14 @@ class ContactsFrame(ttk.Frame):
         selected_item = self.txt.selection()[0]
         self.txt.delete(selected_item)
 
+        # Delete in DepartmentsFrame
         found_id = None
-        # Search for the row with 'Bob' in the first column
-        for item in self.tree.get_children(self.department[dep_user]):
+        # Search for the row with contact name in the contact's department column
+        for item in self.tree.get_children(self.dict_department[dep_user]):
             if self.tree.item(item, 'text') == f"{first_name} {last_name}":
                 found_id = item
                 break
 
-        # Delete in DepartmentsFrame
         self.tree.delete(found_id)
 
         tk.messagebox.showinfo(title='Update Contact Book',
@@ -142,22 +143,15 @@ class ContactsFrame(ttk.Frame):
         self.scrollbar.grid_forget()
         self.lf.grid_forget()
 
-        # selection = self.contact_listbox.curselection()
-        # if selection:
-        #     contact_index = selection[0]
-        #     contact = self.contact_book.contacts[contact_index]
-        #     new_name = self.name_entry.get()
-        #     self.contact_book.rename_contact(contact, new_name)
-        #     self.contact_listbox.delete(contact_index)
-        #     self.contact_listbox.insert(contact_index, f"{new_name} - {contact.phone_number}")
-
     def add_to_favorites(self):
         item = self.txt.item(self.txt.focus())['values']
         print(item)
 
     def rename(self):
         item = self.txt.item(self.txt.focus())['values']
-        
+
+        old_first_name = item[0]
+        old_last_name = item[1]
         number = item[2]
         new_first_name = self.text1.get()
         new_last_name = self.text2.get()
@@ -167,9 +161,43 @@ class ContactsFrame(ttk.Frame):
             if number == user.phone_number:
                 index_txt = n
 
+        # Rename contact in the class ContactsFrame
+        selected_item = self.txt.selection()[0]
+        self.txt.delete(selected_item)
+
+        index = 0
+        while index < len(self.txt.get_children()):
+            if new_first_name.lower() < self.txt.item(self.txt.get_children()[index])['values'][0].lower():
+                break
+            index += 1
+
+        self.txt.insert('',
+                        index,
+                        values=(new_first_name, new_last_name, number))
+
+        # Rename contact in the class DepartmentsFrame
+        dep_user = None
+        for n, user in enumerate(self.contact_book.contacts):
+            if old_first_name == user.first_name:
+                dep_user = user.department
+
+        found_id = None
+        for item in self.tree.get_children(self.dict_department[dep_user]):
+            if self.tree.item(item, 'text') == f"{old_first_name} {old_last_name}":
+                found_id = item
+                break
+
+        self.tree.delete(found_id)
+
+        self.tree.insert('', tk.END, text=f'{new_first_name} {new_last_name}', iid=str(self.i), open=False)
+        self.tree.move(str(self.i), self.dict_department[dep_user], 0)
+        self.i += 1
+
+        # Rename contact in the class ContactBook
         contact = self.contact_book.contacts[index_txt]
         self.contact_book.rename_contact(contact, new_first_name, new_last_name)
 
+        # Open ContactsFrame again
         self.txt.tkraise()
         self.scrollbar.grid(row=0, column=1, sticky='ns')
         self.lf.grid(row=1, column=0, sticky='ns')
