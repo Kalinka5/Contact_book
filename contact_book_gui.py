@@ -3,7 +3,7 @@ from tkinter import ttk
 from Frames.first_frame import ImageFrame
 from Frames.contacts import ContactsFrame
 from Frames.departments import DepartmentsFrame
-from Frames.add_contact import AddContactFrame
+from Frames.favorites import FavoritesFrame
 from contact_book import Contact, ContactBook
 import csv
 import os
@@ -60,20 +60,14 @@ class ContactBookGUI(tk.Tk):
 
         departments_frame = DepartmentsFrame(self, self.tab_control)
 
-        contacts_frame = ContactsFrame(self,
-                                       self.tab_control,
-                                       self.contact_book,
-                                       departments_frame.tree,
-                                       departments_frame.dict_departments,
-                                       departments_frame.i)
+        ContactsFrame(self,
+                      self.tab_control,
+                      self.contact_book,
+                      departments_frame.tree,
+                      departments_frame.dict_departments,
+                      departments_frame.i)
 
-        AddContactFrame(self,
-                        self.tab_control,
-                        contacts_frame.txt,
-                        departments_frame.tree,
-                        departments_frame.i,
-                        departments_frame.dict_departments,
-                        self.contact_book)
+        FavoritesFrame(self, self.tab_control)
 
     def save_csv_file(self):
         contact_book_w = open("Contact_book.csv", "w")
