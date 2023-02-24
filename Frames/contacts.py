@@ -10,7 +10,7 @@ from contact_book import Contact
 
 
 class ContactsFrame(ttk.Frame):
-    def __init__(self, container, tab_control, contact_book, tree, department, i):
+    def __init__(self, container, tab_control, contact_book, tree, department, i, favorites):
         super().__init__(container)
 
         self.departments = None
@@ -25,6 +25,7 @@ class ContactsFrame(ttk.Frame):
         self.tree = tree
         self.dict_department = department
         self.i = i
+        self.favorites = favorites
 
         self.__create_widgets()
 
@@ -272,10 +273,6 @@ class ContactsFrame(ttk.Frame):
         self.scrollbar.grid_forget()
         self.lf.grid_forget()
 
-    def add_to_favorites(self):
-        item = self.txt.item(self.txt.focus())['values']
-        print(item)
-
     def rename(self):
         item = self.txt.item(self.txt.focus())['values']
 
@@ -284,11 +281,6 @@ class ContactsFrame(ttk.Frame):
         number = item[2]
         new_first_name = self.text1.get()
         new_last_name = self.text2.get()
-
-        index_txt = None
-        for n, user in enumerate(self.contact_book.contacts):
-            if number == user.phone_number:
-                index_txt = n
 
         # Rename contact in the class ContactsFrame
         selected_item = self.txt.selection()[0]
@@ -323,6 +315,11 @@ class ContactsFrame(ttk.Frame):
         self.i += 1
 
         # Rename contact in the class ContactBook
+        index_txt = None
+        for n, user in enumerate(self.contact_book.contacts):
+            if number == user.phone_number:
+                index_txt = n
+
         contact = self.contact_book.contacts[index_txt]
         self.contact_book.rename_contact(contact, new_first_name, new_last_name)
 
@@ -330,3 +327,31 @@ class ContactsFrame(ttk.Frame):
         self.txt.tkraise()
         self.scrollbar.grid(row=0, column=1, sticky='ns')
         self.lf.grid(row=1, column=0, sticky='ns')
+
+    def add_to_favorites(self):
+        item = self.txt.item(self.txt.focus())['values']
+        first_name = item[0]
+        last_name = item[1]
+        number = item[2]
+
+        index = 0
+        while index < len(self.favorites.get_children()):
+            if first_name.lower() < self.favorites.item(self.favorites.get_children()[index])['values'][0].lower():
+                break
+            index += 1
+
+        self.favorites.insert('',
+                              index,
+                              values=(first_name, last_name, number))
+
+        index_txt = None
+        for n, user in enumerate(self.contact_book.contacts):
+            if number == user.phone_number:
+                index_txt = n
+
+        contact = self.contact_book.contacts[index_txt]
+        contact.favorites = "True"
+
+        tk.messagebox.showinfo(title='Update Contact Book',
+                               message=f"\"{first_name} {last_name}\" was successfully added to the Favorites.")
+        print(f"\"{first_name} {last_name}\" was successfully added to the Favorites.\n")

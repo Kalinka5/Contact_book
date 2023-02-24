@@ -8,6 +8,7 @@ class Contact:
     last_name: str
     phone_number: str
     department: str
+    favorites: str = "False"
 
     def __lt__(self, other):
         return self.first_name < other.first_name

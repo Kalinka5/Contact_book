@@ -48,7 +48,8 @@ class ContactBookGUI(tk.Tk):
                     self.contact_book.contacts.append(Contact(row['first_name'],
                                                               row['last_name'],
                                                               row['numbers'],
-                                                              row['department']))
+                                                              row['department'],
+                                                              row['favorites']))
 
             contact_book_r.close()
 
@@ -60,18 +61,23 @@ class ContactBookGUI(tk.Tk):
 
         departments_frame = DepartmentsFrame(self, self.tab_control)
 
+        favorites_frame = FavoritesFrame(self, self.tab_control)
+
         ContactsFrame(self,
                       self.tab_control,
                       self.contact_book,
                       departments_frame.tree,
                       departments_frame.dict_departments,
-                      departments_frame.i)
-
-        FavoritesFrame(self, self.tab_control)
+                      departments_frame.i,
+                      favorites_frame.txt)
 
     def save_csv_file(self):
         contact_book_w = open("Contact_book.csv", "w")
-        writer = csv.DictWriter(contact_book_w, fieldnames=["first_name", "last_name", "numbers", "department"])
+        writer = csv.DictWriter(contact_book_w, fieldnames=["first_name",
+                                                            "last_name",
+                                                            "numbers",
+                                                            "department",
+                                                            "favorites"])
         writer.writeheader()
 
         peoples = []
@@ -79,7 +85,8 @@ class ContactBookGUI(tk.Tk):
             peoples.append({"first_name": contact.first_name,
                             "last_name": contact.last_name,
                             "numbers": contact.phone_number,
-                            "department": contact.department})
+                            "department": contact.department,
+                            "favorites": contact.favorites})
 
         writer.writerows(peoples)
 
