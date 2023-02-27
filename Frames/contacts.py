@@ -37,8 +37,8 @@ class ContactsFrame(ttk.Frame):
         self.txt.heading('first_name', text='First Name')
         self.txt.heading('last_name', text='Second Name')
         self.txt.heading('number', text='Number')
-        self.txt.column('first_name', width=100, anchor=tk.CENTER)
-        self.txt.column('last_name', width=100, anchor=tk.CENTER)
+        self.txt.column('first_name', width=100, anchor=tk.W)
+        self.txt.column('last_name', width=100, anchor=tk.W)
         self.txt.column('number', width=200, anchor=tk.CENTER)
 
         # Read file to check is it empty
@@ -336,13 +336,13 @@ class ContactsFrame(ttk.Frame):
 
         index = 0
         while index < len(self.favorites.get_children()):
-            if first_name.lower() < self.favorites.item(self.favorites.get_children()[index])['values'][0].lower():
+            if first_name.lower() < self.favorites.item(self.favorites.get_children()[index])['values'][1].lower():
                 break
             index += 1
 
         self.favorites.insert('',
                               index,
-                              values=(first_name, last_name, number))
+                              values=("🖤", first_name, last_name, number))
 
         index_txt = None
         for n, user in enumerate(self.contact_book.contacts):
