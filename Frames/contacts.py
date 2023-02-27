@@ -216,15 +216,15 @@ class ContactsFrame(ttk.Frame):
             if first_name == user.first_name:
                 dep_user = user.department
 
-        # Delete in class the Contact book
+        # Delete contact in the class Contact book
         contact = self.contact_book.contacts[index_txt]
         self.contact_book.delete_contact(contact)
 
-        # Delete in ContactsFrame
+        # Delete contact in ContactsFrame
         selected_item = self.txt.selection()[0]
         self.txt.delete(selected_item)
 
-        # Delete in DepartmentsFrame
+        # Delete contact in DepartmentsFrame
         found_id = None
         # Search for the row with contact name in the contact's department column
         for item in self.tree.get_children(self.dict_department[dep_user]):
@@ -233,6 +233,16 @@ class ContactsFrame(ttk.Frame):
                 break
 
         self.tree.delete(found_id)
+
+        # Delete contact in FavoritesFrame
+        item_id = None
+        # Search for the row with contact name in the contact's department column
+        for child in self.favorites.get_children():
+            if self.favorites.set(child, "first_name") == first_name:
+                item_id = child
+                break
+
+        self.favorites.delete(item_id)
 
         tk.messagebox.showinfo(title='Update Contact Book',
                                message=f"\"{human[0]} {human[1]}\" was successfully deleted.")
@@ -313,6 +323,25 @@ class ContactsFrame(ttk.Frame):
         self.tree.insert('', tk.END, text=f'{new_first_name} {new_last_name}', iid=str(self.i), open=False)
         self.tree.move(str(self.i), self.dict_department[dep_user], 0)
         self.i += 1
+
+        # Rename contact in the class FavoritesFrame
+        item_id = None
+        # Search for the row with contact name in the contact's department column
+        for child in self.favorites.get_children():
+            if self.favorites.set(child, "first_name") == old_first_name:
+                item_id = child
+                break
+
+        self.favorites.delete(item_id)
+        index = 0
+        while index < len(self.favorites.get_children()):
+            if new_first_name.lower() < self.favorites.item(self.favorites.get_children()[index])['values'][1].lower():
+                break
+            index += 1
+
+        self.favorites.insert('',
+                              index,
+                              values=("🖤", new_first_name, new_last_name, number))
 
         # Rename contact in the class ContactBook
         index_txt = None
