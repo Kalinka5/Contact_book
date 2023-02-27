@@ -33,25 +33,10 @@ class ContactBookGUI(tk.Tk):
 
         self.iconbitmap('images/receiver.ico')
 
-        df = pd.read_csv("Contact_book.csv")
         self.data = []
         self.contact_book = ContactBook()
         self.tab_control = ttk.Notebook(self)
         self.tab_control.pack(expand=1, fill='both')
-
-        if os.path.exists("Contact_book.csv"):
-            contact_book_r = open("Contact_book.csv")
-            reader = csv.DictReader(contact_book_r)
-
-            if not df.empty:
-                for row in reader:
-                    self.contact_book.contacts.append(Contact(row['first_name'],
-                                                              row['last_name'],
-                                                              row['numbers'],
-                                                              row['department'],
-                                                              row['favorites']))
-
-            contact_book_r.close()
 
         self.__create_widgets()
 
@@ -63,13 +48,53 @@ class ContactBookGUI(tk.Tk):
 
         favorites_frame = FavoritesFrame(self, self.tab_control)
 
-        ContactsFrame(self,
-                      self.tab_control,
-                      self.contact_book,
-                      departments_frame.tree,
-                      departments_frame.dict_departments,
-                      departments_frame.i,
-                      favorites_frame.txt)
+        contacts_frame = ContactsFrame(self,
+                                       self.tab_control,
+                                       self.contact_book,
+                                       departments_frame.tree,
+                                       departments_frame.dict_departments,
+                                       departments_frame.i,
+                                       favorites_frame.txt)
+
+        # Read data from csv file
+        df = pd.read_csv("Contact_book.csv")
+        favorites = []
+        contacts = []
+        if os.path.exists("Contact_book.csv"):
+            contact_book_r = open("Contact_book.csv")
+            reader = csv.DictReader(contact_book_r)
+
+            if not df.empty:
+                for row in reader:
+                    self.contact_book.contacts.append(Contact(row['first_name'],
+                                                              row['last_name'],
+                                                              row['numbers'],
+                                                              row['department'],
+                                                              row['favorites']))
+                    departments_frame.tree.insert('',
+                                                  tk.END,
+                                                  text=f'{row["first_name"]} {row["last_name"]}',
+                                                  iid=str(departments_frame.i),
+                                                  open=False)
+                    departments_frame.tree.move(str(departments_frame.i),
+                                                departments_frame.dict_departments[row["department"]],
+                                                0)
+                    departments_frame.i += 1
+
+                    if row["favorites"] == "True":
+                        favorites.append(('🖤', row['first_name'], row['last_name'], row['numbers']))
+
+                    contacts.append((row['first_name'], row['last_name'], row['numbers']))
+
+                # add data to the Favorites Treeview
+                for contact in favorites:
+                    favorites_frame.txt.insert('', tk.END, values=contact)
+
+                # add data to the Contacts Treeview
+                for contact in contacts:
+                    contacts_frame.txt.insert('', tk.END, values=contact)
+
+            contact_book_r.close()
 
     def save_csv_file(self):
         contact_book_w = open("Contact_book.csv", "w")

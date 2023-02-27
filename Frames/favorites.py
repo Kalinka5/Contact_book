@@ -1,8 +1,5 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-import csv
-import os
-import pandas as pd
 
 
 class FavoritesFrame(ttk.Frame):
@@ -33,26 +30,6 @@ class FavoritesFrame(ttk.Frame):
         self.scrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL, command=self.txt.yview)
         self.txt.configure(yscroll=self.scrollbar.set)
         self.scrollbar.grid(row=0, column=1, sticky='ns')
-
-        # Read file to check is it empty
-        df = pd.read_csv("Contact_book.csv")
-        contacts = []
-
-        # Append to Contacts Treeview all data from CSV file
-        if os.path.exists("Contact_book.csv"):
-            contact_book_r = open("Contact_book.csv")
-            reader = csv.DictReader(contact_book_r)
-
-            if not df.empty:
-                for row in reader:
-                    if row["favorites"] == "True":
-                        contacts.append(('🖤', row['first_name'], row['last_name'], row['numbers']))
-
-            # add data to the Favorites Treeview
-            for contact in contacts:
-                self.txt.insert('', tk.END, values=contact)
-
-            contact_book_r.close()
 
         # Create Label Frame with 3 buttons
         self.lf = ttk.LabelFrame(self, text='Interaction')

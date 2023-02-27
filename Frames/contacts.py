@@ -1,8 +1,5 @@
 import tkinter as tk
-import csv
-import os
 import re
-import pandas as pd
 from tkinter import ttk, messagebox
 from Exceptions.name_exception import NameException
 from Exceptions.number_exception import NumberException
@@ -41,26 +38,8 @@ class ContactsFrame(ttk.Frame):
         self.txt.column('last_name', width=100, anchor=tk.W)
         self.txt.column('number', width=200, anchor=tk.CENTER)
 
-        # Read file to check is it empty
-        df = pd.read_csv("Contact_book.csv")
-
         # Create contacts to store data for Contacts Treeview
         self.contacts = []
-
-        # Append to Contacts Treeview all data from CSV file
-        if os.path.exists("Contact_book.csv"):
-            contact_book_r = open("Contact_book.csv")
-            reader = csv.DictReader(contact_book_r)
-
-            if not df.empty:
-                for row in reader:
-                    self.contacts.append((row['first_name'], row['last_name'], row['numbers']))
-
-            # add data to the Contacts Treeview
-            for contact in self.contacts:
-                self.txt.insert('', tk.END, values=contact)
-
-            contact_book_r.close()
 
         self.txt.grid(row=0, column=0, sticky='nsew')
 
