@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
+from tkinter.messagebox import askyesno
 
 
 class FavoritesFrame(ttk.Frame):
@@ -56,27 +57,39 @@ class FavoritesFrame(ttk.Frame):
         first_name = human[1]
         last_name = human[2]
 
-        # Delete in the FavoritesFrame
-        selected_item = self.txt.selection()[0]
-        self.txt.delete(selected_item)
-
-        index_txt = None
-        for n, user in enumerate(self.contact_book.contacts):
-            if first_name == user.first_name:
-                index_txt = n
-
-        contact = self.contact_book.contacts[index_txt]
-        contact.favorites = "False"
-
-        # If contact doesn't have lastname
         if last_name == "":
-            messagebox.showinfo(title='Update Contact Book',
-                                message=f"\"{first_name}\" was successfully deleted from Favorites.")
-            print(f"Deleting \"{first_name}\" from your Contact Book was successfully from Favorites.\n")
-        # If contact has firstname and lastname
+            answer = askyesno(
+                title='Confirmation',
+                message=f'Are you sure that you want to delete \"{first_name}\" from the Favorites?')
         else:
-            messagebox.showinfo(title='Update Contact Book',
-                                message=f"\"{first_name} {last_name}\" was successfully deleted from Favorites.")
-            print(f"Deleting \"{first_name} {last_name}\" from your Contact Book was successfully from Favorites.\n")
+            answer = askyesno(
+                title='Confirmation',
+                message=f'Are you sure that you want to delete \"{first_name} {last_name}\" from the Favorites?')
 
-        self.b1.state(['disabled'])
+        if answer:
+            # Delete in the FavoritesFrame
+            selected_item = self.txt.selection()[0]
+            self.txt.delete(selected_item)
+
+            index_txt = None
+            for n, user in enumerate(self.contact_book.contacts):
+                if first_name == user.first_name:
+                    index_txt = n
+
+            contact = self.contact_book.contacts[index_txt]
+            contact.favorites = "False"
+
+            # If contact doesn't have lastname
+            if last_name == "":
+                messagebox.showinfo(
+                    title='Update Contact Book',
+                    message=f"\"{first_name}\" was deleted from the Favorites successfully!")
+                print(f"Deleting \"{first_name}\" from the Favorites was successfully!\n")
+            # If contact has firstname and lastname
+            else:
+                messagebox.showinfo(
+                    title='Update Contact Book',
+                    message=f"\"{first_name} {last_name}\" was deleted from the Favorites successfully!")
+                print(f"Deleting \"{first_name} {last_name}\" from the Favorites was successfully!\n")
+
+            self.b1.state(['disabled'])

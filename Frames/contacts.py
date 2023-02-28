@@ -232,53 +232,62 @@ class ContactsFrame(ttk.Frame):
         last_name = human[1]
         number = human[2]
 
-        index_txt = None
-        dep_user = None
-        for n, user in enumerate(self.contact_book.contacts):
-            if number == user.phone_number:
-                index_txt = n
-            if first_name == user.first_name:
-                dep_user = user.department
-
-        # Delete contact in ContactsFrame
-        selected_item = self.txt.selection()[0]
-        self.txt.delete(selected_item)
-
-        # Delete contact in DepartmentsFrame
-        found_id = None
-        # Search for the row with contact name in the contact's department column
-        for item in self.tree.get_children(self.dict_department[dep_user]):
-            if self.tree.item(item, 'text') == f"{first_name} {last_name}":
-                found_id = item
-                break
-
-        self.tree.delete(found_id)
-
-        # Delete contact in FavoritesFrame
-        item_id = None
-        # Search for the row with contact name in the contact's department column
-        for child in self.favorites.get_children():
-            if self.favorites.set(child, "first_name") == first_name:
-                item_id = child
-                break
-
-        if item_id is not None:
-            self.favorites.delete(item_id)
-
-        # Delete contact in the class Contact book
-        contact = self.contact_book.contacts[index_txt]
-        self.contact_book.delete_contact(contact)
-
-        self.b2.state(['disabled'])
-
         if last_name == "":
-            tk.messagebox.showinfo(title='Update Contact Book',
-                                   message=f"\"{first_name}\" was successfully deleted.")
-            print(f"Deleting \"{first_name}\" from your Contact Book was successfully.\n")
+            answer = askyesno(title='Confirmation',
+                              message=f'Are you sure that you want to delete \"{first_name}\"?')
         else:
-            tk.messagebox.showinfo(title='Update Contact Book',
-                                   message=f"\"{first_name} {last_name}\" was successfully deleted.")
-            print(f"Deleting \"{first_name} {last_name}\" from your Contact Book was successfully.\n")
+            answer = askyesno(title='Confirmation',
+                              message=f'Are you sure that you want to delete \"{first_name} {last_name}\"?')
+        if answer:
+            index_txt = None
+            dep_user = None
+            for n, user in enumerate(self.contact_book.contacts):
+                if number == user.phone_number:
+                    index_txt = n
+                if first_name == user.first_name:
+                    dep_user = user.department
+
+            # Delete contact in ContactsFrame
+            selected_item = self.txt.selection()[0]
+            self.txt.delete(selected_item)
+
+            # Delete contact in DepartmentsFrame
+            found_id = None
+            # Search for the row with contact name in the contact's department column
+            for item in self.tree.get_children(self.dict_department[dep_user]):
+                if self.tree.item(item, 'text') == f"{first_name} {last_name}":
+                    found_id = item
+                    break
+
+            self.tree.delete(found_id)
+
+            # Delete contact in FavoritesFrame
+            item_id = None
+            # Search for the row with contact name in the contact's department column
+            for child in self.favorites.get_children():
+                if self.favorites.set(child, "first_name") == first_name:
+                    item_id = child
+                    break
+
+            if item_id is not None:
+                self.favorites.delete(item_id)
+
+            # Delete contact in the class Contact book
+            contact = self.contact_book.contacts[index_txt]
+            self.contact_book.delete_contact(contact)
+
+            if last_name == "":
+                tk.messagebox.showinfo(title='Update Contact Book',
+                                       message=f"\"{first_name}\" was successfully deleted.")
+                print(f"Deleting \"{first_name}\" from your Contact Book was successfully.\n")
+            else:
+                tk.messagebox.showinfo(title='Update Contact Book',
+                                       message=f"\"{first_name} {last_name}\" was successfully deleted.")
+                print(f"Deleting \"{first_name} {last_name}\" from your Contact Book was successfully.\n")
+
+            self.b2.state(['disabled'])
+            self.b3.state(['disabled'])
+            self.b4.state(['disabled'])
 
     def rename_contact(self):
         item = self.txt.item(self.txt.focus())['values']
@@ -449,29 +458,39 @@ class ContactsFrame(ttk.Frame):
         last_name = item[1]
         number = item[2]
 
-        index = 0
-        while index < len(self.favorites.get_children()):
-            if first_name.lower() < self.favorites.item(self.favorites.get_children()[index])['values'][1].lower():
-                break
-            index += 1
-
-        self.favorites.insert('',
-                              index,
-                              values=("🖤", first_name, last_name, number))
-
-        index_txt = None
-        for n, user in enumerate(self.contact_book.contacts):
-            if number == user.phone_number:
-                index_txt = n
-
-        contact = self.contact_book.contacts[index_txt]
-        contact.favorites = "True"
-
         if last_name == "":
-            tk.messagebox.showinfo(title='Update Contact Book',
-                                   message=f"\"{first_name}\" was successfully added to the Favorites.")
-            print(f"\"{first_name}\" was successfully added to the Favorites.\n")
+            answer = askyesno(
+                title='Confirmation',
+                message=f'Are you sure that you want to add \"{first_name}\" to the Favorites?')
         else:
-            tk.messagebox.showinfo(title='Update Contact Book',
-                                   message=f"\"{first_name} {last_name}\" was successfully added to the Favorites.")
-            print(f"\"{first_name} {last_name}\" was successfully added to the Favorites.\n")
+            answer = askyesno(
+                title='Confirmation',
+                message=f'Are you sure that you want to add \"{first_name} {last_name}\" to the Favorites?')
+
+        if answer:
+            index = 0
+            while index < len(self.favorites.get_children()):
+                if first_name.lower() < self.favorites.item(self.favorites.get_children()[index])['values'][1].lower():
+                    break
+                index += 1
+
+            self.favorites.insert('',
+                                  index,
+                                  values=("🖤", first_name, last_name, number))
+
+            index_txt = None
+            for n, user in enumerate(self.contact_book.contacts):
+                if number == user.phone_number:
+                    index_txt = n
+
+            contact = self.contact_book.contacts[index_txt]
+            contact.favorites = "True"
+
+            if last_name == "":
+                tk.messagebox.showinfo(title='Update Contact Book',
+                                       message=f"\"{first_name}\" was added to the Favorites successfully!")
+                print(f"\"{first_name}\" was added to the Favorites successfully!\n")
+            else:
+                tk.messagebox.showinfo(title='Update Contact Book',
+                                       message=f"\"{first_name} {last_name}\" was added to the Favorites successfully!")
+                print(f"\"{first_name} {last_name}\" was added to the Favorites successfully!\n")
