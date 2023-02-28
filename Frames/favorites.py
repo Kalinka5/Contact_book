@@ -24,6 +24,8 @@ class FavoritesFrame(ttk.Frame):
         self.txt.column('last_name', width=100, anchor=tk.W)
         self.txt.column('number', width=200, anchor=tk.CENTER)
 
+        self.txt.bind('<<TreeviewSelect>>', self.get_button_enable)
+
         self.txt.grid(row=0, column=0, sticky='nsew')
 
         # add a scrollbar to Contacts Treeview
@@ -41,6 +43,11 @@ class FavoritesFrame(ttk.Frame):
                              cursor='hand2')
 
         self.b1.grid(row=1, column=0, sticky='ns')
+        self.b1.state(['disabled'])
+
+    def get_button_enable(self, contact):
+        # remove the disabled flag
+        self.b1.state(['!disabled'])
 
     def delete_from_favorites(self):
         human = self.txt.item(self.txt.focus())['values']

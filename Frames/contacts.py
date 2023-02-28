@@ -38,6 +38,8 @@ class ContactsFrame(ttk.Frame):
         self.txt.column('last_name', width=100, anchor=tk.W)
         self.txt.column('number', width=200, anchor=tk.CENTER)
 
+        self.txt.bind('<<TreeviewSelect>>', self.get_buttons_enable)
+
         # Create contacts to store data for Contacts Treeview
         self.contacts = []
 
@@ -59,8 +61,15 @@ class ContactsFrame(ttk.Frame):
 
         self.b1.grid(row=1, column=0, sticky='ns')
         self.b2.grid(row=1, column=1, sticky='ns')
+        self.b2.state(['disabled'])
         self.b3.grid(row=1, column=2, sticky='ns')
+        self.b3.state(['disabled'])
         self.b4.grid(row=1, column=3, sticky='ns')
+
+    def get_buttons_enable(self, contact):
+        # remove the disabled flag
+        self.b2.state(['!disabled'])
+        self.b3.state(['!disabled'])
 
     def add_contact(self):
         add_frame = ttk.Frame(self)
@@ -249,7 +258,7 @@ class ContactsFrame(ttk.Frame):
         renamer.grid(row=0, column=0, sticky='nsew')
 
         lf = ttk.LabelFrame(master=renamer, text='Rename Window')
-        lf.place(x=85, y=60)
+        lf.place(x=85, y=40)
 
         download_icon = tk.PhotoImage(file='images/close.png')
         download_button = ttk.Button(
