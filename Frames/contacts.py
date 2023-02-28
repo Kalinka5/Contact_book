@@ -12,11 +12,11 @@ class ContactsFrame(ttk.Frame):
 
         self.departments = None
         self.btn = None
-        self.text5 = None
-        self.text4 = None
-        self.text3 = None
-        self.text2 = None
         self.text1 = None
+        self.text2 = None
+        self.text3 = None
+        self.text4 = None
+        self.text5 = None
         self.tab_control = tab_control
         self.contact_book = contact_book
         self.tree = tree
@@ -67,43 +67,52 @@ class ContactsFrame(ttk.Frame):
         add_frame.grid(row=0, column=0, sticky='nsew')
 
         lf = ttk.LabelFrame(master=add_frame, text='Add Contact Window')
-        lf.place(x=30, y=40)
+        lf.place(x=30, y=30)
 
         lbl1 = ttk.Label(master=lf, text='First Name', font=("BOLD", 10))
-        lbl1.grid(row=0, column=0, padx=5)
+        lbl1.grid(row=1, column=0, padx=5)
 
         self.text3 = tk.StringVar()
         t1 = ttk.Entry(master=lf, textvariable=self.text3)
         t1.focus()
-        t1.grid(row=0, column=1, padx=5)
+        t1.grid(row=1, column=1, padx=5)
 
         lbl2 = ttk.Label(master=lf, text='Last Name', font=("BOLD", 10))
-        lbl2.grid(row=1, column=0, padx=5)
+        lbl2.grid(row=2, column=0, padx=5)
 
         self.text4 = tk.StringVar()
         t2 = ttk.Entry(master=lf, textvariable=self.text4)
-        t2.grid(row=1, column=1, padx=5)
+        t2.grid(row=2, column=1, padx=5)
 
         lbl3 = ttk.Label(master=lf, text='Number', font=("BOLD", 10))
-        lbl3.grid(row=2, column=0, padx=5, pady=10)
+        lbl3.grid(row=3, column=0, padx=5, pady=10)
 
         self.text5 = tk.StringVar()
         t3 = ttk.Entry(master=lf, textvariable=self.text5)
-        t3.grid(row=2, column=1, padx=5, pady=5)
+        t3.grid(row=3, column=1, padx=5, pady=5)
 
         lbl4 = ttk.Label(master=lf, text="Departments")
-        lbl4.grid(row=0, column=2, padx=5)
+        lbl4.grid(row=1, column=2, padx=5)
         departments_str = tk.StringVar()
         self.departments = ttk.Combobox(master=lf, textvariable=departments_str)
         headers = ('Work', 'Classmates', 'Friends', 'Relatives', 'Stars')
         self.departments['values'] = headers
         self.departments['state'] = 'readonly'
-        self.departments.grid(row=1, column=2, padx=5)
+        self.departments.grid(row=2, column=2, padx=5)
         self.departments.bind('<<ComboboxSelected>>', self.get_button_enable)
 
         self.btn = ttk.Button(master=lf, text='Add contact', command=self.add, cursor='hand2')
-        self.btn.grid(row=3, column=2, padx=5, pady=50)
+        self.btn.grid(row=4, column=2, padx=5, pady=50)
         self.btn.state(['disabled'])
+
+        download_icon = tk.PhotoImage(file='images/close.png')
+        download_button = ttk.Button(
+            lf,
+            image=download_icon,
+            command=self.close_clicked
+        )
+        download_button.image = download_icon
+        download_button.grid(row=0, column=2, sticky='e')
 
         add_frame.tkraise()
         self.scrollbar.grid_forget()
@@ -180,6 +189,11 @@ class ContactsFrame(ttk.Frame):
         # remove the disabled flag
         self.btn.state(['!disabled'])
 
+    def close_clicked(self):
+        self.txt.tkraise()
+        self.scrollbar.grid(row=0, column=1, sticky='ns')
+        self.lf.grid(row=1, column=0, sticky='ns')
+
     def delete_contact(self):
         human = self.txt.item(self.txt.focus())['values']
 
@@ -236,6 +250,15 @@ class ContactsFrame(ttk.Frame):
 
         lf = ttk.LabelFrame(master=renamer, text='Rename Window')
         lf.place(x=85, y=60)
+
+        download_icon = tk.PhotoImage(file='images/close.png')
+        download_button = ttk.Button(
+            lf,
+            image=download_icon,
+            command=self.close_clicked
+        )
+        download_button.image = download_icon
+        download_button.pack(anchor=tk.E)
 
         lbl1 = ttk.Label(master=lf, text=f'You choose the contact \"{item[0]} {item[1]}\".', font=("BOLD", 10))
         lbl1.pack()
