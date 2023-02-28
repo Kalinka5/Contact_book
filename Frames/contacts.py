@@ -1,6 +1,7 @@
 import tkinter as tk
 import re
 from tkinter import ttk, messagebox
+from tkinter.messagebox import askyesno
 from Exceptions.name_exception import NameException
 from Exceptions.number_exception import NumberException
 from contact_book import Contact
@@ -54,22 +55,38 @@ class ContactsFrame(ttk.Frame):
         self.lf = ttk.LabelFrame(self, text='Interaction')
         self.lf.grid(row=1, column=0, sticky='ns', pady=10)
 
+        # Button Add contact
         self.b1 = ttk.Button(master=self.lf, text='Add contact', command=self.add_contact, cursor='hand2')
+
+        # Button Delete contact
         self.b2 = ttk.Button(master=self.lf, text='Delete contact', command=self.delete_contact, cursor='hand2')
+
+        # Button Rename contact
         self.b3 = ttk.Button(master=self.lf, text='Rename contact', command=self.rename_contact, cursor='hand2')
+
+        # Button Add to favorites
         self.b4 = ttk.Button(master=self.lf, text='Add to favorites', command=self.add_to_favorites, cursor='hand2')
 
+        # Location of button Add contact
         self.b1.grid(row=1, column=0, sticky='ns')
+
+        # Location of button Delete contact
         self.b2.grid(row=1, column=1, sticky='ns')
         self.b2.state(['disabled'])
+
+        # Location of button Rename contact
         self.b3.grid(row=1, column=2, sticky='ns')
         self.b3.state(['disabled'])
+
+        # Location of button Add to favorites
         self.b4.grid(row=1, column=3, sticky='ns')
+        self.b4.state(['disabled'])
 
     def get_buttons_enable(self, contact):
         # remove the disabled flag
         self.b2.state(['!disabled'])
         self.b3.state(['!disabled'])
+        self.b4.state(['!disabled'])
 
     def add_contact(self):
         add_frame = ttk.Frame(self)
@@ -218,10 +235,6 @@ class ContactsFrame(ttk.Frame):
             if first_name == user.first_name:
                 dep_user = user.department
 
-        # Delete contact in the class Contact book
-        contact = self.contact_book.contacts[index_txt]
-        self.contact_book.delete_contact(contact)
-
         # Delete contact in ContactsFrame
         selected_item = self.txt.selection()[0]
         self.txt.delete(selected_item)
@@ -244,7 +257,14 @@ class ContactsFrame(ttk.Frame):
                 item_id = child
                 break
 
-        self.favorites.delete(item_id)
+        if item_id is not None:
+            self.favorites.delete(item_id)
+
+        # Delete contact in the class Contact book
+        contact = self.contact_book.contacts[index_txt]
+        self.contact_book.delete_contact(contact)
+
+        self.b2.state(['disabled'])
 
         tk.messagebox.showinfo(title='Update Contact Book',
                                message=f"\"{human[0]} {human[1]}\" was successfully deleted.")
@@ -303,70 +323,83 @@ class ContactsFrame(ttk.Frame):
         new_first_name = self.text1.get()
         new_last_name = self.text2.get()
 
-        # Rename contact in the class ContactsFrame
-        selected_item = self.txt.selection()[0]
-        self.txt.delete(selected_item)
+        answer = askyesno(title='Confirmation',
+                          message=f'Are you sure that you want to rename \"{old_first_name} {old_last_name}\" to \"{new_first_name} {new_last_name}\"?')
+        if answer:
+            # Rename contact in the class ContactsFrame
+            selected_item = self.txt.selection()[0]
+            self.txt.delete(selected_item)
 
-        index = 0
-        while index < len(self.txt.get_children()):
-            if new_first_name.lower() < self.txt.item(self.txt.get_children()[index])['values'][0].lower():
-                break
-            index += 1
+            index = 0
+            while index < len(self.txt.get_children()):
+                if new_first_name.lower() < self.txt.item(self.txt.get_children()[index])['values'][0].lower():
+                    break
+                index += 1
 
-        self.txt.insert('',
-                        index,
-                        values=(new_first_name, new_last_name, number))
+            self.txt.insert('',
+                            index,
+                            values=(new_first_name, new_last_name, number))
 
-        # Rename contact in the class DepartmentsFrame
-        dep_user = None
-        for n, user in enumerate(self.contact_book.contacts):
-            if old_first_name == user.first_name:
-                dep_user = user.department
+            # Rename contact in the class DepartmentsFrame
+            dep_user = None
+            for n, user in enumerate(self.contact_book.contacts):
+                if old_first_name == user.first_name:
+                    dep_user = user.department
 
-        found_id = None
-        for item in self.tree.get_children(self.dict_department[dep_user]):
-            if self.tree.item(item, 'text') == f"{old_first_name} {old_last_name}":
-                found_id = item
-                break
+            found_id = None
+            for item in self.tree.get_children(self.dict_department[dep_user]):
+                if self.tree.item(item, 'text') == f"{old_first_name} {old_last_name}":
+                    found_id = item
+                    break
 
-        self.tree.delete(found_id)
+            self.tree.delete(found_id)
 
-        self.tree.insert('', tk.END, text=f'{new_first_name} {new_last_name}', iid=str(self.i), open=False)
-        self.tree.move(str(self.i), self.dict_department[dep_user], 0)
-        self.i += 1
+            self.tree.insert('', tk.END, text=f'{new_first_name} {new_last_name}', iid=str(self.i), open=False)
+            self.tree.move(str(self.i), self.dict_department[dep_user], 0)
+            self.i += 1
 
-        # Rename contact in the class FavoritesFrame
-        item_id = None
-        # Search for the row with contact name in the contact's department column
-        for child in self.favorites.get_children():
-            if self.favorites.set(child, "first_name") == old_first_name:
-                item_id = child
-                break
+            # Rename contact in the class FavoritesFrame
+            item_id = None
+            # Search for the row with contact name in the contact's department column
+            for child in self.favorites.get_children():
+                if self.favorites.set(child, "first_name") == old_first_name:
+                    item_id = child
+                    break
 
-        self.favorites.delete(item_id)
-        index = 0
-        while index < len(self.favorites.get_children()):
-            if new_first_name.lower() < self.favorites.item(self.favorites.get_children()[index])['values'][1].lower():
-                break
-            index += 1
+            if item_id is not None:
+                self.favorites.delete(item_id)
+                index = 0
+                while index < len(self.favorites.get_children()):
+                    if new_first_name.lower() < self.favorites.item(self.favorites.get_children()[index])['values'][1].lower():
+                        break
+                    index += 1
 
-        self.favorites.insert('',
-                              index,
-                              values=("🖤", new_first_name, new_last_name, number))
+                self.favorites.insert('',
+                                      index,
+                                      values=("🖤", new_first_name, new_last_name, number))
 
-        # Rename contact in the class ContactBook
-        index_txt = None
-        for n, user in enumerate(self.contact_book.contacts):
-            if number == user.phone_number:
-                index_txt = n
+            # Rename contact in the class ContactBook
+            index_txt = None
+            for n, user in enumerate(self.contact_book.contacts):
+                if number == user.phone_number:
+                    index_txt = n
 
-        contact = self.contact_book.contacts[index_txt]
-        self.contact_book.rename_contact(contact, new_first_name, new_last_name)
+            contact = self.contact_book.contacts[index_txt]
+            self.contact_book.rename_contact(contact, new_first_name, new_last_name)
 
-        # Open ContactsFrame again
-        self.txt.tkraise()
-        self.scrollbar.grid(row=0, column=1, sticky='ns')
-        self.lf.grid(row=1, column=0, sticky='ns')
+            tk.messagebox.showinfo(title='Update Contact Book',
+                                   message=f"\"{old_first_name} {old_last_name}\" was successfully renamed to \"{new_first_name} {new_last_name}\".")
+
+            print(f"\"{old_first_name} {old_last_name}\" was renamed to \"{new_first_name} {new_last_name}\" successfully.\n")
+
+            self.b2.state(['disabled'])
+            self.b3.state(['disabled'])
+            self.b4.state(['disabled'])
+
+            # Open ContactsFrame again
+            self.txt.tkraise()
+            self.scrollbar.grid(row=0, column=1, sticky='ns')
+            self.lf.grid(row=1, column=0, sticky='ns')
 
     def add_to_favorites(self):
         item = self.txt.item(self.txt.focus())['values']

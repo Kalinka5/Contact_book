@@ -41,12 +41,14 @@ class ContactBookGUI(tk.Tk):
         self.__create_widgets()
 
     def __create_widgets(self):
-        # create the input frame
+
         ImageFrame(self, self.tab_control)
 
         departments_frame = DepartmentsFrame(self, self.tab_control)
 
-        favorites_frame = FavoritesFrame(self, self.tab_control)
+        favorites_frame = FavoritesFrame(self,
+                                         self.tab_control,
+                                         self.contact_book)
 
         contacts_frame = ContactsFrame(self,
                                        self.tab_control,

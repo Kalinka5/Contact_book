@@ -3,10 +3,11 @@ from tkinter import ttk, messagebox
 
 
 class FavoritesFrame(ttk.Frame):
-    def __init__(self, container, tab_control):
+    def __init__(self, container, tab_control, contact_book):
         super().__init__(container)
 
         self.tab_control = tab_control
+        self.contact_book = contact_book
 
         self.__create_widgets()
 
@@ -62,4 +63,14 @@ class FavoritesFrame(ttk.Frame):
         messagebox.showinfo(title='Update Contact Book',
                             message=f"\"{first_name} {last_name}\" was successfully deleted from Favorites.")
 
+        index_txt = None
+        for n, user in enumerate(self.contact_book.contacts):
+            if first_name == user.first_name:
+                index_txt = n
+
+        contact = self.contact_book.contacts[index_txt]
+        contact.favorites = "False"
+
         print(f"Deleting \"{first_name} {last_name}\" from your Contact Book was successfully from Favorites.\n")
+
+        self.b1.state(['disabled'])
