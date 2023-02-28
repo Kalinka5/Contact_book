@@ -334,16 +334,20 @@ class ContactsFrame(ttk.Frame):
 
         if old_last_name == "" and new_last_name == "":
             answer = askyesno(title='Confirmation',
-                              message=f'Are you sure that you want to rename \"{old_first_name}\" to \"{new_first_name}\"?')
+                              message='Are you sure that you want to rename '
+                                      f'\"{old_first_name}\" to \"{new_first_name}\"?')
         elif old_last_name == "":
             answer = askyesno(title='Confirmation',
-                              message=f'Are you sure that you want to rename \"{old_first_name}\" to \"{new_first_name} {new_last_name}\"?')
+                              message='Are you sure that you want to rename '
+                                      f'\"{old_first_name}\" to \"{new_first_name} {new_last_name}\"?')
         elif new_last_name == "":
             answer = askyesno(title='Confirmation',
-                              message=f'Are you sure that you want to rename \"{old_first_name} {old_last_name}\" to \"{new_first_name}\"?')
+                              message='Are you sure that you want to rename '
+                                      f'\"{old_first_name} {old_last_name}\" to \"{new_first_name}\"?')
         else:
             answer = askyesno(title='Confirmation',
-                              message=f'Are you sure that you want to rename \"{old_first_name} {old_last_name}\" to \"{new_first_name} {new_last_name}\"?')
+                              message='Are you sure that you want to rename '
+                                      f'\"{old_first_name} {old_last_name}\" to \"{new_first_name} {new_last_name}\"?')
         if answer:
             # Rename contact in the class ContactsFrame
             selected_item = self.txt.selection()[0]
@@ -389,7 +393,8 @@ class ContactsFrame(ttk.Frame):
                 self.favorites.delete(item_id)
                 index = 0
                 while index < len(self.favorites.get_children()):
-                    if new_first_name.lower() < self.favorites.item(self.favorites.get_children()[index])['values'][1].lower():
+                    contact = self.favorites.item(self.favorites.get_children()[index])
+                    if new_first_name.lower() < contact['values'][1].lower():
                         break
                     index += 1
 
@@ -407,24 +412,27 @@ class ContactsFrame(ttk.Frame):
             self.contact_book.rename_contact(contact, new_first_name, new_last_name)
 
             if old_last_name == "" and new_last_name == "":
-                tk.messagebox.showinfo(title='Update Contact Book',
-                                       message=f"\"{old_first_name}\" was successfully renamed to \"{new_first_name}\".")
-                print(
-                    f"\"{old_first_name}\" was renamed to \"{new_first_name}\" successfully.\n")
+                tk.messagebox.showinfo(
+                    title='Update Contact Book',
+                    message=f"\"{old_first_name}\" was renamed to \"{new_first_name}\" successfully!")
+                print(f"\"{old_first_name}\" was renamed to \"{new_first_name}\" successfully!\n")
             elif old_last_name == "":
-                tk.messagebox.showinfo(title='Update Contact Book',
-                                       message=f"\"{old_first_name}\" was successfully renamed to \"{new_first_name} {new_last_name}\".")
-                print(
-                    f"\"{old_first_name}\" was renamed to \"{new_first_name} {new_last_name}\" successfully.\n")
+                tk.messagebox.showinfo(
+                    title='Update Contact Book',
+                    message=f"\"{old_first_name}\" was renamed to \"{new_first_name} {new_last_name}\" successfully!")
+                print(f"\"{old_first_name}\" was renamed to \"{new_first_name} {new_last_name}\" successfully!\n")
             elif new_last_name == "":
-                tk.messagebox.showinfo(title='Update Contact Book',
-                                       message=f"\"{old_first_name} {old_last_name}\" was successfully renamed to \"{new_first_name}\".")
-                print(
-                    f"\"{old_first_name} {old_last_name}\" was renamed to \"{new_first_name}\" successfully.\n")
+                tk.messagebox.showinfo(
+                    title='Update Contact Book',
+                    message=f"\"{old_first_name} {old_last_name}\" was renamed to \"{new_first_name}\" successfully!")
+                print(f"\"{old_first_name} {old_last_name}\" was renamed to \"{new_first_name}\" successfully!\n")
             else:
-                tk.messagebox.showinfo(title='Update Contact Book',
-                                       message=f"\"{old_first_name} {old_last_name}\" was successfully renamed to \"{new_first_name} {new_last_name}\".")
-                print(f"\"{old_first_name} {old_last_name}\" was renamed to \"{new_first_name} {new_last_name}\" successfully.\n")
+                tk.messagebox.showinfo(
+                    title='Update Contact Book',
+                    message=f"\"{old_first_name} {old_last_name}\" was renamed to "
+                            f"\"{new_first_name} {new_last_name}\" successfully!")
+                print(f"\"{old_first_name} {old_last_name}\" was renamed to "
+                      f"\"{new_first_name} {new_last_name}\" successfully!\n")
 
             self.b2.state(['disabled'])
             self.b3.state(['disabled'])

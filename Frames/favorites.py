@@ -56,7 +56,7 @@ class FavoritesFrame(ttk.Frame):
         first_name = human[1]
         last_name = human[2]
 
-        # Delete in ContactsFrame
+        # Delete in the FavoritesFrame
         selected_item = self.txt.selection()[0]
         self.txt.delete(selected_item)
 
@@ -68,10 +68,12 @@ class FavoritesFrame(ttk.Frame):
         contact = self.contact_book.contacts[index_txt]
         contact.favorites = "False"
 
+        # If contact doesn't have lastname
         if last_name == "":
             messagebox.showinfo(title='Update Contact Book',
                                 message=f"\"{first_name}\" was successfully deleted from Favorites.")
             print(f"Deleting \"{first_name}\" from your Contact Book was successfully from Favorites.\n")
+        # If contact has firstname and lastname
         else:
             messagebox.showinfo(title='Update Contact Book',
                                 message=f"\"{first_name} {last_name}\" was successfully deleted from Favorites.")
