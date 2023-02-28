@@ -189,10 +189,15 @@ class ContactsFrame(ttk.Frame):
                     self.text4.set("")
                     self.text5.set("")
 
-                    # Show message box when add contact
-                    tk.messagebox.showinfo(title='Update Contact Book',
-                                           message=f"\"{first_name} {last_name}\" was successfully added.")
-                    print(f"\"{first_name} {last_name}\" was successfully added to your Contact Book.\n")
+                    if last_name == "":
+                        tk.messagebox.showinfo(title='Update Contact Book',
+                                               message=f"\"{first_name}\" was successfully added.")
+                        print(f"\"{first_name}\" was successfully added to your Contact Book.\n")
+                    else:
+                        # Show message box when add contact
+                        tk.messagebox.showinfo(title='Update Contact Book',
+                                               message=f"\"{first_name} {last_name}\" was successfully added.")
+                        print(f"\"{first_name} {last_name}\" was successfully added to your Contact Book.\n")
 
                     # Open ContactsFrame again
                     self.txt.tkraise()
@@ -266,10 +271,14 @@ class ContactsFrame(ttk.Frame):
 
         self.b2.state(['disabled'])
 
-        tk.messagebox.showinfo(title='Update Contact Book',
-                               message=f"\"{human[0]} {human[1]}\" was successfully deleted.")
-
-        print(f"Deleting \"{human[0]} {human[1]}\" from your Contact Book was successfully.\n")
+        if last_name == "":
+            tk.messagebox.showinfo(title='Update Contact Book',
+                                   message=f"\"{first_name}\" was successfully deleted.")
+            print(f"Deleting \"{first_name}\" from your Contact Book was successfully.\n")
+        else:
+            tk.messagebox.showinfo(title='Update Contact Book',
+                                   message=f"\"{first_name} {last_name}\" was successfully deleted.")
+            print(f"Deleting \"{first_name} {last_name}\" from your Contact Book was successfully.\n")
 
     def rename_contact(self):
         item = self.txt.item(self.txt.focus())['values']
@@ -323,8 +332,18 @@ class ContactsFrame(ttk.Frame):
         new_first_name = self.text1.get()
         new_last_name = self.text2.get()
 
-        answer = askyesno(title='Confirmation',
-                          message=f'Are you sure that you want to rename \"{old_first_name} {old_last_name}\" to \"{new_first_name} {new_last_name}\"?')
+        if old_last_name == "" and new_last_name == "":
+            answer = askyesno(title='Confirmation',
+                              message=f'Are you sure that you want to rename \"{old_first_name}\" to \"{new_first_name}\"?')
+        elif old_last_name == "":
+            answer = askyesno(title='Confirmation',
+                              message=f'Are you sure that you want to rename \"{old_first_name}\" to \"{new_first_name} {new_last_name}\"?')
+        elif new_last_name == "":
+            answer = askyesno(title='Confirmation',
+                              message=f'Are you sure that you want to rename \"{old_first_name} {old_last_name}\" to \"{new_first_name}\"?')
+        else:
+            answer = askyesno(title='Confirmation',
+                              message=f'Are you sure that you want to rename \"{old_first_name} {old_last_name}\" to \"{new_first_name} {new_last_name}\"?')
         if answer:
             # Rename contact in the class ContactsFrame
             selected_item = self.txt.selection()[0]
@@ -387,10 +406,25 @@ class ContactsFrame(ttk.Frame):
             contact = self.contact_book.contacts[index_txt]
             self.contact_book.rename_contact(contact, new_first_name, new_last_name)
 
-            tk.messagebox.showinfo(title='Update Contact Book',
-                                   message=f"\"{old_first_name} {old_last_name}\" was successfully renamed to \"{new_first_name} {new_last_name}\".")
-
-            print(f"\"{old_first_name} {old_last_name}\" was renamed to \"{new_first_name} {new_last_name}\" successfully.\n")
+            if old_last_name == "" and new_last_name == "":
+                tk.messagebox.showinfo(title='Update Contact Book',
+                                       message=f"\"{old_first_name}\" was successfully renamed to \"{new_first_name}\".")
+                print(
+                    f"\"{old_first_name}\" was renamed to \"{new_first_name}\" successfully.\n")
+            elif old_last_name == "":
+                tk.messagebox.showinfo(title='Update Contact Book',
+                                       message=f"\"{old_first_name}\" was successfully renamed to \"{new_first_name} {new_last_name}\".")
+                print(
+                    f"\"{old_first_name}\" was renamed to \"{new_first_name} {new_last_name}\" successfully.\n")
+            elif new_last_name == "":
+                tk.messagebox.showinfo(title='Update Contact Book',
+                                       message=f"\"{old_first_name} {old_last_name}\" was successfully renamed to \"{new_first_name}\".")
+                print(
+                    f"\"{old_first_name} {old_last_name}\" was renamed to \"{new_first_name}\" successfully.\n")
+            else:
+                tk.messagebox.showinfo(title='Update Contact Book',
+                                       message=f"\"{old_first_name} {old_last_name}\" was successfully renamed to \"{new_first_name} {new_last_name}\".")
+                print(f"\"{old_first_name} {old_last_name}\" was renamed to \"{new_first_name} {new_last_name}\" successfully.\n")
 
             self.b2.state(['disabled'])
             self.b3.state(['disabled'])
@@ -425,6 +459,11 @@ class ContactsFrame(ttk.Frame):
         contact = self.contact_book.contacts[index_txt]
         contact.favorites = "True"
 
-        tk.messagebox.showinfo(title='Update Contact Book',
-                               message=f"\"{first_name} {last_name}\" was successfully added to the Favorites.")
-        print(f"\"{first_name} {last_name}\" was successfully added to the Favorites.\n")
+        if last_name == "":
+            tk.messagebox.showinfo(title='Update Contact Book',
+                                   message=f"\"{first_name}\" was successfully added to the Favorites.")
+            print(f"\"{first_name}\" was successfully added to the Favorites.\n")
+        else:
+            tk.messagebox.showinfo(title='Update Contact Book',
+                                   message=f"\"{first_name} {last_name}\" was successfully added to the Favorites.")
+            print(f"\"{first_name} {last_name}\" was successfully added to the Favorites.\n")

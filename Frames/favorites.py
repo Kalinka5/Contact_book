@@ -60,9 +60,6 @@ class FavoritesFrame(ttk.Frame):
         selected_item = self.txt.selection()[0]
         self.txt.delete(selected_item)
 
-        messagebox.showinfo(title='Update Contact Book',
-                            message=f"\"{first_name} {last_name}\" was successfully deleted from Favorites.")
-
         index_txt = None
         for n, user in enumerate(self.contact_book.contacts):
             if first_name == user.first_name:
@@ -71,6 +68,13 @@ class FavoritesFrame(ttk.Frame):
         contact = self.contact_book.contacts[index_txt]
         contact.favorites = "False"
 
-        print(f"Deleting \"{first_name} {last_name}\" from your Contact Book was successfully from Favorites.\n")
+        if last_name == "":
+            messagebox.showinfo(title='Update Contact Book',
+                                message=f"\"{first_name}\" was successfully deleted from Favorites.")
+            print(f"Deleting \"{first_name}\" from your Contact Book was successfully from Favorites.\n")
+        else:
+            messagebox.showinfo(title='Update Contact Book',
+                                message=f"\"{first_name} {last_name}\" was successfully deleted from Favorites.")
+            print(f"Deleting \"{first_name} {last_name}\" from your Contact Book was successfully from Favorites.\n")
 
         self.b1.state(['disabled'])
