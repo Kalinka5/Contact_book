@@ -74,12 +74,12 @@ class ContactBookGUI(tk.Tk):
                     departments_frame.tree.insert('',
                                                   tk.END,
                                                   text=f'{row["first_name"]} {row["last_name"]}',
-                                                  iid=str(departments_frame.i),
+                                                  iid=str(contacts_frame.i),
                                                   open=False)
-                    departments_frame.tree.move(str(departments_frame.i),
+                    departments_frame.tree.move(str(contacts_frame.i),
                                                 departments_frame.dict_departments[row["department"]],
                                                 0)
-                    departments_frame.i += 1
+                    contacts_frame.i += 1
 
                     if row["favorites"] == "True":
                         favorites.append(('🖤', row['first_name'], row['last_name'], row['numbers']))
