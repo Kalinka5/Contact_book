@@ -22,6 +22,9 @@ class ContactBook(OutputContact):
     def get_contacts(self):
         return self.contacts
 
+    def __len__(self):
+        return len(self.contacts)
+
     def add_contact(self, contact):
         self.contacts.append(contact)
 

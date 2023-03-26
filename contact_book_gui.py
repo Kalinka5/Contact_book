@@ -65,7 +65,6 @@ class ContactBookGUI(tk.Tk):
         if os.path.exists("Contact_book.csv"):
             contact_book_r = open("Contact_book.csv")
             reader = csv.DictReader(contact_book_r)
-
             if not df.empty:
                 for row in reader:
                     self.contact_book.contacts.append(Contact(row['first_name'],
@@ -73,6 +72,12 @@ class ContactBookGUI(tk.Tk):
                                                               row['numbers'],
                                                               row['department'],
                                                               row['favorites']))
+
+                amount_all_contacts = len(self.contact_book)
+                contact_book_r.seek(0)
+                reader = csv.DictReader(contact_book_r)
+                
+                for row in reader:
                     departments_frame.tree.insert('',
                                                   tk.END,
                                                   text=f'{row["first_name"]} {row["last_name"]}',
@@ -80,7 +85,7 @@ class ContactBookGUI(tk.Tk):
                                                   open=False)
                     departments_frame.tree.move(str(contacts_frame.i),
                                                 departments_frame.dict_departments[row["department"]],
-                                                0)
+                                                amount_all_contacts)
                     contacts_frame.i += 1
 
                     if row["favorites"] == "True":
