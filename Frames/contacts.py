@@ -296,7 +296,7 @@ class ContactsFrame(ttk.Frame):
         renamer.grid(row=0, column=0, sticky='nsew')
 
         lf = ttk.LabelFrame(master=renamer, text='Rename Window')
-        lf.place(x=85, y=40)
+        lf.place(x=105, y=40)
 
         download_icon = tk.PhotoImage(file='images/close.png')
         download_button = ttk.Button(
@@ -307,7 +307,10 @@ class ContactsFrame(ttk.Frame):
         download_button.image = download_icon
         download_button.pack(anchor=tk.E)
 
-        lbl1 = ttk.Label(master=lf, text=f'You choose the contact \"{item[0]} {item[1]}\".', font=("BOLD", 10))
+        if item[1]:
+            lbl1 = ttk.Label(master=lf, text=f'You choose the contact \"{item[0]} {item[1]}\".', font=("BOLD", 10))
+        else:
+            lbl1 = ttk.Label(master=lf, text=f'You choose the contact \"{item[0]}\".', font=("BOLD", 10))
         lbl1.pack()
 
         btn = ttk.Button(master=lf, text='Rename contact', command=self.rename, cursor='hand2')
