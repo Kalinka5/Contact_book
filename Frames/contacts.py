@@ -143,7 +143,7 @@ class ContactsFrame(ttk.Frame):
         add_frame.tkraise()
         self.scrollbar.grid_forget()
         self.lf.grid_forget()
-        
+
     def add(self):
         try:
             first_name = self.text3.get().title()
@@ -168,6 +168,10 @@ class ContactsFrame(ttk.Frame):
                 result = re.search(pattern, number)
                 number = f"({result[1]})-{result[2]}-{result[3]}"
                 if result:
+                    # Add contact to class Contacts
+                    department = self.departments.get()
+                    contact = Contact(first_name, last_name, number, department)
+                    self.contact_book.add_contact(contact)
 
                     # Add new contact to ContactsFrame
                     self.txt.insert('',
@@ -175,14 +179,21 @@ class ContactsFrame(ttk.Frame):
                                     values=(first_name, last_name, number))
 
                     # Add contact to DepartmentsFrame
-                    department = self.departments.get()
-                    self.tree.insert('', tk.END, text=f'{first_name} {last_name}', iid=str(self.i), open=False)
-                    self.tree.move(str(self.i), self.dict_department[department], 0)
-                    self.i += 1
-
-                    # Add contact to class Contacts
-                    contact = Contact(first_name, last_name, number, department)
-                    self.contact_book.add_contact(contact)
+                    children = self.tree.get_children(self.dict_department[department])
+                    self.tree.delete(*children)
+                    
+                    amount_all_contacts = len(self.contact_book)
+                    for human in self.contact_book:
+                        if human.department == department:
+                            self.tree.insert('',
+                                             tk.END,
+                                             text=f'{human.first_name} {human.last_name}',
+                                             iid=str(self.i),
+                                             open=False)
+                            self.tree.move(str(self.i),
+                                           self.dict_department[department],
+                                           amount_all_contacts)
+                            self.i += 1
 
                     # Clear all fields with data
                     self.text3.set("")

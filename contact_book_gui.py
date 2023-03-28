@@ -76,7 +76,7 @@ class ContactBookGUI(tk.Tk):
                 amount_all_contacts = len(self.contact_book)
                 contact_book_r.seek(0)
                 reader = csv.DictReader(contact_book_r)
-                
+
                 for row in reader:
                     departments_frame.tree.insert('',
                                                   tk.END,

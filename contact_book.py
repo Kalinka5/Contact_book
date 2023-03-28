@@ -25,6 +25,13 @@ class ContactBook(OutputContact):
     def __len__(self):
         return len(self.contacts)
 
+    def __iter__(self):
+        def generator():
+            for item in sorted(self.contacts):
+                yield item
+
+        return generator()
+
     def add_contact(self, contact):
         self.contacts.append(contact)
 
