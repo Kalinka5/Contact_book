@@ -3,6 +3,7 @@ from tkinter import ttk, messagebox
 from tkinter.messagebox import askyesno
 from Frames.Contacts.add_frame import AddFrame
 from Frames.Contacts.rename_frame import RenameFrame
+from Exceptions.exist_in_favorites import ContactExistFavoritesException
 
 
 class ContactsFrame(ttk.Frame):
@@ -156,39 +157,55 @@ class ContactsFrame(ttk.Frame):
         last_name = item[1]
         number = item[2]
 
-        if last_name == "":
-            answer = askyesno(
-                title='Confirmation',
-                message=f'Are you sure that you want to add \"{first_name}\" to the Favorites?')
-        else:
-            answer = askyesno(
-                title='Confirmation',
-                message=f'Are you sure that you want to add \"{first_name} {last_name}\" to the Favorites?')
-
-        if answer:
+        try:
             index = 0
             while index < len(self.favorites.get_children()):
-                if first_name.lower() < self.favorites.item(self.favorites.get_children()[index])['values'][1].lower():
-                    break
+                if number == self.favorites.item(self.favorites.get_children()[index])['values'][3].lower():
+                    raise ContactExistFavoritesException(first_name, last_name)
                 index += 1
 
-            self.favorites.insert('',
-                                  index,
-                                  values=("🖤", first_name, last_name, number))
-
-            index_txt = None
-            for n, user in enumerate(self.contact_book.contacts):
-                if number == user.phone_number:
-                    index_txt = n
-
-            contact = self.contact_book.contacts[index_txt]
-            contact.favorites = "True"
-
             if last_name == "":
-                tk.messagebox.showinfo(title='Update Contact Book',
-                                       message=f"\"{first_name}\" was added to the Favorites successfully!")
-                print(f"\"{first_name}\" was added to the Favorites successfully!\n")
+                answer = askyesno(
+                    title='Confirmation',
+                    message=f'Are you sure that you want to add \"{first_name}\" to the Favorites?')
             else:
-                tk.messagebox.showinfo(title='Update Contact Book',
-                                       message=f"\"{first_name} {last_name}\" was added to the Favorites successfully!")
-                print(f"\"{first_name} {last_name}\" was added to the Favorites successfully!\n")
+                answer = askyesno(
+                    title='Confirmation',
+                    message=f'Are you sure that you want to add \"{first_name} {last_name}\" to the Favorites?')
+
+            if answer:
+                index = 0
+                while index < len(self.favorites.get_children()):
+                    if first_name.lower() < self.favorites.item(self.favorites.get_children()[index])['values'][1].lower():
+                        break
+                    index += 1
+
+                self.favorites.insert('',
+                                      index,
+                                      values=("🖤", first_name, last_name, number))
+
+                index_txt = None
+                for n, user in enumerate(self.contact_book.contacts):
+                    if number == user.phone_number:
+                        index_txt = n
+
+                contact = self.contact_book.contacts[index_txt]
+                contact.favorites = "True"
+
+                if last_name == "":
+                    tk.messagebox.showinfo(title='Update Contact Book',
+                                           message=f"\"{first_name}\" was added to the Favorites successfully!")
+                    print(f"\"{first_name}\" was added to the Favorites successfully!\n")
+                else:
+                    tk.messagebox.showinfo(title='Update Contact Book',
+                                           message=f'"{first_name} {last_name}" was added to the Favorites successfully!')
+                    print(f"\"{first_name} {last_name}\" was added to the Favorites successfully!\n")
+
+        except ContactExistFavoritesException as fe:
+            print(fe)
+            if last_name:
+                tk.messagebox.showwarning(title='Update Contact Book',
+                                          message=f"A contact \"{first_name} {last_name}\" is already in the Favorites!")
+            else:
+                tk.messagebox.showwarning(title='Update Contact Book',
+                                          message=f"A contact \"{first_name}\" is already in the Favorites!")

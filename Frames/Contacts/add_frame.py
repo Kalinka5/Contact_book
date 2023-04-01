@@ -106,7 +106,7 @@ class AddFrame(ttk.Frame):
 
             for contact in self.contact_book:
                 if number == contact.phone_number:
-                    raise ContactExistException(number)
+                    raise ContactExistException()
 
             # Check name is it has less than 10 letters and more than 0
             if len(first_name) < 1 or len(first_name) > 10:
