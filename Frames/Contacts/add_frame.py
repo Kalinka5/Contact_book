@@ -2,7 +2,8 @@ import tkinter as tk
 import re
 from Exceptions.name_exception import NameException
 from Exceptions.number_exception import NumberException
-from Exceptions.contact_exist_exception import ContactExistException
+from Exceptions.number_exist import NumberExistException
+from Exceptions.fname_lname_exist import FirstnameLastnameExistException
 from tkinter import ttk, messagebox
 from contact_book import Contact
 
@@ -106,7 +107,9 @@ class AddFrame(ttk.Frame):
 
             for contact in self.contact_book:
                 if number == contact.phone_number:
-                    raise ContactExistException()
+                    raise NumberExistException()
+                elif first_name == contact.first_name and last_name == contact.last_name:
+                    raise FirstnameLastnameExistException
 
             # Check name is it has less than 10 letters and more than 0
             if len(first_name) < 1 or len(first_name) > 10:
@@ -168,12 +171,18 @@ class AddFrame(ttk.Frame):
         except NameException as ne:
             # When raise Name error, it shows message box with error text
             print(ne)
-            messagebox.showerror('Name error', 'Invalid value of contact name.\nName length should be from 1 to 10.\n')
+            messagebox.showerror(title='Name error',
+                                 message='Invalid value of contact name.\nName length should be from 1 to 10.\n')
         except NumberException as nue:
             # When raise Number error, it shows message box with error text
             print(nue)
-            messagebox.showerror('Number error', 'Number should contain only integers and dashes.')
-        except ContactExistException as cee:
+            messagebox.showerror(title='Number error',
+                                 message='Number should contain only integers and dashes.')
+        except NumberExistException as cee:
             print(cee)
             tk.messagebox.showwarning(title='Update Contact Book',
                                       message="A contact with this number is already in the phone book!")
+        except FirstnameLastnameExistException as flee:
+            print(flee)
+            tk.messagebox.showwarning(title='Update Contact Book',
+                                      message="A contact with this name is already in the Contact Book!")
