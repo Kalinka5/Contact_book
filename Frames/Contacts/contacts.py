@@ -176,7 +176,8 @@ class ContactsFrame(ttk.Frame):
             if answer:
                 index = 0
                 while index < len(self.favorites.get_children()):
-                    if first_name.lower() < self.favorites.item(self.favorites.get_children()[index])['values'][1].lower():
+                    favorites_name = self.favorites.item(self.favorites.get_children()[index])['values'][1].lower()
+                    if first_name.lower() < favorites_name:
                         break
                     index += 1
 
@@ -197,15 +198,17 @@ class ContactsFrame(ttk.Frame):
                                            message=f"\"{first_name}\" was added to the Favorites successfully!")
                     print(f"\"{first_name}\" was added to the Favorites successfully!\n")
                 else:
-                    tk.messagebox.showinfo(title='Update Contact Book',
-                                           message=f'"{first_name} {last_name}" was added to the Favorites successfully!')
                     print(f"\"{first_name} {last_name}\" was added to the Favorites successfully!\n")
+                    tk.messagebox.showinfo(
+                        title='Update Contact Book',
+                        message=f'"{first_name} {last_name}" was added to the Favorites successfully!')
 
         except ContactExistFavoritesException as fe:
             print(fe)
             if last_name:
-                tk.messagebox.showwarning(title='Update Contact Book',
-                                          message=f"A contact \"{first_name} {last_name}\" is already in the Favorites!")
+                tk.messagebox.showwarning(
+                    title='Update Contact Book',
+                    message=f"A contact \"{first_name} {last_name}\" is already in the Favorites!")
             else:
                 tk.messagebox.showwarning(title='Update Contact Book',
                                           message=f"A contact \"{first_name}\" is already in the Favorites!")
