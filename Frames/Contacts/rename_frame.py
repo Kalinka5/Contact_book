@@ -2,6 +2,7 @@ from tkinter import ttk
 import tkinter as tk
 from tkinter.messagebox import askyesno
 from contact_book import Contact
+from Exceptions.fname_lname_exist import FirstnameLastnameExistException
 
 
 class RenameFrame(ttk.Frame):
@@ -76,121 +77,130 @@ class RenameFrame(ttk.Frame):
         self.contacts_lf.grid(row=1, column=0, sticky='ns')
 
     def rename(self):
-        item = self.contacts_txt.item(self.contacts_txt.focus())['values']
+        try:
+            item = self.contacts_txt.item(self.contacts_txt.focus())['values']
 
-        old_first_name = item[0]
-        old_last_name = item[1]
-        number = item[2]
-        new_first_name = self.text1.get().capitalize()
-        new_last_name = self.text2.get().capitalize()
+            old_first_name = item[0]
+            old_last_name = item[1]
+            number = item[2]
+            new_first_name = self.text1.get().capitalize()
+            new_last_name = self.text2.get().capitalize()
 
-        if old_last_name == "" and new_last_name == "":
-            answer = askyesno(title='Confirmation',
-                              message='Are you sure that you want to rename '
-                                      f'\"{old_first_name}\" to \"{new_first_name}\"?')
-        elif old_last_name == "":
-            answer = askyesno(title='Confirmation',
-                              message='Are you sure that you want to rename '
-                                      f'\"{old_first_name}\" to \"{new_first_name} {new_last_name}\"?')
-        elif new_last_name == "":
-            answer = askyesno(title='Confirmation',
-                              message='Are you sure that you want to rename '
-                                      f'\"{old_first_name} {old_last_name}\" to \"{new_first_name}\"?')
-        else:
-            answer = askyesno(title='Confirmation',
-                              message='Are you sure that you want to rename '
-                                      f'\"{old_first_name} {old_last_name}\" to \"{new_first_name} {new_last_name}\"?')
-        if answer:
-            # Rename contact in the class ContactsFrame
-            selected_item = self.contacts_txt.selection()[0]
-            self.contacts_txt.delete(selected_item)
+            if old_first_name == new_first_name and old_last_name == new_last_name:
+                raise FirstnameLastnameExistException
 
-            index = 0
-            while index < len(self.contacts_txt.get_children()):
-                if new_first_name.lower() < self.contacts_txt.item(self.contacts_txt.get_children()[index])['values'][0].lower():
-                    break
-                index += 1
+            if old_last_name == "" and new_last_name == "":
+                answer = askyesno(title='Confirmation',
+                                  message='Are you sure that you want to rename '
+                                          f'\"{old_first_name}\" to \"{new_first_name}\"?')
+            elif old_last_name == "":
+                answer = askyesno(title='Confirmation',
+                                  message='Are you sure that you want to rename '
+                                          f'\"{old_first_name}\" to \"{new_first_name} {new_last_name}\"?')
+            elif new_last_name == "":
+                answer = askyesno(title='Confirmation',
+                                  message='Are you sure that you want to rename '
+                                          f'\"{old_first_name} {old_last_name}\" to \"{new_first_name}\"?')
+            else:
+                answer = askyesno(title='Confirmation',
+                                  message='Are you sure that you want to rename '
+                                          f'\"{old_first_name} {old_last_name}\" to \"{new_first_name} {new_last_name}\"?')
+            if answer:
+                # Rename contact in the class ContactsFrame
+                selected_item = self.contacts_txt.selection()[0]
+                self.contacts_txt.delete(selected_item)
 
-            self.contacts_txt.insert('',
-                                     index,
-                                     values=(new_first_name, new_last_name, number))
-
-            # Rename contact in the class DepartmentsFrame
-            dep_user = None
-            for n, user in enumerate(self.contact_book.contacts):
-                if old_first_name == user.first_name:
-                    dep_user = user.department
-
-            found_id = None
-            for item in self.tree.get_children(self.dict_department[dep_user]):
-                if self.tree.item(item, 'text') == f"{old_first_name} {old_last_name}":
-                    found_id = item
-                    break
-
-            self.tree.delete(found_id)
-
-            self.tree.insert('', tk.END, text=f'{new_first_name} {new_last_name}', iid=str(Contact.iid), open=False)
-            self.tree.move(str(Contact.iid), self.dict_department[dep_user], 0)
-            Contact.iid += 1
-
-            # Rename contact in the class FavoritesFrame
-            item_id = None
-            # Search for the row with contact name in the contact's department column
-            for child in self.favorites.get_children():
-                if self.favorites.set(child, "first_name") == old_first_name:
-                    item_id = child
-                    break
-
-            if item_id is not None:
-                self.favorites.delete(item_id)
                 index = 0
-                while index < len(self.favorites.get_children()):
-                    contact = self.favorites.item(self.favorites.get_children()[index])
-                    if new_first_name.lower() < contact['values'][1].lower():
+                while index < len(self.contacts_txt.get_children()):
+                    if new_first_name.lower() < self.contacts_txt.item(self.contacts_txt.get_children()[index])['values'][0].lower():
                         break
                     index += 1
 
-                self.favorites.insert('',
-                                      index,
-                                      values=("🖤", new_first_name, new_last_name, number))
+                self.contacts_txt.insert('',
+                                         index,
+                                         values=(new_first_name, new_last_name, number))
 
-            # Rename contact in the class ContactBook
-            index_txt = None
-            for n, user in enumerate(self.contact_book.contacts):
-                if number == user.phone_number:
-                    index_txt = n
+                # Rename contact in the class DepartmentsFrame
+                dep_user = None
+                for n, user in enumerate(self.contact_book.contacts):
+                    if old_first_name == user.first_name:
+                        dep_user = user.department
 
-            contact = self.contact_book.contacts[index_txt]
-            self.contact_book.rename_contact(contact, new_first_name, new_last_name)
+                found_id = None
+                for item in self.tree.get_children(self.dict_department[dep_user]):
+                    if self.tree.item(item, 'text') == f"{old_first_name} {old_last_name}":
+                        found_id = item
+                        break
 
-            if old_last_name == "" and new_last_name == "":
-                tk.messagebox.showinfo(
-                    title='Update Contact Book',
-                    message=f"\"{old_first_name}\" was renamed to \"{new_first_name}\" successfully!")
-                print(f"\"{old_first_name}\" was renamed to \"{new_first_name}\" successfully!\n")
-            elif old_last_name == "":
-                tk.messagebox.showinfo(
-                    title='Update Contact Book',
-                    message=f"\"{old_first_name}\" was renamed to \"{new_first_name} {new_last_name}\" successfully!")
-                print(f"\"{old_first_name}\" was renamed to \"{new_first_name} {new_last_name}\" successfully!\n")
-            elif new_last_name == "":
-                tk.messagebox.showinfo(
-                    title='Update Contact Book',
-                    message=f"\"{old_first_name} {old_last_name}\" was renamed to \"{new_first_name}\" successfully!")
-                print(f"\"{old_first_name} {old_last_name}\" was renamed to \"{new_first_name}\" successfully!\n")
-            else:
-                tk.messagebox.showinfo(
-                    title='Update Contact Book',
-                    message=f"\"{old_first_name} {old_last_name}\" was renamed to "
-                            f"\"{new_first_name} {new_last_name}\" successfully!")
-                print(f"\"{old_first_name} {old_last_name}\" was renamed to "
-                      f"\"{new_first_name} {new_last_name}\" successfully!\n")
+                self.tree.delete(found_id)
 
-            self.contacts_b2.state(['disabled'])
-            self.contacts_b3.state(['disabled'])
-            self.contacts_b4.state(['disabled'])
+                self.tree.insert('', tk.END, text=f'{new_first_name} {new_last_name}', iid=str(Contact.iid), open=False)
+                self.tree.move(str(Contact.iid), self.dict_department[dep_user], 0)
+                Contact.iid += 1
 
-            # Open ContactsFrame again
-            self.contacts_txt.tkraise()
-            self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
-            self.contacts_lf.grid(row=1, column=0, sticky='ns')
+                # Rename contact in the class FavoritesFrame
+                item_id = None
+                # Search for the row with contact name in the contact's department column
+                for child in self.favorites.get_children():
+                    if self.favorites.set(child, "first_name") == old_first_name:
+                        item_id = child
+                        break
+
+                if item_id is not None:
+                    self.favorites.delete(item_id)
+                    index = 0
+                    while index < len(self.favorites.get_children()):
+                        contact = self.favorites.item(self.favorites.get_children()[index])
+                        if new_first_name.lower() < contact['values'][1].lower():
+                            break
+                        index += 1
+
+                    self.favorites.insert('',
+                                          index,
+                                          values=("🖤", new_first_name, new_last_name, number))
+
+                # Rename contact in the class ContactBook
+                index_txt = None
+                for n, user in enumerate(self.contact_book.contacts):
+                    if number == user.phone_number:
+                        index_txt = n
+
+                contact = self.contact_book.contacts[index_txt]
+                self.contact_book.rename_contact(contact, new_first_name, new_last_name)
+
+                if old_last_name == "" and new_last_name == "":
+                    tk.messagebox.showinfo(
+                        title='Update Contact Book',
+                        message=f"\"{old_first_name}\" was renamed to \"{new_first_name}\" successfully!")
+                    print(f"\"{old_first_name}\" was renamed to \"{new_first_name}\" successfully!\n")
+                elif old_last_name == "":
+                    tk.messagebox.showinfo(
+                        title='Update Contact Book',
+                        message=f"\"{old_first_name}\" was renamed to \"{new_first_name} {new_last_name}\" successfully!")
+                    print(f"\"{old_first_name}\" was renamed to \"{new_first_name} {new_last_name}\" successfully!\n")
+                elif new_last_name == "":
+                    tk.messagebox.showinfo(
+                        title='Update Contact Book',
+                        message=f"\"{old_first_name} {old_last_name}\" was renamed to \"{new_first_name}\" successfully!")
+                    print(f"\"{old_first_name} {old_last_name}\" was renamed to \"{new_first_name}\" successfully!\n")
+                else:
+                    tk.messagebox.showinfo(
+                        title='Update Contact Book',
+                        message=f"\"{old_first_name} {old_last_name}\" was renamed to "
+                                f"\"{new_first_name} {new_last_name}\" successfully!")
+                    print(f"\"{old_first_name} {old_last_name}\" was renamed to "
+                          f"\"{new_first_name} {new_last_name}\" successfully!\n")
+
+                self.contacts_b2.state(['disabled'])
+                self.contacts_b3.state(['disabled'])
+                self.contacts_b4.state(['disabled'])
+
+                # Open ContactsFrame again
+                self.contacts_txt.tkraise()
+                self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
+                self.contacts_lf.grid(row=1, column=0, sticky='ns')
+
+        except FirstnameLastnameExistException as flee:
+            print(flee)
+            tk.messagebox.showwarning(title='Update Contact Book',
+                                      message="A contact with this name is already in the Contact Book!")
