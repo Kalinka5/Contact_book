@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from contact_book import Contact
 
 
 class DepartmentsFrame(ttk.Frame):
@@ -21,10 +22,9 @@ class DepartmentsFrame(ttk.Frame):
         self.tree.heading('#0', text='Departments', anchor=tk.W)
         headers = ('Work', 'Classmates', 'Friends', 'Relatives', 'Stars')
 
-        self.i = 0
         for head in headers:
-            self.tree.insert('', tk.END, text=head, iid=str(self.i), open=False)
-            self.i += 1
+            self.tree.insert('', tk.END, text=head, iid=str(Contact.iid), open=False)
+            Contact.iid += 1
 
         # place the Treeview widget on the root window
         self.tree.grid(row=0, column=0, sticky=tk.NSEW)

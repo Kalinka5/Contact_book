@@ -9,6 +9,7 @@ class Contact:
     phone_number: str
     department: str
     favorites: str = "False"
+    iid: int = 0
 
     def __lt__(self, other):
         return self.first_name < other.first_name

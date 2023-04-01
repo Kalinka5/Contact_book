@@ -1,9 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
-from Frames.first_frame import ImageFrame
-from Frames.contacts import ContactsFrame
-from Frames.departments import DepartmentsFrame
-from Frames.favorites import FavoritesFrame
+from Frames.First_frame.first_frame import ImageFrame
+from Frames.Contacts.contacts import ContactsFrame
+from Frames.Departments.departments import DepartmentsFrame
+from Frames.Favorites.favorites import FavoritesFrame
 from contact_book import Contact, ContactBook
 import csv
 import os
@@ -55,7 +55,6 @@ class ContactBookGUI(tk.Tk):
                                        self.contact_book,
                                        departments_frame.tree,
                                        departments_frame.dict_departments,
-                                       departments_frame.i,
                                        favorites_frame.txt)
 
         # Read data from csv file
@@ -81,12 +80,12 @@ class ContactBookGUI(tk.Tk):
                     departments_frame.tree.insert('',
                                                   tk.END,
                                                   text=f'{row["first_name"]} {row["last_name"]}',
-                                                  iid=str(contacts_frame.i),
+                                                  iid=str(Contact.iid),
                                                   open=False)
-                    departments_frame.tree.move(str(contacts_frame.i),
+                    departments_frame.tree.move(str(Contact.iid),
                                                 departments_frame.dict_departments[row["department"]],
                                                 amount_all_contacts)
-                    contacts_frame.i += 1
+                    Contact.iid += 1
 
                     if row["favorites"] == "True":
                         favorites.append(('🖤', row['first_name'], row['last_name'], row['numbers']))
