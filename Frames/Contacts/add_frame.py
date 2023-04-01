@@ -2,6 +2,7 @@ import tkinter as tk
 import re
 from Exceptions.name_exception import NameException
 from Exceptions.number_exception import NumberException
+from Exceptions.contact_exist_exception import ContactExistException
 from tkinter import ttk, messagebox
 from contact_book import Contact
 
@@ -90,8 +91,11 @@ class AddFrame(ttk.Frame):
         try:
             first_name = self.text3.get().title()
             last_name = self.text4.get().title()
-            number = self.text5.get().replace("-", "")
+            digits = self.text5.get().replace("-", "")
             pattern = r"(\d{3})(\d{3})([\d.]+)"
+            # convert phone number to (000)-000-0000
+            result = re.search(pattern, digits)
+            number = f"({result[1]})-{result[2]}-{result[3]}"
 
             # Get index of contact where he is in contact book by alphabet
             index = 0
@@ -100,15 +104,16 @@ class AddFrame(ttk.Frame):
                     break
                 index += 1
 
+            for contact in self.contact_book:
+                if number == contact.phone_number:
+                    raise ContactExistException(number)
+
             # Check name is it has less than 10 letters and more than 0
             if len(first_name) < 1 or len(first_name) > 10:
                 raise NameException(first_name)
 
             # Check phone number is it has only digits
-            elif number.isdigit():
-                # convert phone number to (000)-000-0000
-                result = re.search(pattern, number)
-                number = f"({result[1]})-{result[2]}-{result[3]}"
+            elif digits.isdigit():
                 if result:
                     # Add contact to class Contacts
                     department = self.departments.get()
@@ -168,3 +173,7 @@ class AddFrame(ttk.Frame):
             # When raise Number error, it shows message box with error text
             print(nue)
             messagebox.showerror('Number error', 'Number should contain only integers and dashes.')
+        except ContactExistException as cee:
+            print(cee)
+            tk.messagebox.showwarning(title='Update Contact Book',
+                                      message="A contact with this number is already in the phone book!")
