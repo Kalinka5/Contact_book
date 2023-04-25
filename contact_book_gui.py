@@ -72,6 +72,9 @@ class ContactBookGUI(tk.Tk):
                                                               row['department'],
                                                               row['favorites']))
 
+                    self.contact_book.all_names.append(f"{row['first_name']} {row['last_name']}")
+                    self.contact_book.all_numbers.append(row['numbers'])
+
                 amount_all_contacts = len(self.contact_book)
                 contact_book_r.seek(0)
                 reader = csv.DictReader(contact_book_r)

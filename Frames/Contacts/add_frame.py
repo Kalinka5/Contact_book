@@ -110,11 +110,14 @@ class AddFrame(ttk.Frame):
                     break
                 index += 1
 
-            for contact in self.contact_book:
-                if number == contact.phone_number:
-                    raise NumberExistException()
-                elif first_name == contact.first_name and last_name == contact.last_name:
-                    raise FirstnameLastnameExistException
+            all_numbers = self.contact_book.get_all_numbers
+            if number in all_numbers:
+                raise NumberExistException()
+
+            all_names = self.contact_book.get_all_names
+            for name in all_names:
+                if f"{first_name} {last_name}" in name:
+                    raise FirstnameLastnameExistException()
 
             # Check name is it has less than 10 letters and more than 0
             if len(first_name) < 1 or len(first_name) > 10:
