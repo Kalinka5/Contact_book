@@ -15,13 +15,11 @@ class FavoritesFrame(ttk.Frame):
     def __create_widgets(self):
         self.tab_control.add(self, text='Favorites')
 
-        columns = ('', 'first_name', 'last_name', 'number')
+        columns = ('first_name', 'last_name', 'number')
         self.txt = ttk.Treeview(self, columns=columns, show='headings')
-        self.txt.heading('', text='')
         self.txt.heading('first_name', text='First Name')
         self.txt.heading('last_name', text='Second Name')
         self.txt.heading('number', text='Number')
-        self.txt.column('', width=20, anchor=tk.CENTER)
         self.txt.column('first_name', width=100, anchor=tk.W)
         self.txt.column('last_name', width=100, anchor=tk.W)
         self.txt.column('number', width=200, anchor=tk.CENTER)

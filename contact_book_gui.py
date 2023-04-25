@@ -88,7 +88,7 @@ class ContactBookGUI(tk.Tk):
                     Contact.iid += 1
 
                     if row["favorites"] == "True":
-                        favorites.append(('🖤', row['first_name'], row['last_name'], row['numbers']))
+                        favorites.append((f"♥  {row['first_name']}", row['last_name'], row['numbers']))
 
                     contacts.append((row['first_name'], row['last_name'], row['numbers']))
 
