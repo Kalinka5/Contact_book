@@ -62,17 +62,20 @@ class AddFrame(ttk.Frame):
         self.departments.grid(row=2, column=2, padx=5)
         self.departments.bind('<<ComboboxSelected>>', self.get_button_enable)
 
-        self.btn = ttk.Button(master=lf, text='Add contact', command=self.add, cursor='hand2')
-        self.btn.grid(row=4, column=2, padx=5, pady=50)
+        self.btn = ttk.Button(master=lf,
+                              text='Add contact',
+                              command=self.add,
+                              cursor='hand2')
+        self.btn.grid(row=4, column=2, padx=5, pady=15)
         self.btn.state(['disabled'])
 
-        download_icon = tk.PhotoImage(file='images/close.png')
+        close_icon = tk.PhotoImage(file='images/close.png')
         download_button = ttk.Button(
-            lf,
-            image=download_icon,
+            master=lf,
+            image=close_icon,
             command=self.close_clicked
         )
-        download_button.image = download_icon
+        download_button.image = close_icon
         download_button.grid(row=0, column=2, sticky='e')
 
         self.tkraise()
