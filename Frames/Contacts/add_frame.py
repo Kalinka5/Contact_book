@@ -96,8 +96,10 @@ class AddFrame(ttk.Frame):
             first_name = self.text3.get().title()
             last_name = self.text4.get().title()
             digits = self.text5.get().replace("-", "")
-            pattern = r"(\d{3})(\d{3})([\d.]+)"
+            if len(digits) < 6:
+                raise NumberException(digits)
             # convert phone number to (000)-000-0000
+            pattern = r"(\d{3})(\d{3})([\d.]+)"
             result = re.search(pattern, digits)
             number = f"({result[1]})-{result[2]}-{result[3]}"
 
@@ -180,7 +182,8 @@ class AddFrame(ttk.Frame):
             # When raise Number error, it shows message box with error text
             print(nue)
             messagebox.showerror(title='Number error',
-                                 message='Number should contain only integers and dashes.')
+                                 message='Number should contain only integers and dashes.'
+                                         '\n\nNumber example: "000-000-0000" or "0000000000".')
         except NumberExistException as cee:
             print(cee)
             tk.messagebox.showwarning(title='Update Contact Book',

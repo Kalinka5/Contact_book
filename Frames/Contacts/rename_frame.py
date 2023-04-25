@@ -88,6 +88,9 @@ class RenameFrame(ttk.Frame):
 
             if old_first_name == new_first_name and old_last_name == new_last_name:
                 raise FirstnameLastnameExistException
+            for contact in self.contact_book:
+                if new_first_name == contact.first_name and new_last_name == contact.last_name:
+                    raise FirstnameLastnameExistException
 
             if old_last_name == "" and new_last_name == "":
                 answer = askyesno(title='Confirmation',
