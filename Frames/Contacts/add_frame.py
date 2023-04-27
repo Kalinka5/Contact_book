@@ -6,12 +6,13 @@ from Exceptions.number_exist import NumberExistException
 from Exceptions.fname_lname_exist import FirstnameLastnameExistException
 from tkinter import ttk, messagebox
 from contact_book import Contact
+from Frames.Departments.departments import DepartmentsFrame as Depart
 
 
 class AddFrame(ttk.Frame):
 
     def __init__(self, container, contacts_txt, contacts_lf, contacts_scrollbar,
-                 contact_book, tree, department, favorites):
+                 contact_book, tree, favorites):
         super().__init__(container)
 
         self.contacts_txt = contacts_txt
@@ -19,7 +20,6 @@ class AddFrame(ttk.Frame):
         self.contacts_scrollbar = contacts_scrollbar
         self.contact_book = contact_book
         self.tree = tree
-        self.dict_department = department
         self.favorites = favorites
 
         self.__create_widgets()
@@ -137,7 +137,7 @@ class AddFrame(ttk.Frame):
                                              values=(first_name, last_name, number))
 
                     # Add contact to DepartmentsFrame
-                    children = self.tree.get_children(self.dict_department[department])
+                    children = self.tree.get_children(Depart.dict_departments[department])
                     self.tree.delete(*children)
 
                     amount_all_contacts = len(self.contact_book)
@@ -149,7 +149,7 @@ class AddFrame(ttk.Frame):
                                              iid=str(Contact.iid),
                                              open=False)
                             self.tree.move(str(Contact.iid),
-                                           self.dict_department[department],
+                                           Depart.dict_departments[department],
                                            amount_all_contacts)
                             Contact.iid += 1
 

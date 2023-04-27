@@ -3,11 +3,12 @@ import tkinter as tk
 from tkinter.messagebox import askyesno
 from contact_book import Contact
 from Exceptions.fname_lname_exist import FirstnameLastnameExistException
+from Frames.Departments.departments import DepartmentsFrame as Depart
 
 
 class RenameFrame(ttk.Frame):
     def __init__(self, container, contacts_txt, contacts_lf, contacts_scrollbar,
-                 contact_book, tree, department, favorites, contacts_b2, contacts_b3, contacts_b4):
+                 contact_book, tree, favorites, contacts_b2, contacts_b3, contacts_b4):
         super().__init__(container)
 
         self.contacts_txt = contacts_txt
@@ -15,7 +16,6 @@ class RenameFrame(ttk.Frame):
         self.contacts_scrollbar = contacts_scrollbar
         self.contact_book = contact_book
         self.tree = tree
-        self.dict_department = department
         self.favorites = favorites
         self.contacts_b2 = contacts_b2
         self.contacts_b3 = contacts_b3
@@ -129,7 +129,7 @@ class RenameFrame(ttk.Frame):
                         dep_user = user.department
 
                 found_id = None
-                for item in self.tree.get_children(self.dict_department[dep_user]):
+                for item in self.tree.get_children(Depart.dict_departments[dep_user]):
                     if self.tree.item(item, 'text') == f"{old_first_name} {old_last_name}":
                         found_id = item
                         break
@@ -137,7 +137,7 @@ class RenameFrame(ttk.Frame):
                 self.tree.delete(found_id)
 
                 self.tree.insert('', tk.END, text=f'{new_first_name} {new_last_name}', iid=str(Contact.iid), open=False)
-                self.tree.move(str(Contact.iid), self.dict_department[dep_user], 0)
+                self.tree.move(str(Contact.iid), Depart.dict_departments[dep_user], 0)
                 Contact.iid += 1
 
                 # Rename contact in the class FavoritesFrame

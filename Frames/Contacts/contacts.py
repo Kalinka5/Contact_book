@@ -4,16 +4,16 @@ from tkinter.messagebox import askyesno
 from Frames.Contacts.add_frame import AddFrame
 from Frames.Contacts.rename_frame import RenameFrame
 from Exceptions.exist_in_favorites import ContactExistFavoritesException
+from Frames.Departments.departments import DepartmentsFrame as Depart
 
 
 class ContactsFrame(ttk.Frame):
-    def __init__(self, container, tab_control, contact_book, tree, department, favorites):
+    def __init__(self, container, tab_control, contact_book, tree, favorites):
         super().__init__(container)
 
         self.tab_control = tab_control
         self.contact_book = contact_book
         self.tree = tree
-        self.dict_department = department
         self.favorites = favorites
 
         self.__create_widgets()
@@ -81,7 +81,7 @@ class ContactsFrame(ttk.Frame):
 
     def add_contact(self):
         AddFrame(self, self.txt, self.lf, self.scrollbar,
-                 self.contact_book, self.tree, self.dict_department, self.favorites)
+                 self.contact_book, self.tree, self.favorites)
 
     def delete_contact(self):
         human = self.txt.item(self.txt.focus())['values']
@@ -112,7 +112,7 @@ class ContactsFrame(ttk.Frame):
             # Delete contact in DepartmentsFrame
             found_id = None
             # Search for the row with contact name in the contact's department column
-            for item in self.tree.get_children(self.dict_department[dep_user]):
+            for item in self.tree.get_children(Depart.dict_departments[dep_user]):
                 if self.tree.item(item, 'text') == f"{first_name} {last_name}":
                     found_id = item
                     break
@@ -149,7 +149,7 @@ class ContactsFrame(ttk.Frame):
 
     def rename_contact(self):
         RenameFrame(self, self.txt, self.lf, self.scrollbar, self.contact_book, self.tree,
-                    self.dict_department, self.favorites, self.b2, self.b3, self.b4)
+                    self.favorites, self.b2, self.b3, self.b4)
 
     def add_to_favorites(self):
         item = self.txt.item(self.txt.focus())['values']

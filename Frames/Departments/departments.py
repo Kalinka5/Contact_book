@@ -4,10 +4,11 @@ from contact_book import Contact
 
 
 class DepartmentsFrame(ttk.Frame):
+    dict_departments = {'Work': "0", 'Classmates': "1", 'Friends': "2", 'Relatives': "3", 'Stars': "4"}
+
     def __init__(self, container, tab_control):
         super().__init__(container)
         self.tab_control = tab_control
-        self.dict_departments = {'Work': "0", 'Classmates': "1", 'Friends': "2", 'Relatives': "3", 'Stars': "4"}
         self.__create_widgets()
 
     def __create_widgets(self):

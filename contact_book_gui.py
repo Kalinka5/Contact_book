@@ -54,7 +54,6 @@ class ContactBookGUI(tk.Tk):
                                        self.tab_control,
                                        self.contact_book,
                                        departments_frame.tree,
-                                       departments_frame.dict_departments,
                                        favorites_frame.txt)
 
         # Read data from csv file
