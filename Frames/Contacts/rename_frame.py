@@ -2,7 +2,7 @@ from tkinter import ttk
 import tkinter as tk
 from tkinter.messagebox import askyesno
 
-from Exceptions.fname_lname_exist import FirstnameLastnameExistException
+from Exceptions.name_exist import NameExistException
 from Frames.Departments.departments import DepartmentsFrame as Depart
 from contact_book import Contact
 
@@ -90,7 +90,7 @@ class RenameFrame(ttk.Frame):
             all_names = self.contact_book.get_all_names
             for name in all_names:
                 if f"{new_first_name} {new_last_name}" in name:
-                    raise FirstnameLastnameExistException()
+                    raise NameExistException()
 
             if old_last_name == "" and new_last_name == "":
                 answer = askyesno(title='Confirmation',
@@ -203,7 +203,7 @@ class RenameFrame(ttk.Frame):
                 self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
                 self.contacts_lf.grid(row=1, column=0, sticky='ns')
 
-        except FirstnameLastnameExistException as flee:
+        except NameExistException as flee:
             print(flee)
             tk.messagebox.showwarning(title='Update Contact Book',
                                       message="A contact with this name is already in the Contact Book!")

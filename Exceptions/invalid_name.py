@@ -1,4 +1,4 @@
-class NameException(Exception):
+class InvalidNameException(Exception):
     def __init__(self, name):
         self.name = name
 

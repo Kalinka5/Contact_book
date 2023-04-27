@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from tkinter.messagebox import askyesno
 
-from Exceptions.exist_in_favorites import ContactExistFavoritesException
+from Exceptions.exist_in_favorites import ContactExistInFavoritesException
 from Frames.Contacts.add_frame import AddFrame
 from Frames.Contacts.rename_frame import RenameFrame
 from Frames.Departments.departments import DepartmentsFrame as Depart
@@ -161,8 +161,8 @@ class ContactsFrame(ttk.Frame):
         try:
             index = 0
             while index < len(self.favorites.get_children()):
-                if number == self.favorites.item(self.favorites.get_children()[index])['values'][3].lower():
-                    raise ContactExistFavoritesException(first_name, last_name)
+                if number == self.favorites.item(self.favorites.get_children()[index])['values'][2].lower():
+                    raise ContactExistInFavoritesException(first_name, last_name)
                 index += 1
 
             if last_name == "":
@@ -204,7 +204,7 @@ class ContactsFrame(ttk.Frame):
                         title='Update Contact Book',
                         message=f'"{first_name} {last_name}" was added to the Favorites successfully!')
 
-        except ContactExistFavoritesException as fe:
+        except ContactExistInFavoritesException as fe:
             print(fe)
             if last_name:
                 tk.messagebox.showwarning(

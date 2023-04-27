@@ -1,4 +1,4 @@
-class NumberException(Exception):
+class InvalidNumberException(Exception):
     def __init__(self, number):
         self.number = number
 

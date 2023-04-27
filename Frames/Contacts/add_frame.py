@@ -2,10 +2,10 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import re
 
-from Exceptions.name_exception import NameException
-from Exceptions.number_exception import NumberException
+from Exceptions.invalid_name import InvalidNameException
+from Exceptions.invalid_number import InvalidNumberException
 from Exceptions.number_exist import NumberExistException
-from Exceptions.fname_lname_exist import FirstnameLastnameExistException
+from Exceptions.name_exist import NameExistException
 from Frames.Departments.departments import DepartmentsFrame as Depart
 from contact_book import Contact
 
@@ -95,10 +95,21 @@ class AddFrame(ttk.Frame):
     def add(self):
         try:
             first_name = self.text3.get().title()
+            if first_name == "":
+                first_name = "Mr/Mrs"
             last_name = self.text4.get().title()
             digits = self.text5.get().replace("-", "")
+
             if len(digits) < 6:
-                raise NumberException(digits)
+                raise InvalidNumberException(digits)
+
+            # Check first name is it has less than 10 letters and more than 0
+            if len(first_name) < 1 or len(first_name) > 10:
+                raise InvalidNameException(first_name)
+            # Check last name is it has less than 10 letters and more than 0
+            if len(last_name) < 1 or len(last_name) > 10:
+                raise InvalidNameException(last_name)
+
             # convert phone number to (000)-000-0000
             pattern = r"(\d{3})(\d{3})([\d.]+)"
             result = re.search(pattern, digits)
@@ -118,14 +129,10 @@ class AddFrame(ttk.Frame):
             all_names = self.contact_book.get_all_names
             for name in all_names:
                 if f"{first_name} {last_name}" in name:
-                    raise FirstnameLastnameExistException()
-
-            # Check name is it has less than 10 letters and more than 0
-            if len(first_name) < 1 or len(first_name) > 10:
-                raise NameException(first_name)
+                    raise NameExistException()
 
             # Check phone number is it has only digits
-            elif digits.isdigit():
+            if digits.isdigit():
                 if result:
                     # Add contact to class Contacts
                     department = self.departments.get()
@@ -175,14 +182,14 @@ class AddFrame(ttk.Frame):
                     self.contacts_lf.grid(row=1, column=0, sticky='ns')
             else:
                 # If number contain not only digits, it raises exception
-                raise NumberException(number)
+                raise InvalidNumberException(number)
 
-        except NameException as ne:
+        except InvalidNameException as ne:
             # When raise Name error, it shows message box with error text
             print(ne)
             messagebox.showerror(title='Name error',
                                  message='Invalid value of contact name.\nName length should be from 1 to 10.\n')
-        except NumberException as nue:
+        except InvalidNumberException as nue:
             # When raise Number error, it shows message box with error text
             print(nue)
             messagebox.showerror(title='Number error',
@@ -192,7 +199,7 @@ class AddFrame(ttk.Frame):
             print(cee)
             tk.messagebox.showwarning(title='Update Contact Book',
                                       message="A contact with this number is already in the phone book!")
-        except FirstnameLastnameExistException as flee:
+        except NameExistException as flee:
             print(flee)
             tk.messagebox.showwarning(title='Update Contact Book',
                                       message="A contact with this name is already in the Contact Book!")
