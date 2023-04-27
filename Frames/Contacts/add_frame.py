@@ -98,7 +98,9 @@ class AddFrame(ttk.Frame):
             if first_name == "":
                 first_name = "Mr/Mrs"
             last_name = self.text4.get().title()
-            digits = self.text5.get().replace("-", "")
+            number = self.text5.get()
+
+            digits = number.replace("-", "")
 
             if len(digits) < 6:
                 raise InvalidNumberException(digits)
@@ -113,6 +115,10 @@ class AddFrame(ttk.Frame):
             # convert phone number to (000)-000-0000
             pattern = r"(\d{3})(\d{3})([\d.]+)"
             result = re.search(pattern, digits)
+            # If number contain not only digits, it raises exception
+            if not result:
+                raise InvalidNumberException(number)
+
             number = f"({result[1]})-{result[2]}-{result[3]}"
 
             # Get index of contact where he is in contact book by alphabet
@@ -180,18 +186,15 @@ class AddFrame(ttk.Frame):
                     self.contacts_txt.tkraise()
                     self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
                     self.contacts_lf.grid(row=1, column=0, sticky='ns')
-            else:
-                # If number contain not only digits, it raises exception
-                raise InvalidNumberException(number)
 
-        except InvalidNameException as ne:
+        except InvalidNameException as ine:
             # When raise Name error, it shows message box with error text
-            print(ne)
+            print(ine)
             messagebox.showerror(title='Name error',
                                  message='Invalid value of contact name.\nName length should be from 1 to 10.\n')
-        except InvalidNumberException as nue:
+        except InvalidNumberException as inue:
             # When raise Number error, it shows message box with error text
-            print(nue)
+            print(inue)
             messagebox.showerror(title='Number error',
                                  message='Number should contain only integers and dashes.'
                                          '\n\nNumber example: "000-000-0000" or "0000000000".')

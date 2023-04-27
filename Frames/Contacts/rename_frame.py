@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter.messagebox import askyesno
 
 from Exceptions.name_exist import NameExistException
+from Exceptions.invalid_name import InvalidNameException
 from Frames.Departments.departments import DepartmentsFrame as Depart
 from contact_book import Contact
 
@@ -85,7 +86,16 @@ class RenameFrame(ttk.Frame):
             old_last_name = item[1]
             number = item[2]
             new_first_name = self.text1.get().capitalize()
+            if new_first_name == "":
+                new_first_name = "Mr/Mrs"
             new_last_name = self.text2.get().capitalize()
+
+            # Check first name is it has less than 10 letters and more than 0
+            if len(new_first_name) < 1 or len(new_first_name) > 10:
+                raise InvalidNameException(new_first_name)
+            # Check last name is it has less than 10 letters and more than 0
+            if len(new_last_name) < 1 or len(new_last_name) > 10:
+                raise InvalidNameException(new_last_name)
 
             all_names = self.contact_book.get_all_names
             for name in all_names:
@@ -207,3 +217,7 @@ class RenameFrame(ttk.Frame):
             print(flee)
             tk.messagebox.showwarning(title='Update Contact Book',
                                       message="A contact with this name is already in the Contact Book!")
+        except InvalidNameException as ine:
+            print(ine)
+            tk.messagebox.showwarning(title='Name error',
+                                      message='Invalid value of contact name.\nName length should be from 1 to 10.\n')
