@@ -1,9 +1,10 @@
 from tkinter import ttk
 import tkinter as tk
 from tkinter.messagebox import askyesno
-from contact_book import Contact
+
 from Exceptions.fname_lname_exist import FirstnameLastnameExistException
 from Frames.Departments.departments import DepartmentsFrame as Depart
+from contact_book import Contact
 
 
 class RenameFrame(ttk.Frame):

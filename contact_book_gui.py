@@ -1,13 +1,15 @@
 import tkinter as tk
 from tkinter import ttk
+import csv
+import os
+
+import pandas as pd
+
 from Frames.First_frame.first_frame import ImageFrame
 from Frames.Contacts.contacts import ContactsFrame
 from Frames.Departments.departments import DepartmentsFrame
 from Frames.Favorites.favorites import FavoritesFrame
 from contact_book import Contact, ContactBook
-import csv
-import os
-import pandas as pd
 
 
 class ContactBookGUI(tk.Tk):

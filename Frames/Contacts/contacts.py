@@ -1,9 +1,10 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from tkinter.messagebox import askyesno
+
+from Exceptions.exist_in_favorites import ContactExistFavoritesException
 from Frames.Contacts.add_frame import AddFrame
 from Frames.Contacts.rename_frame import RenameFrame
-from Exceptions.exist_in_favorites import ContactExistFavoritesException
 from Frames.Departments.departments import DepartmentsFrame as Depart
 
 

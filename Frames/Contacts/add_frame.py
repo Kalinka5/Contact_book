@@ -1,12 +1,13 @@
 import tkinter as tk
+from tkinter import ttk, messagebox
 import re
+
 from Exceptions.name_exception import NameException
 from Exceptions.number_exception import NumberException
 from Exceptions.number_exist import NumberExistException
 from Exceptions.fname_lname_exist import FirstnameLastnameExistException
-from tkinter import ttk, messagebox
-from contact_book import Contact
 from Frames.Departments.departments import DepartmentsFrame as Depart
+from contact_book import Contact
 
 
 class AddFrame(ttk.Frame):

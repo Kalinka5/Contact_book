@@ -1,5 +1,6 @@
-from output_contacts import OutputContact
 from dataclasses import dataclass
+
+from output_contacts import OutputContact
 
 
 @dataclass
