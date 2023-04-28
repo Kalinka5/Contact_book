@@ -193,18 +193,17 @@ class AddFrame(ttk.Frame):
             # When raise Name error, it shows message box with error text
             print(ine)
             messagebox.showerror(title='Name error',
-                                 message='Invalid value of contact name.\nName length should be from 1 to 10.\n')
+                                 message=ine)
         except InvalidNumberException as inue:
             # When raise Number error, it shows message box with error text
             print(inue)
             messagebox.showerror(title='Number error',
-                                 message='Number should contain only integers and dashes.'
-                                         '\n\nNumber example: "000-000-0000" or "0000000000".')
+                                 message=inue)
         except NumberExistException as cee:
             print(cee)
             tk.messagebox.showwarning(title='Update Contact Book',
-                                      message="A contact with this number is already in the phone book!")
-        except NameExistException as flee:
-            print(flee)
+                                      message="A contact with this number is already in the Contact book!")
+        except NameExistException as nee:
+            print(nee)
             tk.messagebox.showwarning(title='Update Contact Book',
                                       message="A contact with this name is already in the Contact Book!")

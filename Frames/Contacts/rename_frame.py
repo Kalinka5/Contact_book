@@ -125,7 +125,8 @@ class RenameFrame(ttk.Frame):
 
                 index = 0
                 while index < len(self.contacts_txt.get_children()):
-                    if new_first_name.lower() < self.contacts_txt.item(self.contacts_txt.get_children()[index])['values'][0].lower():
+                    if new_first_name.lower() < \
+                            self.contacts_txt.item(self.contacts_txt.get_children()[index])['values'][0].lower():
                         break
                     index += 1
 
@@ -213,11 +214,11 @@ class RenameFrame(ttk.Frame):
                 self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
                 self.contacts_lf.grid(row=1, column=0, sticky='ns')
 
-        except NameExistException as flee:
-            print(flee)
+        except NameExistException as nee:
+            print(nee)
             tk.messagebox.showwarning(title='Update Contact Book',
                                       message="A contact with this name is already in the Contact Book!")
         except InvalidNameException as ine:
             print(ine)
             tk.messagebox.showwarning(title='Name error',
-                                      message='Invalid value of contact name.\nName length should be from 1 to 10.\n')
+                                      message=ine)

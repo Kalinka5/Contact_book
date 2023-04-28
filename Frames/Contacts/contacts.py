@@ -204,12 +204,9 @@ class ContactsFrame(ttk.Frame):
                         title='Update Contact Book',
                         message=f'"{first_name} {last_name}" was added to the Favorites successfully!')
 
-        except ContactExistInFavoritesException as fe:
-            print(fe)
-            if last_name:
-                tk.messagebox.showwarning(
-                    title='Update Contact Book',
-                    message=f"A contact \"{first_name} {last_name}\" is already in the Favorites!")
-            else:
-                tk.messagebox.showwarning(title='Update Contact Book',
-                                          message=f"A contact \"{first_name}\" is already in the Favorites!")
+        except ContactExistInFavoritesException as ceife:
+            print(ceife)
+            tk.messagebox.showwarning(
+                title='Update Contact Book',
+                message=ceife)
+

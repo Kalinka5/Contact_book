@@ -4,4 +4,7 @@ class ContactExistInFavoritesException(Exception):
         self.last_name = last_name
 
     def __str__(self):
-        return f"A contact {self.first_name} {self.last_name} is already in the Favorites!"
+        if self.last_name:
+            return f"A contact \"{self.first_name} {self.last_name}\" is already in the Favorites!"
+        else:
+            return f"A contact \"{self.first_name}\" is already in the Favorites!"
