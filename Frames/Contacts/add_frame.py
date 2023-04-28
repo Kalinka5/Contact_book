@@ -6,6 +6,8 @@ from Exceptions.invalid_name import InvalidNameException
 from Exceptions.invalid_number import InvalidNumberException
 from Exceptions.number_exist import NumberExistException
 from Exceptions.name_exist import NameExistException
+from Exceptions.not_ukrainian_code import NotUkrainianCode
+from Exceptions.length_number import InvalidLengthNumberException
 from Frames.Departments.departments import DepartmentsFrame as Depart
 from contact_book import Contact
 
@@ -15,6 +17,9 @@ class AddFrame(ttk.Frame):
     def __init__(self, container, contacts_txt, contacts_lf, contacts_scrollbar,
                  contact_book, tree, favorites):
         super().__init__(container)
+
+        self.ukrainian_numbers = ["039", "050", "063", "066", "067", "068",
+                                  "091", "092", "093", "094", "095", "096", "097", "098", "099"]
 
         self.contacts_txt = contacts_txt
         self.contacts_lf = contacts_lf
@@ -103,8 +108,8 @@ class AddFrame(ttk.Frame):
 
             digits = number.replace("-", "")
 
-            if len(digits) < 6:
-                raise InvalidNumberException(number)
+            if len(digits) < 6 or len(digits) > 12:
+                raise InvalidLengthNumberException(number)
 
             # Check first name is it has less than 10 letters and more than 0
             if len(first_name) < 1 or len(first_name) > 12:
@@ -113,14 +118,28 @@ class AddFrame(ttk.Frame):
             if len(last_name) > 12:
                 raise InvalidNameException(last_name)
 
-            # convert phone number to (000)-000-0000
-            pattern = r"(\d{3})(\d{3})([\d.]+)"
+            pattern = r"(\d{1})(\d{2})(\d{3})(\d{4})"
             result = re.search(pattern, digits)
             # If number contain not only digits, it raises exception
             if not result:
                 raise InvalidNumberException(number)
 
-            normal_number = f"({result[1]})-{result[2]}-{result[3]}"
+            if f"{result[1]}{result[2]}" in self.ukrainian_numbers:
+                # convert phone number to 0-(00)-000-0000
+                normal_number = f"{result[1]}-({result[2]})-{result[3]}-{result[4]}"
+            else:
+                raise NotUkrainianCode(result[2])
+
+            # check is number exist in the Contact Book
+            all_numbers = self.contact_book.get_all_numbers
+            if normal_number in all_numbers:
+                raise NumberExistException()
+
+            # check is name exist in the Contact Book
+            all_names = self.contact_book.get_all_names
+            for name in all_names:
+                if f"{first_name} {last_name}" in name:
+                    raise NameExistException()
 
             # Get index of contact where he is in contact book by alphabet
             index = 0
@@ -129,64 +148,54 @@ class AddFrame(ttk.Frame):
                     break
                 index += 1
 
-            all_numbers = self.contact_book.get_all_numbers
-            if normal_number in all_numbers:
-                raise NumberExistException()
-
-            all_names = self.contact_book.get_all_names
-            for name in all_names:
-                if f"{first_name} {last_name}" in name:
-                    raise NameExistException()
-
             # Check phone number is it has only digits
             if digits.isdigit():
-                if result:
-                    # Add contact to class Contacts
-                    department = self.departments.get()
-                    contact = Contact(first_name, last_name, normal_number, department)
-                    self.contact_book.add_contact(contact)
+                # Add contact to class Contacts
+                department = self.departments.get()
+                contact = Contact(first_name, last_name, normal_number, department)
+                self.contact_book.add_contact(contact)
 
-                    # Add new contact to ContactsFrame
-                    self.contacts_txt.insert('',
-                                             index,
-                                             values=(first_name, last_name, normal_number))
+                # Add new contact to ContactsFrame
+                self.contacts_txt.insert('',
+                                         index,
+                                         values=(first_name, last_name, normal_number))
 
-                    # Add contact to DepartmentsFrame
-                    children = self.tree.get_children(Depart.dict_departments[department])
-                    self.tree.delete(*children)
+                # Add contact to DepartmentsFrame
+                children = self.tree.get_children(Depart.dict_departments[department])
+                self.tree.delete(*children)
 
-                    amount_all_contacts = len(self.contact_book)
-                    for human in self.contact_book:
-                        if human.department == department:
-                            self.tree.insert('',
-                                             tk.END,
-                                             text=f'{human.first_name} {human.last_name}',
-                                             iid=str(Contact.iid),
-                                             open=False)
-                            self.tree.move(str(Contact.iid),
-                                           Depart.dict_departments[department],
-                                           amount_all_contacts)
-                            Contact.iid += 1
+                amount_all_contacts = len(self.contact_book)
+                for human in self.contact_book:
+                    if human.department == department:
+                        self.tree.insert('',
+                                         tk.END,
+                                         text=f'{human.first_name} {human.last_name}',
+                                         iid=str(Contact.iid),
+                                         open=False)
+                        self.tree.move(str(Contact.iid),
+                                       Depart.dict_departments[department],
+                                       amount_all_contacts)
+                        Contact.iid += 1
 
-                    # Clear all fields with data
-                    self.text3.set("")
-                    self.text4.set("")
-                    self.text5.set("")
+                # Clear all fields with data
+                self.text3.set("")
+                self.text4.set("")
+                self.text5.set("")
 
-                    if last_name == "":
-                        tk.messagebox.showinfo(title='Update Contact Book',
-                                               message=f"\"{first_name}\" was successfully added.")
-                        print(f"\"{first_name}\" was successfully added to your Contact Book.\n")
-                    else:
-                        # Show message box when add contact
-                        tk.messagebox.showinfo(title='Update Contact Book',
-                                               message=f"\"{first_name} {last_name}\" was successfully added.")
-                        print(f"\"{first_name} {last_name}\" was successfully added to your Contact Book.\n")
+                if last_name == "":
+                    tk.messagebox.showinfo(title='Update Contact Book',
+                                           message=f"\"{first_name}\" was successfully added.")
+                    print(f"\"{first_name}\" was successfully added to your Contact Book.\n")
+                else:
+                    # Show message box when add contact
+                    tk.messagebox.showinfo(title='Update Contact Book',
+                                           message=f"\"{first_name} {last_name}\" was successfully added.")
+                    print(f"\"{first_name} {last_name}\" was successfully added to your Contact Book.\n")
 
-                    # Open ContactsFrame again
-                    self.contacts_txt.tkraise()
-                    self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
-                    self.contacts_lf.grid(row=1, column=0, sticky='ns')
+                # Open ContactsFrame again
+                self.contacts_txt.tkraise()
+                self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
+                self.contacts_lf.grid(row=1, column=0, sticky='ns')
             else:
                 raise InvalidNumberException(number)
 
@@ -208,3 +217,11 @@ class AddFrame(ttk.Frame):
             print(nee)
             tk.messagebox.showwarning(title='Update Contact Book',
                                       message="A contact with this name is already in the Contact Book!")
+        except NotUkrainianCode as nuc:
+            print(nuc)
+            tk.messagebox.showwarning(title='Update Contact Book',
+                                      message=nuc)
+        except InvalidLengthNumberException as ilne:
+            print(ilne)
+            tk.messagebox.showerror(title='Update Contact Book',
+                                      message=ilne)
