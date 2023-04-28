@@ -184,7 +184,7 @@ class ContactsFrame(ttk.Frame):
 
                 self.favorites.insert('',
                                       index,
-                                      values=("🖤", first_name, last_name, number))
+                                      values=(f"♥  {first_name}", last_name, number))
 
                 index_txt = None
                 for n, user in enumerate(self.contact_book.contacts):

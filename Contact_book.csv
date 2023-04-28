@@ -2,7 +2,7 @@ first_name,last_name,numbers,department,favorites
 Alexandra,Panchenko,(098)-786-7564,Work,False
 Andrew,Bondar,(097)-654-9806,Work,True
 Anna,Vasilieva,(099)-218-8975,Work,False
-Dad,,(066)-007-9990,Relatives,False
+Dad,,(066)-007-9990,Relatives,True
 Darik,,(099)-221-7786,Friends,True
 Darina,,(342)-342-34,Friends,False
 Eduard,Dryga,(213)-213-1231,Friends,False
