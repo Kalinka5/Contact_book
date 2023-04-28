@@ -95,6 +95,7 @@ class AddFrame(ttk.Frame):
     def add(self):
         try:
             first_name = self.text3.get().title()
+            # if user don't enter first name, contact creates with "Mr/Mrs" first name
             if first_name == "":
                 first_name = "Mr/Mrs"
             last_name = self.text4.get().title()
@@ -103,7 +104,7 @@ class AddFrame(ttk.Frame):
             digits = number.replace("-", "")
 
             if len(digits) < 6:
-                raise InvalidNumberException(digits)
+                raise InvalidNumberException(number)
 
             # Check first name is it has less than 10 letters and more than 0
             if len(first_name) < 1 or len(first_name) > 12:
@@ -119,7 +120,7 @@ class AddFrame(ttk.Frame):
             if not result:
                 raise InvalidNumberException(number)
 
-            number = f"({result[1]})-{result[2]}-{result[3]}"
+            normal_number = f"({result[1]})-{result[2]}-{result[3]}"
 
             # Get index of contact where he is in contact book by alphabet
             index = 0
@@ -129,7 +130,7 @@ class AddFrame(ttk.Frame):
                 index += 1
 
             all_numbers = self.contact_book.get_all_numbers
-            if number in all_numbers:
+            if normal_number in all_numbers:
                 raise NumberExistException()
 
             all_names = self.contact_book.get_all_names
@@ -142,13 +143,13 @@ class AddFrame(ttk.Frame):
                 if result:
                     # Add contact to class Contacts
                     department = self.departments.get()
-                    contact = Contact(first_name, last_name, number, department)
+                    contact = Contact(first_name, last_name, normal_number, department)
                     self.contact_book.add_contact(contact)
 
                     # Add new contact to ContactsFrame
                     self.contacts_txt.insert('',
                                              index,
-                                             values=(first_name, last_name, number))
+                                             values=(first_name, last_name, normal_number))
 
                     # Add contact to DepartmentsFrame
                     children = self.tree.get_children(Depart.dict_departments[department])
@@ -187,7 +188,7 @@ class AddFrame(ttk.Frame):
                     self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
                     self.contacts_lf.grid(row=1, column=0, sticky='ns')
             else:
-                raise InvalidNumberException(digits)
+                raise InvalidNumberException(number)
 
         except InvalidNameException as ine:
             # When raise Name error, it shows message box with error text
