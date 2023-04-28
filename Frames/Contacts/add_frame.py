@@ -106,10 +106,10 @@ class AddFrame(ttk.Frame):
                 raise InvalidNumberException(digits)
 
             # Check first name is it has less than 10 letters and more than 0
-            if len(first_name) < 1 or len(first_name) > 10:
+            if len(first_name) < 1 or len(first_name) > 12:
                 raise InvalidNameException(first_name)
             # Check last name is it has less than 10 letters and more than 0
-            if len(last_name) > 10:
+            if len(last_name) > 12:
                 raise InvalidNameException(last_name)
 
             # convert phone number to (000)-000-0000

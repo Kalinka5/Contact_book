@@ -209,4 +209,3 @@ class ContactsFrame(ttk.Frame):
             tk.messagebox.showwarning(
                 title='Update Contact Book',
                 message=ceife)
-
