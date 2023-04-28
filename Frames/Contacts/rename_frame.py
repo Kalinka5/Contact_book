@@ -94,7 +94,7 @@ class RenameFrame(ttk.Frame):
             if len(new_first_name) < 1 or len(new_first_name) > 10:
                 raise InvalidNameException(new_first_name)
             # Check last name is it has less than 10 letters and more than 0
-            if len(new_last_name) < 1 or len(new_last_name) > 10:
+            if len(new_last_name) > 10:
                 raise InvalidNameException(new_last_name)
 
             all_names = self.contact_book.get_all_names

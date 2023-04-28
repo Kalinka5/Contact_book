@@ -109,7 +109,7 @@ class AddFrame(ttk.Frame):
             if len(first_name) < 1 or len(first_name) > 10:
                 raise InvalidNameException(first_name)
             # Check last name is it has less than 10 letters and more than 0
-            if len(last_name) < 1 or len(last_name) > 10:
+            if len(last_name) > 10:
                 raise InvalidNameException(last_name)
 
             # convert phone number to (000)-000-0000
@@ -186,6 +186,8 @@ class AddFrame(ttk.Frame):
                     self.contacts_txt.tkraise()
                     self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
                     self.contacts_lf.grid(row=1, column=0, sticky='ns')
+            else:
+                raise InvalidNumberException(digits)
 
         except InvalidNameException as ine:
             # When raise Name error, it shows message box with error text
