@@ -4,7 +4,7 @@ from tkinter.messagebox import askyesno
 
 from Exceptions.exist_contact import ContactExistInFavoritesException
 from Frames.Contacts.add_frame import AddFrame
-from Frames.Contacts.rename_frame import RenameFrame
+from Frames.Contacts.Rename_contact.rename_frame import RenameFrame
 from Frames.Departments.departments import DepartmentsFrame as Depart
 
 

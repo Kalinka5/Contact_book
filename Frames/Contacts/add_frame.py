@@ -154,6 +154,8 @@ class AddFrame(ttk.Frame):
                     if code in self.ukrainian_numbers:
                         # convert phone number to 0-(00)-000-0000
                         normal_number = f"{result[1][-1]}-({result[2]})-{result[3]}-{result[4]}"
+                    else:
+                        raise NotUkrainianCode(code)
                 elif result[1] == "351":
                     pattern = r"(\d{3})(\d{3})(\d{3})(\d{3})"
                     result = re.search(pattern, digits)
