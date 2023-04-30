@@ -2,12 +2,9 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import re
 
-from Exceptions.invalid_name import InvalidNameException
-from Exceptions.invalid_number import InvalidNumberException
-from Exceptions.number_exist import NumberExistException
-from Exceptions.name_exist import NameExistException
+from Exceptions.invalid_contact import InvalidNameException, InvalidNumberException, InvalidLengthNumberException
+from Exceptions.exist_contact import NumberExistException, NameExistException
 from Exceptions.not_ukrainian_code import NotUkrainianCode
-from Exceptions.length_number import InvalidLengthNumberException
 from Frames.Departments.departments import DepartmentsFrame as Depart
 from contact_book import Contact
 

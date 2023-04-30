@@ -2,8 +2,8 @@ from tkinter import ttk
 import tkinter as tk
 from tkinter.messagebox import askyesno
 
-from Exceptions.name_exist import NameExistException
-from Exceptions.invalid_name import InvalidNameException
+from Exceptions.exist_contact import NameExistException
+from Exceptions.invalid_contact import InvalidNameException
 from Frames.Departments.departments import DepartmentsFrame as Depart
 from contact_book import Contact
 

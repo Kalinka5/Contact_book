@@ -8,3 +8,13 @@ class ContactExistInFavoritesException(Exception):
             return f"A contact \"{self.first_name} {self.last_name}\" is already in the Favorites!"
         else:
             return f"A contact \"{self.first_name}\" is already in the Favorites!"
+
+
+class NameExistException(Exception):
+    def __str__(self):
+        return "A contact with this name is already in the Contact Book!"
+
+
+class NumberExistException(Exception):
+    def __str__(self):
+        return "A contact with this number is already in the Contact book!"
