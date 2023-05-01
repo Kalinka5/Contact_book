@@ -1,9 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from tkinter.messagebox import askyesno
 
 from Exceptions.exist_contact import ContactExistInFavoritesException
-from Frames.Contacts.add_frame import AddFrame
+from Frames.Contacts.Add_contact.add_frame import AddFrame
 from Frames.Contacts.Rename_contact.rename_frame import RenameFrame
 from Frames.Contacts.Delete_contact.confirmation_messagebox import confirmation_messagebox
 from Frames.Contacts.Delete_contact.delete_in_ContactsFrame import delete_in_contacts_frame
