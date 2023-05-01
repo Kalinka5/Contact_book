@@ -106,7 +106,7 @@ class RenameFrame(ttk.Frame):
                 if f"{new_first_name} {new_last_name}" in name:
                     raise NameExistException()
 
-            # print confirmation messagebox "Are you sure that you want to rename?"
+            # print confirmation messagebox "Are you sure that you want to rename contact?"
             answer = confirmation_messagebox(old_first_name, old_last_name, new_first_name, new_last_name)
 
             if answer:

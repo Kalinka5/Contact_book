@@ -5,7 +5,12 @@ from tkinter.messagebox import askyesno
 from Exceptions.exist_contact import ContactExistInFavoritesException
 from Frames.Contacts.add_frame import AddFrame
 from Frames.Contacts.Rename_contact.rename_frame import RenameFrame
-from Frames.Departments.departments import DepartmentsFrame as Depart
+from Frames.Contacts.Delete_contact.confirmation_messagebox import confirmation_messagebox
+from Frames.Contacts.Delete_contact.delete_in_ContactsFrame import delete_in_contacts_frame
+from Frames.Contacts.Delete_contact.search_index_departments import contact_values
+from Frames.Contacts.Delete_contact.delete_in_DepartmentsFrame import delete_in_departments_frame
+from Frames.Contacts.Delete_contact.delete_in_FavoritesFrame import delete_in_favorites_frame
+from Frames.Contacts.Delete_contact.successfully_messagebox import successfully_messagebox
 
 
 class ContactsFrame(ttk.Frame):
@@ -91,59 +96,29 @@ class ContactsFrame(ttk.Frame):
         last_name = human[1]
         number = human[2]
 
-        if last_name == "":
-            answer = askyesno(title='Confirmation',
-                              message=f'Are you sure that you want to delete \"{first_name}\"?')
-        else:
-            answer = askyesno(title='Confirmation',
-                              message=f'Are you sure that you want to delete \"{first_name} {last_name}\"?')
+        # print confirmation messagebox "Are you sure that you want to delete contact?"
+        answer = confirmation_messagebox(first_name, last_name)
+
         if answer:
-            index_txt = None
-            dep_user = None
-            for n, user in enumerate(self.contact_book.contacts):
-                if number == user.phone_number:
-                    index_txt = n
-                if first_name == user.first_name and last_name == user.last_name:
-                    dep_user = user.department
+            contact_index, contact_dep = contact_values(self.contact_book, first_name, last_name, number)
 
             # Delete contact in ContactsFrame
-            selected_item = self.txt.selection()[0]
-            self.txt.delete(selected_item)
+            delete_in_contacts_frame(self.txt)
 
             # Delete contact in DepartmentsFrame
-            found_id = None
-            # Search for the row with contact name in the contact's department column
-            for item in self.tree.get_children(Depart.dict_departments[dep_user]):
-                if self.tree.item(item, 'text') == f"{first_name} {last_name}":
-                    found_id = item
-                    break
-
-            self.tree.delete(found_id)
+            delete_in_departments_frame(self.tree, contact_dep, first_name, last_name)
 
             # Delete contact in FavoritesFrame
-            item_id = None
-            # Search for the row with contact name in the contact's department column
-            for child in self.favorites.get_children():
-                if self.favorites.set(child, "first_name") == first_name:
-                    item_id = child
-                    break
-
-            if item_id is not None:
-                self.favorites.delete(item_id)
+            delete_in_favorites_frame(self.favorites, first_name)
 
             # Delete contact in the class Contact book
-            contact = self.contact_book.contacts[index_txt]
+            contact = self.contact_book.contacts[contact_index]
             self.contact_book.delete_contact(contact)
 
-            if last_name == "":
-                tk.messagebox.showinfo(title='Update Contact Book',
-                                       message=f"\"{first_name}\" was successfully deleted.")
-                print(f"Deleting \"{first_name}\" from your Contact Book was successfully.\n")
-            else:
-                tk.messagebox.showinfo(title='Update Contact Book',
-                                       message=f"\"{first_name} {last_name}\" was successfully deleted.")
-                print(f"Deleting \"{first_name} {last_name}\" from your Contact Book was successfully.\n")
+            # notify user that the contact has been deleted successfully
+            successfully_messagebox(first_name, last_name)
 
+            # make buttons "Add contact", "Delete contact", "Rename contact" disabled
             self.b2.state(['disabled'])
             self.b3.state(['disabled'])
             self.b4.state(['disabled'])
