@@ -11,6 +11,10 @@ from Frames.Contacts.Delete_contact.search_index_departments import contact_valu
 from Frames.Contacts.Delete_contact.delete_in_DepartmentsFrame import delete_in_departments_frame
 from Frames.Contacts.Delete_contact.delete_in_FavoritesFrame import delete_in_favorites_frame
 from Frames.Contacts.Delete_contact.successfully_messagebox import successfully_messagebox
+from Frames.Contacts.Add_to_favorites.confirmation_messagebox import confirmation_favorites
+from Frames.Contacts.Add_to_favorites.successfully_messagebox import successfully_favorites
+from Frames.Contacts.Add_to_favorites.add_to_FavoritesFrame import add_to_favorites_frame
+from Frames.Contacts.Add_to_favorites.update_contact import update_contact_favorites
 
 
 class ContactsFrame(ttk.Frame):
@@ -140,44 +144,18 @@ class ContactsFrame(ttk.Frame):
                     raise ContactExistInFavoritesException(first_name, last_name)
                 index += 1
 
-            if last_name == "":
-                answer = askyesno(
-                    title='Confirmation',
-                    message=f'Are you sure that you want to add \"{first_name}\" to the Favorites?')
-            else:
-                answer = askyesno(
-                    title='Confirmation',
-                    message=f'Are you sure that you want to add \"{first_name} {last_name}\" to the Favorites?')
+            # print confirmation messagebox "Are you sure that you want to add contact to Favorites?"
+            answer = confirmation_favorites(first_name, last_name)
 
             if answer:
-                index = 0
-                while index < len(self.favorites.get_children()):
-                    favorites_name = self.favorites.item(self.favorites.get_children()[index])['values'][1].lower()
-                    if first_name.lower() < favorites_name:
-                        break
-                    index += 1
+                # Add contact to FavoritesFrame
+                add_to_favorites_frame(self.favorites, first_name, last_name, number)
 
-                self.favorites.insert('',
-                                      index,
-                                      values=(f"♥  {first_name}", last_name, number))
+                # Update contact's favorites to True value
+                update_contact_favorites(self.contact_book, number)
 
-                index_txt = None
-                for n, user in enumerate(self.contact_book.contacts):
-                    if number == user.phone_number:
-                        index_txt = n
-
-                contact = self.contact_book.contacts[index_txt]
-                contact.favorites = "True"
-
-                if last_name == "":
-                    tk.messagebox.showinfo(title='Update Contact Book',
-                                           message=f"\"{first_name}\" was added to the Favorites successfully!")
-                    print(f"\"{first_name}\" was added to the Favorites successfully!\n")
-                else:
-                    print(f"\"{first_name} {last_name}\" was added to the Favorites successfully!\n")
-                    tk.messagebox.showinfo(
-                        title='Update Contact Book',
-                        message=f'"{first_name} {last_name}" was added to the Favorites successfully!')
+                # notify user that the contact has been deleted successfully
+                successfully_favorites(first_name, last_name)
 
         except ContactExistInFavoritesException as ceife:
             print(ceife)
