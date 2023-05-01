@@ -72,7 +72,7 @@ class AddFrame(ttk.Frame):
         self.btn.grid(row=4, column=2, padx=5, pady=15)
         self.btn.state(['disabled'])
 
-        close_icon = tk.PhotoImage(file='images/close.png')
+        close_icon = tk.PhotoImage(file='Images/close.png')
         download_button = ttk.Button(
             master=lf,
             image=close_icon,

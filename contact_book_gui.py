@@ -33,7 +33,7 @@ class ContactBookGUI(tk.Tk):
         self.geometry(f'{self.window_width}x{self.window_height}+{self.center_x}+{self.center_y}')
         self.resizable(False, False)
 
-        self.iconbitmap('images/receiver.ico')
+        self.iconbitmap('Images/receiver.ico')
 
         self.data = []
         self.contact_book = ContactBook()

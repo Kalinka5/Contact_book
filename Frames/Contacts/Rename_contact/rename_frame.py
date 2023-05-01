@@ -40,7 +40,7 @@ class RenameFrame(ttk.Frame):
         else:
             lf.place(x=105, y=25)
 
-        download_icon = tk.PhotoImage(file='images/close.png')
+        download_icon = tk.PhotoImage(file='Images/close.png')
         download_button = ttk.Button(
             lf,
             image=download_icon,
