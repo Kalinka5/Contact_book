@@ -1,6 +1,9 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
-from tkinter.messagebox import askyesno
+from tkinter import ttk
+
+from Frames.Favorites.confirmation_messagebox import confirmation_messagebox
+from Frames.Favorites.successfully_messagebox import successfully_messagebox
+from Frames.Favorites.delete_in_FavoritesFrame import delete_in_favorites_frame
 
 
 class FavoritesFrame(ttk.Frame):
@@ -55,39 +58,14 @@ class FavoritesFrame(ttk.Frame):
         first_name = human[0][3:]
         last_name = human[1]
 
-        if last_name == "":
-            answer = askyesno(
-                title='Confirmation',
-                message=f'Are you sure that you want to delete \"{first_name}\" from the Favorites?')
-        else:
-            answer = askyesno(
-                title='Confirmation',
-                message=f'Are you sure that you want to delete \"{first_name} {last_name}\" from the Favorites?')
+        # print confirmation messagebox "Are you sure that you want to add contact to the Favorites?"
+        answer = confirmation_messagebox(first_name, last_name)
 
         if answer:
-            # Delete in the FavoritesFrame
-            selected_item = self.txt.selection()[0]
-            self.txt.delete(selected_item)
+            # delete in the FavoritesFrame
+            delete_in_favorites_frame(self.txt, self.contact_book, first_name)
 
-            index_txt = None
-            for n, user in enumerate(self.contact_book.contacts):
-                if first_name == user.first_name:
-                    index_txt = n
-
-            contact = self.contact_book.contacts[index_txt]
-            contact.favorites = "False"
-
-            # If contact doesn't have lastname
-            if last_name == "":
-                messagebox.showinfo(
-                    title='Update Contact Book',
-                    message=f"\"{first_name}\" was deleted from the Favorites successfully!")
-                print(f"Deleting \"{first_name}\" from the Favorites was successfully!\n")
-            # If contact has firstname and lastname
-            else:
-                messagebox.showinfo(
-                    title='Update Contact Book',
-                    message=f"\"{first_name} {last_name}\" was deleted from the Favorites successfully!")
-                print(f"Deleting \"{first_name} {last_name}\" from the Favorites was successfully!\n")
+            # notify user that the contact has been renamed successfully
+            successfully_messagebox(first_name, last_name)
 
             self.b1.state(['disabled'])
