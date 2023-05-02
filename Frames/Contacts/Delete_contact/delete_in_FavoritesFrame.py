@@ -2,7 +2,7 @@ def delete_in_favorites_frame(favorites, first_name):
     item_id = None
     # Search for the row with contact name in the contact's department column
     for child in favorites.get_children():
-        if favorites.set(child, "first_name") == first_name:
+        if favorites.set(child, "first_name")[3:] == first_name:
             item_id = child
             break
 

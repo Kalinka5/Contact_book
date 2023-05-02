@@ -11,10 +11,10 @@ def rename_in_favorites_frame(favorites, old_first_name, new_first_name, new_las
         index = 0
         while index < len(favorites.get_children()):
             contact = favorites.item(favorites.get_children()[index])
-            if new_first_name.lower() < contact['values'][1].lower():
+            if new_first_name.lower() < contact['values'][0].lower()[3:]:
                 break
             index += 1
 
         favorites.insert('',
                          index,
-                         values=("🖤", new_first_name, new_last_name, number))
+                         values=(f"♥  {new_first_name}", new_last_name, number))

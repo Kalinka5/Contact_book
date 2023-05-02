@@ -1,8 +1,8 @@
 def add_to_favorites_frame(favorites, first_name, last_name, number):
     index = 0
     while index < len(favorites.get_children()):
-        favorites_name = favorites.item(favorites.get_children()[index])['values'][1].lower()
-        if first_name.lower() < favorites_name:
+        favorites_name = favorites.item(favorites.get_children()[index])['values'][0].lower()
+        if first_name.lower() < favorites_name[3:]:
             break
         index += 1
 

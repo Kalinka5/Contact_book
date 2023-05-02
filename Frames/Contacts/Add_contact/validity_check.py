@@ -1,6 +1,5 @@
 from Exceptions.invalid_contact import InvalidNameException, InvalidNumberException, InvalidLengthNumberException
 from Exceptions.exist_contact import NumberExistException, NameExistException
-from Exceptions.not_ukrainian_code import NotUkrainianCode
 
 
 def check_on_invalid_length_number(digits, number):

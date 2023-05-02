@@ -46,10 +46,16 @@ class ContactBook(OutputContact):
 
     def add_contact(self, contact):
         self.contacts.append(contact)
+        self.all_names.append(f"{contact.first_name} {contact.last_name}")
+        self.all_numbers.append(contact.phone_number)
 
     def delete_contact(self, contact):
         self.contacts.remove(contact)
+        self.all_names.remove(f"{contact.first_name} {contact.last_name}")
+        self.all_numbers.remove(contact.phone_number)
 
     def rename_contact(self, contact, new_first_name, new_last_name):
+        self.all_names.remove(f"{contact.first_name} {contact.last_name}")
         contact.first_name = new_first_name
         contact.last_name = new_last_name
+        self.all_names.append(f"{contact.first_name} {contact.last_name}")

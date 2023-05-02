@@ -52,8 +52,8 @@ class FavoritesFrame(ttk.Frame):
     def delete_from_favorites(self):
         human = self.txt.item(self.txt.focus())['values']
 
-        first_name = human[1]
-        last_name = human[2]
+        first_name = human[0][3:]
+        last_name = human[1]
 
         if last_name == "":
             answer = askyesno(

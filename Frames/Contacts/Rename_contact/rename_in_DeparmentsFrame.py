@@ -4,20 +4,25 @@ from Frames.Departments.departments import DepartmentsFrame as Depart
 from contact_book import Contact
 
 
-def rename_in_departments_frame(contact_book, tree, old_first_name, old_last_name, new_first_name, new_last_name):
+def rename_in_departments_frame(contact_book, tree, new_first_name):
     dep_user = None
     for n, user in enumerate(contact_book.contacts):
-        if old_first_name == user.first_name:
+        if new_first_name == user.first_name:
             dep_user = user.department
-
-    found_id = None
-    for item in tree.get_children(Depart.dict_departments[dep_user]):
-        if tree.item(item, 'text') == f"{old_first_name} {old_last_name}":
-            found_id = item
             break
 
-    tree.delete(found_id)
+    children = tree.get_children(Depart.dict_departments[dep_user])
+    tree.delete(*children)
 
-    tree.insert('', tk.END, text=f'{new_first_name} {new_last_name}', iid=str(Contact.iid), open=False)
-    tree.move(str(Contact.iid), Depart.dict_departments[dep_user], 0)
-    Contact.iid += 1
+    amount_all_contacts = len(contact_book)
+    for human in contact_book:
+        if human.department == dep_user:
+            tree.insert('',
+                        tk.END,
+                        text=f'{human.first_name} {human.last_name}',
+                        iid=str(Contact.iid),
+                        open=False)
+            tree.move(str(Contact.iid),
+                      Depart.dict_departments[dep_user],
+                      amount_all_contacts)
+            Contact.iid += 1

@@ -1,6 +1,5 @@
 from tkinter import ttk
 import tkinter as tk
-from tkinter.messagebox import askyesno
 
 from Exceptions.exist_contact import NameExistException
 from Exceptions.invalid_contact import InvalidNameException
@@ -10,6 +9,7 @@ from Frames.Contacts.Rename_contact.rename_in_ContactsFrame import rename_in_con
 from Frames.Contacts.Rename_contact.rename_in_DeparmentsFrame import rename_in_departments_frame
 from Frames.Contacts.Rename_contact.rename_in_FavoritesFrame import rename_in_favorites_frame
 from Frames.Contacts.Rename_contact.rename_in_ContactBook import rename_in_contact_book
+from Decorators.try_exceptions import try_exceptions
 
 
 class RenameFrame(ttk.Frame):
@@ -82,65 +82,55 @@ class RenameFrame(ttk.Frame):
         self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
         self.contacts_lf.grid(row=1, column=0, sticky='ns')
 
+    @try_exceptions
     def rename(self):
-        try:
-            item = self.contacts_txt.item(self.contacts_txt.focus())['values']
+        item = self.contacts_txt.item(self.contacts_txt.focus())['values']
 
-            old_first_name = item[0]
-            old_last_name = item[1]
-            number = item[2]
-            new_first_name = self.text1.get().capitalize()
-            if new_first_name == "":
-                new_first_name = "Mr/Mrs"
-            new_last_name = self.text2.get().capitalize()
+        old_first_name = item[0]
+        old_last_name = item[1]
+        number = item[2]
+        new_first_name = self.text1.get().capitalize()
+        if new_first_name == "":
+            new_first_name = "Mr/Mrs"
+        new_last_name = self.text2.get().capitalize()
 
-            # check first name is it has less than 10 letters and more than 0
-            if len(new_first_name) < 1 or len(new_first_name) > 12:
-                raise InvalidNameException(new_first_name)
-            # check last name is it has less than 10 letters and more than 0
-            if len(new_last_name) > 12:
-                raise InvalidNameException(new_last_name)
+        # check first name is it has less than 10 letters and more than 0
+        if len(new_first_name) < 1 or len(new_first_name) > 12:
+            raise InvalidNameException(new_first_name)
+        # check last name is it has less than 10 letters and more than 0
+        if len(new_last_name) > 12:
+            raise InvalidNameException(new_last_name)
 
-            all_names = self.contact_book.get_all_names
-            for name in all_names:
-                if f"{new_first_name} {new_last_name}" in name:
-                    raise NameExistException()
+        all_names = self.contact_book.get_all_names
+        for name in all_names:
+            if f"{new_first_name} {new_last_name}" == name:
+                raise NameExistException()
 
-            # print confirmation messagebox "Are you sure that you want to rename contact?"
-            answer = confirmation_messagebox(old_first_name, old_last_name, new_first_name, new_last_name)
+        # print confirmation messagebox "Are you sure that you want to rename contact?"
+        answer = confirmation_messagebox(old_first_name, old_last_name, new_first_name, new_last_name)
 
-            if answer:
-                # rename contact in the class ContactsFrame
-                rename_in_contacts_frame(self.contacts_txt, new_first_name, new_last_name, number)
+        if answer:
+            # rename contact in the class ContactBook
+            rename_in_contact_book(self.contact_book, new_first_name, new_last_name, number)
 
-                # rename contact in the class DepartmentsFrame
-                rename_in_departments_frame(self.contact_book, self.tree, old_first_name,
-                                            old_last_name, new_first_name, new_last_name)
+            # rename contact in the class ContactsFrame
+            rename_in_contacts_frame(self.contacts_txt, new_first_name, new_last_name, number)
 
-                # rename contact in the class FavoritesFrame
-                rename_in_favorites_frame(self.favorites, old_first_name, new_first_name, new_last_name, number)
+            # rename contact in the class DepartmentsFrame
+            rename_in_departments_frame(self.contact_book, self.tree, new_first_name)
 
-                # rename contact in the class ContactBook
-                rename_in_contact_book(self.contact_book, new_first_name, new_last_name, number)
+            # rename contact in the class FavoritesFrame
+            rename_in_favorites_frame(self.favorites, old_first_name, new_first_name, new_last_name, number)
 
-                # notify user that the contact has been renamed successfully
-                successfully_messagebox(old_first_name, old_last_name, new_first_name, new_last_name)
+            # notify user that the contact has been renamed successfully
+            successfully_messagebox(old_first_name, old_last_name, new_first_name, new_last_name)
 
-                # make buttons "Add contact", "Delete contact", "Rename contact" disabled
-                self.contacts_b2.state(['disabled'])
-                self.contacts_b3.state(['disabled'])
-                self.contacts_b4.state(['disabled'])
+            # make buttons "Add contact", "Delete contact", "Rename contact" disabled
+            self.contacts_b2.state(['disabled'])
+            self.contacts_b3.state(['disabled'])
+            self.contacts_b4.state(['disabled'])
 
-                # Open ContactsFrame again
-                self.contacts_txt.tkraise()
-                self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
-                self.contacts_lf.grid(row=1, column=0, sticky='ns')
-
-        except NameExistException as nee:
-            print(nee)
-            tk.messagebox.showwarning(title='Update Contact Book',
-                                      message="A contact with this name is already in the Contact Book!")
-        except InvalidNameException as ine:
-            print(ine)
-            tk.messagebox.showwarning(title='Name error',
-                                      message=ine)
+            # Open ContactsFrame again
+            self.contacts_txt.tkraise()
+            self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
+            self.contacts_lf.grid(row=1, column=0, sticky='ns')

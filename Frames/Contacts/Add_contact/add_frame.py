@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk
 
 from Frames.Contacts.Add_contact.validity_check import *
 from Frames.Contacts.Add_contact.convert_number import length_10, length_11, length_12
@@ -7,6 +7,7 @@ from Frames.Contacts.Add_contact.add_to_ContactsFrame import add_to_contacts_fra
 from Frames.Contacts.Add_contact.add_to_class_Contacts import add_to_contacts
 from Frames.Contacts.Add_contact.add_to_DepartmentsFrame import add_to_departments_frame
 from Frames.Contacts.Add_contact.successfully_messagebox import successfully_messagebox
+from Decorators.try_exceptions import try_exceptions
 
 
 class AddFrame(ttk.Frame):
@@ -94,95 +95,68 @@ class AddFrame(ttk.Frame):
         self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
         self.contacts_lf.grid(row=1, column=0, sticky='ns')
 
+    @try_exceptions
     def add(self):
-        try:
-            first_name = self.text3.get().title()
-            # if user don't enter first name, contact creates with "Mr/Mrs" first name
-            if first_name == "":
-                first_name = "Mr/Mrs"
-            last_name = self.text4.get().title()
-            number = self.text5.get()
+        first_name = self.text3.get().title()
+        # if user don't enter first name, contact creates with "Mr/Mrs" first name
+        if first_name == "":
+            first_name = "Mr/Mrs"
+        last_name = self.text4.get().title()
+        number = self.text5.get()
 
-            digits = number.replace("-", "").replace("+", "").replace(" ", "")
+        digits = number.replace("-", "").replace("+", "").replace(" ", "")
 
-            # check 6 < digits < 13
-            check_on_invalid_length_number(digits, number)
+        # check 6 < digits < 13
+        check_on_invalid_length_number(digits, number)
 
-            # check 1 < firstname < 16 and lastname < 13
-            check_on_invalid_name(first_name, last_name)
+        # check 1 < firstname < 16 and lastname < 13
+        check_on_invalid_name(first_name, last_name)
 
-            # convert number in different formats
-            result = None
-            normal_number = ""
-            if len(digits) == 10:
-                result, normal_number = length_10(self.ukrainian_numbers, digits)
+        # convert number in different formats
+        result = None
+        normal_number = ""
+        if len(digits) == 10:
+            result, normal_number = length_10(self.ukrainian_numbers, digits)
 
-            elif len(digits) == 11:
-                result, normal_number = length_11(digits)
+        elif len(digits) == 11:
+            result, normal_number = length_11(digits)
 
-            elif len(digits) == 12:
-                result, normal_number = length_12(self.ukrainian_numbers, digits)
+        elif len(digits) == 12:
+            result, normal_number = length_12(self.ukrainian_numbers, digits)
 
-            # If number contain not only digits, it raises exception
-            check_on_invalid_number(result, number)
+        # If number contain not only digits, it raises exception
+        check_on_invalid_number(result, number)
 
-            # check is number exist in the Contact Book
-            check_on_existing_number(self.contact_book, normal_number)
+        # check is number exist in the Contact Book
+        check_on_existing_number(self.contact_book, normal_number)
 
-            # check is name exist in the Contact Book
-            check_on_existing_name(self.contact_book, first_name, last_name)
+        # check is name exist in the Contact Book
+        check_on_existing_name(self.contact_book, first_name, last_name)
 
-            # Check phone number is it has only digits
-            if digits.isdigit():
-                department = self.departments.get()
+        # Check phone number is it has only digits
+        if digits.isdigit():
+            department = self.departments.get()
 
-                # Add contact to class Contacts
-                add_to_contacts(self.contact_book, department, first_name, last_name, normal_number)
+            # Add contact to class Contacts
+            add_to_contacts(self.contact_book, department, first_name, last_name, normal_number)
 
-                # Add new contact to ContactsFrame
-                add_to_contacts_frame(self.contacts_txt, first_name, last_name, normal_number)
+            # Add new contact to ContactsFrame
+            add_to_contacts_frame(self.contacts_txt, first_name, last_name, normal_number)
 
-                # Add contact to DepartmentsFrame
-                add_to_departments_frame(self.tree, self.contact_book, department)
+            # Add contact to DepartmentsFrame
+            add_to_departments_frame(self.tree, self.contact_book, department)
 
-                # Clear all fields with data
-                self.text3.set("")
-                self.text4.set("")
-                self.text5.set("")
+            # Clear all fields with data
+            self.text3.set("")
+            self.text4.set("")
+            self.text5.set("")
 
-                # notify user that the contact has been added successfully
-                successfully_messagebox(first_name, last_name)
+            # notify user that the contact has been added successfully
+            successfully_messagebox(first_name, last_name)
 
-                # Open ContactsFrame again
-                self.contacts_txt.tkraise()
-                self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
-                self.contacts_lf.grid(row=1, column=0, sticky='ns')
-            else:
-                raise InvalidNumberException(number)
-
-        except InvalidNameException as ine:
-            # When raise Name error, it shows message box with error text
-            print(ine)
-            messagebox.showerror(title='Name error',
-                                 message=ine)
-        except InvalidNumberException as inue:
-            # When raise Number error, it shows message box with error text
-            print(inue)
-            messagebox.showerror(title='Number error',
-                                 message=inue)
-        except NumberExistException as cee:
-            print(cee)
-            tk.messagebox.showwarning(title='Update Contact Book',
-                                      message="A contact with this number is already in the Contact book!")
-        except NameExistException as nee:
-            print(nee)
-            tk.messagebox.showwarning(title='Update Contact Book',
-                                      message="A contact with this name is already in the Contact Book!")
-        except NotUkrainianCode as nuc:
-            print(nuc)
-            tk.messagebox.showwarning(title='Update Contact Book',
-                                      message=nuc)
-        except InvalidLengthNumberException as ilne:
-            print(ilne)
-            tk.messagebox.showerror(title='Update Contact Book',
-                                      message=ilne)
+            # Open ContactsFrame again
+            self.contacts_txt.tkraise()
+            self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
+            self.contacts_lf.grid(row=1, column=0, sticky='ns')
+        else:
+            raise InvalidNumberException(number)
