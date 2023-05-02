@@ -1,9 +1,17 @@
 import re
+from typing import Tuple, Match
 
 from Exceptions.not_ukrainian_code import NotUkrainianCode
 
 
-def length_10(ukrainian_numbers, digits):
+def length_10(ukrainian_numbers: list, digits: str) -> tuple[Match[str] | None, str]:
+    """
+    Convert contact's phone number with 10 digits into different number formats
+    :param ukrainian_numbers: list of ukrainian subscriber's numbers
+    :param digits: digits of contact's number
+    :return: tuple of regular expression and phone number in normal format
+    """
+
     pattern = r"(\d{1})(\d{2})(\d{3})(\d{4})"
     result = re.search(pattern, digits)
     code = f"{result[1]}{result[2]}"
@@ -23,11 +31,18 @@ def length_10(ukrainian_numbers, digits):
     return result, normal_number
 
 
-def length_11(digits):
+def length_11(digits: str) -> tuple[Match[str] | None, str]:
+    """
+    Convert contact's phone number with 11 digits into different number formats
+    :param digits: digits of contact's number
+    :return: tuple of regular expression and phone number in normal format
+    """
+
     pattern = r"(\d{2})(\d{3})(\d{3})(\d{3})"
     result = re.search(pattern, digits)
     # convert phone number to +00-000-000-000
     normal_number = f"+{result[1]}-{result[2]}-{result[3]}-{result[4]}"
+
     if digits[:1] == "1":
         pattern = r"(\d{1})(\d{3})(\d{3})(\d{4})"
         result = re.search(pattern, digits)
@@ -37,7 +52,13 @@ def length_11(digits):
     return result, normal_number
 
 
-def length_12(ukrainian_numbers, digits):
+def length_12(ukrainian_numbers: list, digits: str) -> tuple[Match[str] | None, str]:
+    """
+    Convert contact's phone number with 12 digits into different number formats
+    :param ukrainian_numbers: list of ukrainian subscriber's numbers
+    :param digits: digits of contact's number
+    :return: tuple of regular expression and phone number in normal format
+    """
     pattern = r"(\d{3})(\d{2})(\d{3})(\d{4})"
     result = re.search(pattern, digits)
     code = f"{result[1][-1]}{result[2]}"

@@ -1,10 +1,19 @@
 import tkinter as tk
+from tkinter import ttk
 
-from contact_book import Contact
+from contact_book import Contact, ContactBook
 from Frames.Departments.departments import DepartmentsFrame as Depart
 
 
-def add_to_departments_frame(tree, contact_book, department):
+def add_to_departments_frame(tree: ttk.Treeview, contact_book: ContactBook, department: str) -> None:
+    """
+    Add contact to treeview of DepartmentsFrame
+    :param tree: treeview of DepartmentsFrame
+    :param contact_book: object of ContactBook
+    :param department: contact's department (Work, Classmates, Friends, Relatives, Stars)
+    :return: None
+    """
+
     children = tree.get_children(Depart.dict_departments[department])
     tree.delete(*children)
 

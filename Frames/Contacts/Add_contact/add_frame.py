@@ -87,16 +87,24 @@ class AddFrame(ttk.Frame):
         self.contacts_lf.grid_forget()
 
     def get_button_enable(self, department):
-        # remove the disabled flag
+        """Remove disabled flag from the button 'Add contact'
+        :param department not used, but pass to this function
+        """
+
         self.btn.state(['!disabled'])
 
-    def close_clicked(self):
+    def close_clicked(self) -> None:
+        """When click on red close button, returns list of contacts(ContactsFrame)"""
+
         self.contacts_txt.tkraise()
         self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
         self.contacts_lf.grid(row=1, column=0, sticky='ns')
 
     @try_exceptions
-    def add(self):
+    def add(self) -> None:
+        """Checks new contact's values for errors. Add new contact to class Contacts, ContactsFrame, DepartmentsFrame"""
+
+        # convert firstname and lastname with big letter at the beginning
         first_name = self.text3.get().title()
         # if user don't enter first name, contact creates with "Mr/Mrs" first name
         if first_name == "":
@@ -134,10 +142,13 @@ class AddFrame(ttk.Frame):
         check_on_existing_name(self.contact_book, first_name, last_name)
 
         # Check phone number is it has only digits
-        if digits.isdigit():
+        if not digits.isdigit():
+            raise InvalidNumberException(number)
+        else:
+            # need as parameter in add_to_contacts() and add_to_departments_frame()
             department = self.departments.get()
 
-            # Add contact to class Contacts
+            # Add contact to class ContactBook
             add_to_contacts(self.contact_book, department, first_name, last_name, normal_number)
 
             # Add new contact to ContactsFrame
@@ -158,5 +169,3 @@ class AddFrame(ttk.Frame):
             self.contacts_txt.tkraise()
             self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
             self.contacts_lf.grid(row=1, column=0, sticky='ns')
-        else:
-            raise InvalidNumberException(number)
