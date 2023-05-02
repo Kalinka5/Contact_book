@@ -1,6 +1,7 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk
 
+from Decorators.try_exceptions import try_exceptions
 from Exceptions.exist_contact import ContactExistInFavoritesException
 from Frames.Contacts.Add_contact.add_frame import AddFrame
 from Frames.Contacts.Rename_contact.rename_frame import RenameFrame
@@ -130,34 +131,28 @@ class ContactsFrame(ttk.Frame):
         RenameFrame(self, self.txt, self.lf, self.scrollbar, self.contact_book, self.tree,
                     self.favorites, self.b2, self.b3, self.b4)
 
+    @try_exceptions
     def add_to_favorites(self):
         item = self.txt.item(self.txt.focus())['values']
         first_name = item[0]
         last_name = item[1]
         number = item[2]
 
-        try:
-            index = 0
-            while index < len(self.favorites.get_children()):
-                if number == self.favorites.item(self.favorites.get_children()[index])['values'][2].lower():
-                    raise ContactExistInFavoritesException(first_name, last_name)
-                index += 1
+        index = 0
+        while index < len(self.favorites.get_children()):
+            if number == self.favorites.item(self.favorites.get_children()[index])['values'][2].lower():
+                raise ContactExistInFavoritesException(first_name, last_name)
+            index += 1
 
-            # print confirmation messagebox "Are you sure that you want to add contact to Favorites?"
-            answer = confirmation_favorites(first_name, last_name)
+        # print confirmation messagebox "Are you sure that you want to add contact to Favorites?"
+        answer = confirmation_favorites(first_name, last_name)
 
-            if answer:
-                # Add contact to FavoritesFrame
-                add_to_favorites_frame(self.favorites, first_name, last_name, number)
+        if answer:
+            # Add contact to FavoritesFrame
+            add_to_favorites_frame(self.favorites, first_name, last_name, number)
 
-                # Update contact's favorites to True value
-                update_contact_favorites(self.contact_book, number)
+            # Update contact's favorites to True value
+            update_contact_favorites(self.contact_book, number)
 
-                # notify user that the contact has been deleted successfully
-                successfully_favorites(first_name, last_name)
-
-        except ContactExistInFavoritesException as ceife:
-            print(ceife)
-            tk.messagebox.showwarning(
-                title='Update Contact Book',
-                message=ceife)
+            # notify user that the contact has been deleted from Favorites successfully
+            successfully_favorites(first_name, last_name)

@@ -1,7 +1,7 @@
 from tkinter import messagebox
 
 from Exceptions.invalid_contact import InvalidNameException, InvalidNumberException, InvalidLengthNumberException
-from Exceptions.exist_contact import NumberExistException, NameExistException
+from Exceptions.exist_contact import NumberExistException, NameExistException, ContactExistInFavoritesException
 from Exceptions.not_ukrainian_code import NotUkrainianCode
 
 
@@ -33,4 +33,10 @@ def try_exceptions(func):
             print(ilne)
             messagebox.showerror(title='Update Contact Book',
                                  message=ilne)
+        except ContactExistInFavoritesException as ceife:
+            print(ceife)
+            messagebox.showwarning(
+                title='Update Contact Book',
+                message=ceife)
+
     return _wrapper

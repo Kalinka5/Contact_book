@@ -1,14 +1,14 @@
-import tkinter as tk
-from tkinter.messagebox import askyesno
+from tkinter import messagebox
 
 
-def successfully_favorites(first_name, last_name):
+def successfully_favorites(first_name: str, last_name: str) -> None:
+    """messagebox to notify user that the contact has been deleted from Favorites successfully"""
+
     if last_name == "":
-        tk.messagebox.showinfo(title='Update Contact Book',
-                               message=f"\"{first_name}\" was added to the Favorites successfully!")
+        messagebox.showinfo(title='Update Contact Book',
+                            message=f"\"{first_name}\" was added to the Favorites successfully!")
         print(f"\"{first_name}\" was added to the Favorites successfully!\n")
     else:
         print(f"\"{first_name} {last_name}\" was added to the Favorites successfully!\n")
-        tk.messagebox.showinfo(
-            title='Update Contact Book',
-            message=f'"{first_name} {last_name}" was added to the Favorites successfully!')
+        messagebox.showinfo(title='Update Contact Book',
+                            message=f'"{first_name} {last_name}" was added to the Favorites successfully!')

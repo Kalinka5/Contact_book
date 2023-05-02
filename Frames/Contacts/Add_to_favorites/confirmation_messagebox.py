@@ -1,7 +1,9 @@
 from tkinter.messagebox import askyesno
 
 
-def confirmation_favorites(first_name, last_name):
+def confirmation_favorites(first_name: str, last_name: str) -> askyesno:
+    """print confirmation messagebox"""
+
     if last_name == "":
         answer = askyesno(
             title='Confirmation',
