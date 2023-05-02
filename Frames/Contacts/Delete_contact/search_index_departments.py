@@ -1,4 +1,9 @@
-def contact_values(contact_book, first_name, last_name, number):
+from contact_book import ContactBook
+
+
+def contact_values(contact_book: ContactBook, first_name: str, last_name: str, number: str) -> tuple[int, str]:
+    """Search contact's index in ContactBook, and he's value of departments"""
+
     contact_index = None
     contact_dep = None
 

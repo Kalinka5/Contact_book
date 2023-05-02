@@ -5,6 +5,7 @@ from Decorators.try_exceptions import try_exceptions
 from Exceptions.exist_contact import ContactExistInFavoritesException
 from Frames.Contacts.Add_contact.add_frame import AddFrame
 from Frames.Contacts.Rename_contact.rename_frame import RenameFrame
+from Frames.Contacts.Delete_contact.delete_in_ContactBook import delete_in_contact_book
 from Frames.Contacts.Delete_contact.confirmation_messagebox import confirmation_messagebox
 from Frames.Contacts.Delete_contact.delete_in_ContactsFrame import delete_in_contacts_frame
 from Frames.Contacts.Delete_contact.search_index_departments import contact_values
@@ -23,8 +24,8 @@ class ContactsFrame(ttk.Frame):
 
         self.tab_control = tab_control
         self.contact_book = contact_book
-        self.tree = tree
-        self.favorites = favorites
+        self.departments_tree = tree
+        self.favorites_tree = favorites
 
         self.__create_widgets()
 
@@ -32,24 +33,24 @@ class ContactsFrame(ttk.Frame):
         self.tab_control.add(self, text='Contacts')
 
         columns = ('first_name', 'last_name', 'number')
-        self.txt = ttk.Treeview(self, columns=columns, show='headings')
-        self.txt.heading('first_name', text='First Name')
-        self.txt.heading('last_name', text='Second Name')
-        self.txt.heading('number', text='Number')
-        self.txt.column('first_name', width=100, anchor=tk.W)
-        self.txt.column('last_name', width=100, anchor=tk.W)
-        self.txt.column('number', width=200, anchor=tk.CENTER)
+        self.contacts_tree = ttk.Treeview(self, columns=columns, show='headings')
+        self.contacts_tree.heading('first_name', text='First Name')
+        self.contacts_tree.heading('last_name', text='Second Name')
+        self.contacts_tree.heading('number', text='Number')
+        self.contacts_tree.column('first_name', width=100, anchor=tk.W)
+        self.contacts_tree.column('last_name', width=100, anchor=tk.W)
+        self.contacts_tree.column('number', width=200, anchor=tk.CENTER)
 
-        self.txt.bind('<<TreeviewSelect>>', self.get_buttons_enable)
+        self.contacts_tree.bind('<<TreeviewSelect>>', self.get_buttons_enable)
 
         # Create contacts to store data for Contacts Treeview
         self.contacts = []
 
-        self.txt.grid(row=0, column=0, sticky='nsew')
+        self.contacts_tree.grid(row=0, column=0, sticky='nsew')
 
         # add a scrollbar to Contacts Treeview
-        self.scrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL, command=self.txt.yview)
-        self.txt.configure(yscroll=self.scrollbar.set)
+        self.scrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL, command=self.contacts_tree.yview)
+        self.contacts_tree.configure(yscroll=self.scrollbar.set)
         self.scrollbar.grid(row=0, column=1, sticky='ns')
 
         # Create Label Frame with 3 buttons
@@ -90,11 +91,11 @@ class ContactsFrame(ttk.Frame):
         self.b4.state(['!disabled'])
 
     def add_contact(self):
-        AddFrame(self, self.txt, self.lf, self.scrollbar,
-                 self.contact_book, self.tree, self.favorites)
+        AddFrame(self, self.contacts_tree, self.lf, self.scrollbar,
+                 self.contact_book, self.departments_tree, self.favorites_tree)
 
     def delete_contact(self):
-        human = self.txt.item(self.txt.focus())['values']
+        human = self.contacts_tree.item(self.contacts_tree.focus())['values']
 
         first_name = human[0]
         last_name = human[1]
@@ -107,17 +108,16 @@ class ContactsFrame(ttk.Frame):
             contact_index, contact_dep = contact_values(self.contact_book, first_name, last_name, number)
 
             # Delete contact in ContactsFrame
-            delete_in_contacts_frame(self.txt)
+            delete_in_contacts_frame(self.contacts_tree)
 
             # Delete contact in DepartmentsFrame
-            delete_in_departments_frame(self.tree, contact_dep, first_name, last_name)
+            delete_in_departments_frame(self.departments_tree, contact_dep, first_name, last_name)
 
             # Delete contact in FavoritesFrame
-            delete_in_favorites_frame(self.favorites, first_name)
+            delete_in_favorites_frame(self.favorites_tree, first_name)
 
             # Delete contact in the class Contact book
-            contact = self.contact_book.contacts[contact_index]
-            self.contact_book.delete_contact(contact)
+            delete_in_contact_book(self.contact_book, contact_index)
 
             # notify user that the contact has been deleted successfully
             successfully_messagebox(first_name, last_name)
@@ -128,19 +128,19 @@ class ContactsFrame(ttk.Frame):
             self.b4.state(['disabled'])
 
     def rename_contact(self):
-        RenameFrame(self, self.txt, self.lf, self.scrollbar, self.contact_book, self.tree,
-                    self.favorites, self.b2, self.b3, self.b4)
+        RenameFrame(self, self.contacts_tree, self.lf, self.scrollbar, self.contact_book, self.departments_tree,
+                    self.favorites_tree, self.b2, self.b3, self.b4)
 
     @try_exceptions
     def add_to_favorites(self):
-        item = self.txt.item(self.txt.focus())['values']
+        item = self.contacts_tree.item(self.contacts_tree.focus())['values']
         first_name = item[0]
         last_name = item[1]
         number = item[2]
 
         index = 0
-        while index < len(self.favorites.get_children()):
-            if number == self.favorites.item(self.favorites.get_children()[index])['values'][2].lower():
+        while index < len(self.favorites_tree.get_children()):
+            if number == self.favorites_tree.item(self.favorites_tree.get_children()[index])['values'][2].lower():
                 raise ContactExistInFavoritesException(first_name, last_name)
             index += 1
 
@@ -149,7 +149,7 @@ class ContactsFrame(ttk.Frame):
 
         if answer:
             # Add contact to FavoritesFrame
-            add_to_favorites_frame(self.favorites, first_name, last_name, number)
+            add_to_favorites_frame(self.favorites_tree, first_name, last_name, number)
 
             # Update contact's favorites to True value
             update_contact_favorites(self.contact_book, number)
