@@ -1,10 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
 
-from Frames.Contacts.Add_contact.validity_check import *
+from Frames.Contacts.Add_contact.validity_checks import *
 from Frames.Contacts.Add_contact.convert_number import length_10, length_11, length_12
 from Frames.Contacts.Add_contact.add_to_ContactsFrame import add_to_contacts_frame
-from Frames.Contacts.Add_contact.add_to_class_Contacts import add_to_contacts
+from Frames.Contacts.Add_contact.add_to_ContactBook import add_to_contacts
 from Frames.Contacts.Add_contact.add_to_DepartmentsFrame import add_to_departments_frame
 from Frames.Contacts.Add_contact.successfully_messagebox import successfully_messagebox
 from Decorators.try_exceptions import try_exceptions

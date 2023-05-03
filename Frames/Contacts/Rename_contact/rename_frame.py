@@ -1,14 +1,13 @@
 from tkinter import ttk
 import tkinter as tk
 
-from Exceptions.exist_contact import NameExistException
-from Exceptions.invalid_contact import InvalidNameException
 from Frames.Contacts.Rename_contact.confirmation_messagebox import confirmation_messagebox
 from Frames.Contacts.Rename_contact.successfully_messagebox import successfully_messagebox
 from Frames.Contacts.Rename_contact.rename_in_ContactsFrame import rename_in_contacts_frame
 from Frames.Contacts.Rename_contact.rename_in_DeparmentsFrame import rename_in_departments_frame
 from Frames.Contacts.Rename_contact.rename_in_FavoritesFrame import rename_in_favorites_frame
 from Frames.Contacts.Rename_contact.rename_in_ContactBook import rename_in_contact_book
+from Frames.Contacts.Rename_contact.validity_checks import check_on_invalid_name, check_on_existing_name
 from Decorators.try_exceptions import try_exceptions
 
 
@@ -94,17 +93,9 @@ class RenameFrame(ttk.Frame):
             new_first_name = "Mr/Mrs"
         new_last_name = self.text2.get().capitalize()
 
-        # check first name is it has less than 10 letters and more than 0
-        if len(new_first_name) < 1 or len(new_first_name) > 12:
-            raise InvalidNameException(new_first_name)
-        # check last name is it has less than 10 letters and more than 0
-        if len(new_last_name) > 12:
-            raise InvalidNameException(new_last_name)
+        check_on_invalid_name(new_first_name, new_last_name)
 
-        all_names = self.contact_book.get_all_names
-        for name in all_names:
-            if f"{new_first_name} {new_last_name}" == name:
-                raise NameExistException()
+        check_on_existing_name(self.contact_book, new_first_name, new_last_name)
 
         # print confirmation messagebox "Are you sure that you want to rename contact?"
         answer = confirmation_messagebox(old_first_name, old_last_name, new_first_name, new_last_name)

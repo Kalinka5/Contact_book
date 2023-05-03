@@ -18,7 +18,7 @@ def check_on_invalid_name(first_name: str, last_name: str) -> None:
     And if lastname length more than 12 - raises exception
     """
 
-    if len(first_name) < 1 or len(first_name) > 15:
+    if len(first_name) < 1 or len(first_name) > 12:
         raise InvalidNameException(first_name)
 
     if len(last_name) > 12:
@@ -42,5 +42,5 @@ def check_on_existing_name(contact_book: ContactBook, first_name: str, last_name
     """Check contact's name, if it exists in object of ContactBook - raise exception"""
     all_names = contact_book.get_all_names
     for name in all_names:
-        if f"{first_name} {last_name}" in name:
+        if f"{first_name} {last_name}" == name:
             raise NameExistException()
