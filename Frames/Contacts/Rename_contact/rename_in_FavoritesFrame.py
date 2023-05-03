@@ -8,7 +8,7 @@ def rename_in_favorites_frame(favorites: ttk.Treeview, old_first_name: str,
     # find contact's id in treeview of FavoritesFrame
     item_id = None
     for child in favorites.get_children():
-        if favorites.set(child, "first_name") == old_first_name:
+        if favorites.set(child, "first_name")[3:] == old_first_name:
             item_id = child
             break
 

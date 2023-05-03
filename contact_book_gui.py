@@ -56,7 +56,7 @@ class ContactBookGUI(tk.Tk):
                                        self.tab_control,
                                        self.contact_book,
                                        departments_frame.tree,
-                                       favorites_frame.txt)
+                                       favorites_frame.favorites_tree)
 
         # Read data from csv file
         df = pd.read_csv("Contact_book.csv")
@@ -98,11 +98,11 @@ class ContactBookGUI(tk.Tk):
 
                 # add data to the Favorites Treeview
                 for contact in favorites:
-                    favorites_frame.txt.insert('', tk.END, values=contact)
+                    favorites_frame.favorites_tree.insert('', tk.END, values=contact)
 
                 # add data to the Contacts Treeview
                 for contact in contacts:
-                    contacts_frame.txt.insert('', tk.END, values=contact)
+                    contacts_frame.contacts_tree.insert('', tk.END, values=contact)
 
             contact_book_r.close()
 
