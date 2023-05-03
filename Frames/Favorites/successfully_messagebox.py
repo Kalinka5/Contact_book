@@ -1,7 +1,8 @@
 from tkinter import messagebox
 
 
-def successfully_messagebox(first_name, last_name):
+def successfully_messagebox(first_name: str, last_name: str) -> None:
+    """messagebox to notify user that the contact has been deleted from Favorites successfully"""
 
     if last_name == "":
         messagebox.showinfo(

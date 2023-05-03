@@ -2,7 +2,7 @@ from tkinter import messagebox
 
 
 def successfully_favorites(first_name: str, last_name: str) -> None:
-    """messagebox to notify user that the contact has been deleted from Favorites successfully"""
+    """messagebox to notify user that the contact has been added to Favorites successfully"""
 
     if last_name == "":
         messagebox.showinfo(title='Update Contact Book',

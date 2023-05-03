@@ -19,21 +19,21 @@ class FavoritesFrame(ttk.Frame):
         self.tab_control.add(self, text='Favorites')
 
         columns = ('first_name', 'last_name', 'number')
-        self.txt = ttk.Treeview(self, columns=columns, show='headings')
-        self.txt.heading('first_name', text='First Name')
-        self.txt.heading('last_name', text='Second Name')
-        self.txt.heading('number', text='Number')
-        self.txt.column('first_name', width=100, anchor=tk.W)
-        self.txt.column('last_name', width=100, anchor=tk.W)
-        self.txt.column('number', width=200, anchor=tk.CENTER)
+        self.favorites_tree = ttk.Treeview(self, columns=columns, show='headings')
+        self.favorites_tree.heading('first_name', text='First Name')
+        self.favorites_tree.heading('last_name', text='Second Name')
+        self.favorites_tree.heading('number', text='Number')
+        self.favorites_tree.column('first_name', width=100, anchor=tk.W)
+        self.favorites_tree.column('last_name', width=100, anchor=tk.W)
+        self.favorites_tree.column('number', width=200, anchor=tk.CENTER)
 
-        self.txt.bind('<<TreeviewSelect>>', self.get_button_enable)
+        self.favorites_tree.bind('<<TreeviewSelect>>', self.get_button_enable)
 
-        self.txt.grid(row=0, column=0, sticky='nsew')
+        self.favorites_tree.grid(row=0, column=0, sticky='nsew')
 
         # add a scrollbar to Contacts Treeview
-        self.scrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL, command=self.txt.yview)
-        self.txt.configure(yscroll=self.scrollbar.set)
+        self.scrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL, command=self.favorites_tree.yview)
+        self.favorites_tree.configure(yscroll=self.scrollbar.set)
         self.scrollbar.grid(row=0, column=1, sticky='ns')
 
         # Create Label Frame with 3 buttons
@@ -53,7 +53,7 @@ class FavoritesFrame(ttk.Frame):
         self.b1.state(['!disabled'])
 
     def delete_from_favorites(self):
-        human = self.txt.item(self.txt.focus())['values']
+        human = self.favorites_tree.item(self.favorites_tree.focus())['values']
 
         first_name = human[0][3:]
         last_name = human[1]
@@ -63,7 +63,7 @@ class FavoritesFrame(ttk.Frame):
 
         if answer:
             # delete in the FavoritesFrame
-            delete_in_favorites_frame(self.txt, self.contact_book, first_name)
+            delete_in_favorites_frame(self.favorites_tree, self.contact_book, first_name)
 
             # notify user that the contact has been renamed successfully
             successfully_messagebox(first_name, last_name)
