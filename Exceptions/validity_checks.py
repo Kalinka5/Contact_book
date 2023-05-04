@@ -27,7 +27,7 @@ def check_on_invalid_name(first_name: str, last_name: str) -> None:
 
 def check_on_invalid_number(result: re.search, number: str) -> None:
     """Check if number contain not only digits, it raises exception"""
-    
+
     if not result:
         raise InvalidNumberException(number)
 

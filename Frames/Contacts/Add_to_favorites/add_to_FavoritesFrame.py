@@ -1,5 +1,7 @@
 from tkinter import ttk
 
+from Frames.Favorites.favorites import FavoritesFrame
+
 
 def add_to_favorites_frame(favorites_tree: ttk.Treeview, first_name: str, last_name: str, number: str) -> None:
     """
@@ -19,6 +21,7 @@ def add_to_favorites_frame(favorites_tree: ttk.Treeview, first_name: str, last_n
             break
         index += 1
 
+    emoji = FavoritesFrame.emoji  # emoji in firstname in Favorites contacts
     favorites_tree.insert('',
                           index,
-                          values=(f"♥  {first_name}", last_name, number))
+                          values=(f"{emoji}{first_name}", last_name, number))

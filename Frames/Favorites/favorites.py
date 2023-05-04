@@ -7,6 +7,8 @@ from Frames.Favorites.delete_in_FavoritesFrame import delete_in_favorites_frame
 
 
 class FavoritesFrame(ttk.Frame):
+    emoji = "♥  "
+
     def __init__(self, container, tab_control, contact_book):
         super().__init__(container)
 
@@ -55,17 +57,17 @@ class FavoritesFrame(ttk.Frame):
     def delete_from_favorites(self):
         human = self.favorites_tree.item(self.favorites_tree.focus())['values']
 
-        first_name = human[0][3:]
+        first_name = human[0][3:]  # delete "♥  "
         last_name = human[1]
 
-        # print confirmation messagebox "Are you sure that you want to add contact to the Favorites?"
+        # print confirmation messagebox "Are you sure that you want to delete contact from the Favorites?"
         answer = confirmation_messagebox(first_name, last_name)
 
         if answer:
             # delete in the FavoritesFrame
             delete_in_favorites_frame(self.favorites_tree, self.contact_book, first_name)
 
-            # notify user that the contact has been renamed successfully
+            # notify user that the contact has been deleted successfully
             successfully_messagebox(first_name, last_name)
 
             self.b1.state(['disabled'])

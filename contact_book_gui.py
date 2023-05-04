@@ -77,6 +77,7 @@ class ContactBookGUI(tk.Tk):
                 contact_book_r.seek(0)
                 reader = csv.DictReader(contact_book_r)
 
+                emoji = FavoritesFrame.emoji  # emoji in firstname in Favorites contacts
                 for row in reader:
                     departments_frame.tree.insert('',
                                                   tk.END,
@@ -89,7 +90,7 @@ class ContactBookGUI(tk.Tk):
                     Contact.iid += 1
 
                     if row["favorites"] == "True":
-                        favorites.append((f"♥  {row['first_name']}", row['last_name'], row['numbers']))
+                        favorites.append((f"{emoji}{row['first_name']}", row['last_name'], row['numbers']))
 
                     contacts.append((row['first_name'], row['last_name'], row['numbers']))
 
