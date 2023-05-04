@@ -19,20 +19,10 @@ class Contact:
 class ContactBook(OutputContact):
     def __init__(self):
         self.contacts = []
-        self.all_names = []
-        self.all_numbers = []
 
     @property
     def get_contacts(self):
         return self.contacts
-
-    @property
-    def get_all_names(self):
-        return self.all_names
-
-    @property
-    def get_all_numbers(self):
-        return self.all_numbers
 
     def __len__(self):
         return len(self.contacts)
@@ -46,16 +36,10 @@ class ContactBook(OutputContact):
 
     def add_contact(self, contact):
         self.contacts.append(contact)
-        self.all_names.append(f"{contact.first_name} {contact.last_name}")
-        self.all_numbers.append(contact.phone_number)
 
     def delete_contact(self, contact):
         self.contacts.remove(contact)
-        self.all_names.remove(f"{contact.first_name} {contact.last_name}")
-        self.all_numbers.remove(contact.phone_number)
 
     def rename_contact(self, contact, new_first_name, new_last_name):
-        self.all_names.remove(f"{contact.first_name} {contact.last_name}")
         contact.first_name = new_first_name
         contact.last_name = new_last_name
-        self.all_names.append(f"{contact.first_name} {contact.last_name}")

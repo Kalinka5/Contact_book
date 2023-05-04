@@ -27,19 +27,22 @@ def check_on_invalid_name(first_name: str, last_name: str) -> None:
 
 def check_on_invalid_number(result: re.search, number: str) -> None:
     """Check if number contain not only digits, it raises exception"""
+    
     if not result:
         raise InvalidNumberException(number)
 
 
 def check_on_existing_number(contact_book: ContactBook, normal_number: str) -> None:
     """Check contact's number, if it exists in object of ContactBook - raise exception"""
-    all_numbers = contact_book.get_all_numbers
-    if normal_number in all_numbers:
-        raise NumberExistException()
+
+    for contact in contact_book:
+        if normal_number == contact.phone_number:
+            raise NumberExistException()
 
 
 def check_on_existing_name(contact_book: ContactBook, first_name: str, last_name: str) -> None:
     """Check contact's name, if it exists in object of ContactBook - raise exception"""
-    all_names = contact_book.get_all_names
-    if f"{first_name} {last_name}" in all_names:
-        raise NameExistException()
+
+    for contact in contact_book:
+        if f"{first_name} {last_name}" == f"{contact.first_name} {contact.last_name}":
+            raise NameExistException()
