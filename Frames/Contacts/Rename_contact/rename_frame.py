@@ -1,13 +1,13 @@
 from tkinter import ttk
 import tkinter as tk
 
+from Exceptions.validity_checks import check_on_invalid_name, check_on_existing_name
 from Frames.Contacts.Rename_contact.confirmation_messagebox import confirmation_messagebox
 from Frames.Contacts.Rename_contact.successfully_messagebox import successfully_messagebox
 from Frames.Contacts.Rename_contact.rename_in_ContactsFrame import rename_in_contacts_frame
 from Frames.Contacts.Rename_contact.rename_in_DeparmentsFrame import rename_in_departments_frame
 from Frames.Contacts.Rename_contact.rename_in_FavoritesFrame import rename_in_favorites_frame
 from Frames.Contacts.Rename_contact.rename_in_ContactBook import rename_in_contact_book
-from Frames.Contacts.Rename_contact.validity_checks import check_on_invalid_name, check_on_existing_name
 from Decorators.try_exceptions import try_exceptions
 
 

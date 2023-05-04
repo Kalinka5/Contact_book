@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 
-from Frames.Contacts.Add_contact.validity_checks import *
+from Exceptions.invalid_contact import InvalidNumberException
+from Exceptions.validity_checks import check_on_invalid_length_number, check_on_invalid_name, check_on_invalid_number, \
+    check_on_existing_number, check_on_existing_name
 from Frames.Contacts.Add_contact.convert_number import length_10, length_11, length_12
 from Frames.Contacts.Add_contact.add_to_ContactsFrame import add_to_contacts_frame
 from Frames.Contacts.Add_contact.add_to_ContactBook import add_to_contacts

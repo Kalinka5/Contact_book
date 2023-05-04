@@ -41,6 +41,5 @@ def check_on_existing_number(contact_book: ContactBook, normal_number: str) -> N
 def check_on_existing_name(contact_book: ContactBook, first_name: str, last_name: str) -> None:
     """Check contact's name, if it exists in object of ContactBook - raise exception"""
     all_names = contact_book.get_all_names
-    for name in all_names:
-        if f"{first_name} {last_name}" == name:
-            raise NameExistException()
+    if f"{first_name} {last_name}" in all_names:
+        raise NameExistException()
