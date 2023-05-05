@@ -40,6 +40,7 @@ class ContactBook(OutputContact):
     def delete_contact(self, contact):
         self.contacts.remove(contact)
 
-    def rename_contact(self, contact, new_first_name, new_last_name):
+    def edit_contact(self, contact, new_first_name, new_last_name, new_phone_number):
         contact.first_name = new_first_name
         contact.last_name = new_last_name
+        contact.phone_number = new_phone_number

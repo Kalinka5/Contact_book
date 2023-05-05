@@ -34,7 +34,7 @@ class AddFrame(ttk.Frame):
         self.grid(row=0, column=0, sticky='nsew')
 
         lf = ttk.LabelFrame(master=self, text='Add Contact Window')
-        lf.place(x=30, y=30)
+        lf.pack(anchor=tk.S, expand=True)
 
         lbl1 = ttk.Label(master=lf, text='First Name', font=("BOLD", 10))
         lbl1.grid(row=1, column=0, padx=5)

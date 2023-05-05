@@ -4,7 +4,7 @@ from tkinter import ttk
 from Decorators.try_exceptions import try_exceptions
 from Exceptions.exist_contact import ContactExistInFavoritesException
 from Frames.Contacts.Add_contact.add_frame import AddFrame
-from Frames.Contacts.Rename_contact.rename_frame import RenameFrame
+from Frames.Contacts.Edit_contact.edit_frame import EditFrame
 from Frames.Contacts.Delete_contact.delete_in_ContactBook import delete_in_contact_book
 from Frames.Contacts.Delete_contact.confirmation_messagebox import confirmation_messagebox
 from Frames.Contacts.Delete_contact.delete_in_ContactsFrame import delete_in_contacts_frame
@@ -64,7 +64,7 @@ class ContactsFrame(ttk.Frame):
         self.b2 = ttk.Button(master=self.lf, text='Delete contact', command=self.delete_contact, cursor='hand2')
 
         # Button Rename contact
-        self.b3 = ttk.Button(master=self.lf, text='Rename contact', command=self.rename_contact, cursor='hand2')
+        self.b3 = ttk.Button(master=self.lf, text='Edit contact', command=self.rename_contact, cursor='hand2')
 
         # Button Add to favorites
         self.b4 = ttk.Button(master=self.lf, text='Add to favorites', command=self.add_to_favorites, cursor='hand2')
@@ -128,8 +128,8 @@ class ContactsFrame(ttk.Frame):
             self.b4.state(['disabled'])
 
     def rename_contact(self):
-        RenameFrame(self, self.contacts_tree, self.lf, self.scrollbar, self.contact_book, self.departments_tree,
-                    self.favorites_tree, self.b2, self.b3, self.b4)
+        EditFrame(self, self.contacts_tree, self.lf, self.scrollbar, self.contact_book, self.departments_tree,
+                  self.favorites_tree, self.b2, self.b3, self.b4)
 
     @try_exceptions
     def add_to_favorites(self):
