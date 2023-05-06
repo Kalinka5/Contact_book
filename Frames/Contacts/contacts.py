@@ -114,7 +114,7 @@ class ContactsFrame(ttk.Frame):
             delete_in_departments_frame(self.departments_tree, contact_dep, first_name, last_name)
 
             # Delete contact in FavoritesFrame
-            delete_in_favorites_frame(self.favorites_tree, first_name)
+            delete_in_favorites_frame(self.favorites_tree, number)
 
             # Delete contact in the class Contact book
             delete_in_contact_book(self.contact_book, contact_index)

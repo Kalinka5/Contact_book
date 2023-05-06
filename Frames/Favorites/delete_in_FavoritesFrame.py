@@ -3,12 +3,12 @@ from tkinter import ttk
 from contact_book import ContactBook
 
 
-def delete_in_favorites_frame(favorites_tree: ttk.Treeview, contact_book: ContactBook, first_name: str) -> None:
+def delete_in_favorites_frame(favorites_tree: ttk.Treeview, contact_book: ContactBook, phone_number: str) -> None:
     """
     Delete contact from the treeview of FavoritesFrame
     :param favorites_tree: treeview of FavoritesFrame
     :param contact_book: object of ContactBook
-    :param first_name: contact's firstname
+    :param phone_number: contact's phone number
     :return: None
     """
 
@@ -17,7 +17,7 @@ def delete_in_favorites_frame(favorites_tree: ttk.Treeview, contact_book: Contac
 
     index_txt = None
     for n, user in enumerate(contact_book.contacts):
-        if first_name == user.first_name:
+        if phone_number == user.phone_number:
             index_txt = n
 
     contact = contact_book.contacts[index_txt]

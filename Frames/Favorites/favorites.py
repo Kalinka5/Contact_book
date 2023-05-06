@@ -59,13 +59,14 @@ class FavoritesFrame(ttk.Frame):
 
         first_name = human[0][3:]  # delete "♥  "
         last_name = human[1]
+        phone_number = human[2]
 
         # print confirmation messagebox "Are you sure that you want to delete contact from the Favorites?"
         answer = confirmation_messagebox(first_name, last_name)
 
         if answer:
             # delete in the FavoritesFrame
-            delete_in_favorites_frame(self.favorites_tree, self.contact_book, first_name)
+            delete_in_favorites_frame(self.favorites_tree, self.contact_book, phone_number)
 
             # notify user that the contact has been deleted successfully
             successfully_messagebox(first_name, last_name)

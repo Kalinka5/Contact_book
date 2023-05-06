@@ -13,15 +13,16 @@ def add_to_favorites_frame(favorites_tree: ttk.Treeview, first_name: str, last_n
     :return: None
     """
 
+    emoji = FavoritesFrame.emoji  # emoji in firstname in Favorites contacts
+
     # find contact's index to insert it in alphabetical order
     index = 0
     while index < len(favorites_tree.get_children()):
         favorites_name = favorites_tree.item(favorites_tree.get_children()[index])['values'][0]
-        if first_name.lower() < favorites_name.lower()[3:]:
+        if f"{emoji}{first_name.lower()}" < favorites_name.lower():
             break
         index += 1
 
-    emoji = FavoritesFrame.emoji  # emoji in firstname in Favorites contacts
     favorites_tree.insert('',
                           index,
                           values=(f"{emoji}{first_name}", last_name, number))
