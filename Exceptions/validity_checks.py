@@ -46,3 +46,33 @@ def check_on_existing_name(contact_book: ContactBook, first_name: str, last_name
     for contact in contact_book:
         if f"{first_name} {last_name}" == f"{contact.first_name} {contact.last_name}":
             raise NameExistException()
+
+
+def validity_checks(digits: str, number: str, first_name: str, last_name: str, result: re.search,
+                    contact_book: ContactBook, normal_number: str) -> None:
+    """
+    All validity checks of contact's number, name, number's length, already existing in Contact Book name and number
+    :param digits: phone number digits (without dashes, pluses, spaces, brackets)
+    :param number: phone number that user insert to Contact Book
+    :param first_name: contact's firstname
+    :param last_name: contact's lastname
+    :param result: regular expression search result
+    :param contact_book: object of the class ContactBook
+    :param normal_number: formatted phone number by different countries format number
+    :return: None
+    """
+
+    # check 6 < digits < 13
+    check_on_invalid_length_number(digits, number)
+
+    # check 1 < firstname < 16 and lastname < 13
+    check_on_invalid_name(first_name, last_name)
+
+    # If number contain not only digits, it raises exception
+    check_on_invalid_number(result, number)
+
+    # check is number exist in the Contact Book
+    check_on_existing_number(contact_book, normal_number)
+
+    # check is name exist in the Contact Book
+    check_on_existing_name(contact_book, first_name, last_name)

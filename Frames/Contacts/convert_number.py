@@ -4,7 +4,7 @@ from typing import Tuple, Match
 from Exceptions.not_ukrainian_code import NotUkrainianCode
 
 
-def length_10(ukrainian_numbers: list, digits: str) -> tuple[Match[str] | None, str]:
+def length_10(ukrainian_numbers: list, digits: str) -> Tuple[Match[str] | None, str]:
     """
     Convert contact's phone number with 10 digits into different number formats
     :param ukrainian_numbers: list of ukrainian subscriber's numbers
@@ -31,7 +31,7 @@ def length_10(ukrainian_numbers: list, digits: str) -> tuple[Match[str] | None, 
     return result, normal_number
 
 
-def length_11(digits: str) -> tuple[Match[str] | None, str]:
+def length_11(digits: str) -> Tuple[Match[str] | None, str]:
     """
     Convert contact's phone number with 11 digits into different number formats
     :param digits: digits of contact's number
@@ -52,7 +52,7 @@ def length_11(digits: str) -> tuple[Match[str] | None, str]:
     return result, normal_number
 
 
-def length_12(ukrainian_numbers: list, digits: str) -> tuple[Match[str] | None, str]:
+def length_12(ukrainian_numbers: list, digits: str) -> Tuple[Match[str] | None, str]:
     """
     Convert contact's phone number with 12 digits into different number formats
     :param ukrainian_numbers: list of ukrainian subscriber's numbers
@@ -89,5 +89,26 @@ def length_12(ukrainian_numbers: list, digits: str) -> tuple[Match[str] | None, 
         result = re.search(pattern, digits)
         # convert phone number to +00-0000-000000
         normal_number = f"+{result[1]}-{result[2]}-{result[3]}"
+
+    return result, normal_number
+
+
+def convert_phone_number(digits: str) -> Tuple[Match[str] | None, str]:
+    """Convert digits to phone number's formats of different countries"""
+
+    ukrainian_numbers = ["039", "050", "063", "066", "067", "068",
+                         "091", "092", "093", "094", "095", "096", "097", "098", "099"]
+
+    # convert number in different formats
+    result = None
+    normal_number = ""
+    if len(digits) == 10:
+        result, normal_number = length_10(ukrainian_numbers, digits)
+
+    elif len(digits) == 11:
+        result, normal_number = length_11(digits)
+
+    elif len(digits) == 12:
+        result, normal_number = length_12(ukrainian_numbers, digits)
 
     return result, normal_number

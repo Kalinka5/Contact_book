@@ -2,9 +2,8 @@ from tkinter import ttk
 import tkinter as tk
 
 from Exceptions.invalid_contact import InvalidNumberException
-from Exceptions.validity_checks import check_on_invalid_length_number, check_on_invalid_name, check_on_existing_name, \
-    check_on_existing_number, check_on_invalid_number
-from Frames.Contacts.Add_contact.convert_number import length_10, length_11, length_12
+from Exceptions.validity_checks import validity_checks
+from Frames.Contacts.convert_number import convert_phone_number
 from Frames.Contacts.Edit_contact.confirmation_messagebox import confirmation_messagebox
 from Frames.Contacts.Edit_contact.successfully_messagebox import successfully_messagebox
 from Frames.Contacts.Edit_contact.edit_in_ContactsFrame import edit_in_contacts_frame
@@ -18,9 +17,6 @@ class EditFrame(ttk.Frame):
     def __init__(self, container, contacts_txt, contacts_lf, contacts_scrollbar,
                  contact_book, tree, favorites, contacts_b2, contacts_b3, contacts_b4):
         super().__init__(container)
-
-        self.ukrainian_numbers = ["039", "050", "063", "066", "067", "068",
-                                  "091", "092", "093", "094", "095", "096", "097", "098", "099"]
 
         self.contacts_txt = contacts_txt
         self.contacts_lf = contacts_lf
@@ -104,34 +100,14 @@ class EditFrame(ttk.Frame):
             new_first_name = "Mr/Mrs"
         new_last_name = self.text2.get().capitalize()
         new_phone_number = self.text3.get()
+
         digits = new_phone_number.replace("-", "").replace("+", "").replace(" ", "").replace("(", "").replace(")", "")
 
-        # check 6 < digits < 13
-        check_on_invalid_length_number(digits, new_phone_number)
-
-        # check 1 < firstname < 16 and lastname < 13
-        check_on_invalid_name(new_first_name, new_last_name)
-
         # convert number in different formats
-        result = None
-        normal_number = ""
-        if len(digits) == 10:
-            result, normal_number = length_10(self.ukrainian_numbers, digits)
+        result, normal_number = convert_phone_number(digits)
 
-        elif len(digits) == 11:
-            result, normal_number = length_11(digits)
-
-        elif len(digits) == 12:
-            result, normal_number = length_12(self.ukrainian_numbers, digits)
-
-        # If number contain not only digits, it raises exception
-        check_on_invalid_number(result, new_phone_number)
-
-        # check is number exist in the Contact Book
-        check_on_existing_number(self.contact_book, normal_number)
-
-        # check is name exist in the Contact Book
-        check_on_existing_name(self.contact_book, new_first_name, new_last_name)
+        validity_checks(digits, new_phone_number, new_first_name, new_last_name, result,
+                        self.contact_book, normal_number)
 
         # print confirmation messagebox "Are you sure that you want to edit contact?"
         answer = confirmation_messagebox(self.old_first_name, self.old_last_name, new_first_name, new_last_name)

@@ -2,9 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 
 from Exceptions.invalid_contact import InvalidNumberException
-from Exceptions.validity_checks import check_on_invalid_length_number, check_on_invalid_name, check_on_invalid_number, \
-    check_on_existing_number, check_on_existing_name
-from Frames.Contacts.Add_contact.convert_number import length_10, length_11, length_12
+from Exceptions.validity_checks import validity_checks
+from Frames.Contacts.convert_number import convert_phone_number
 from Frames.Contacts.Add_contact.add_to_ContactsFrame import add_to_contacts_frame
 from Frames.Contacts.Add_contact.add_to_ContactBook import add_to_contacts
 from Frames.Contacts.Add_contact.add_to_DepartmentsFrame import add_to_departments_frame
@@ -17,9 +16,6 @@ class AddFrame(ttk.Frame):
     def __init__(self, container, contacts_txt, contacts_lf, contacts_scrollbar,
                  contact_book, tree, favorites):
         super().__init__(container)
-
-        self.ukrainian_numbers = ["039", "050", "063", "066", "067", "068",
-                                  "091", "092", "093", "094", "095", "096", "097", "098", "099"]
 
         self.contacts_txt = contacts_txt
         self.contacts_lf = contacts_lf
@@ -114,34 +110,12 @@ class AddFrame(ttk.Frame):
         last_name = self.text4.get().title()
         number = self.text5.get()
 
-        digits = number.replace("-", "").replace("+", "").replace(" ", "")
-
-        # check 6 < digits < 13
-        check_on_invalid_length_number(digits, number)
-
-        # check 1 < firstname < 16 and lastname < 13
-        check_on_invalid_name(first_name, last_name)
+        digits = number.replace("-", "").replace("+", "").replace(" ", "").replace("(", "").replace(")", "")
 
         # convert number in different formats
-        result = None
-        normal_number = ""
-        if len(digits) == 10:
-            result, normal_number = length_10(self.ukrainian_numbers, digits)
+        result, normal_number = convert_phone_number(digits)
 
-        elif len(digits) == 11:
-            result, normal_number = length_11(digits)
-
-        elif len(digits) == 12:
-            result, normal_number = length_12(self.ukrainian_numbers, digits)
-
-        # If number contain not only digits, it raises exception
-        check_on_invalid_number(result, number)
-
-        # check is number exist in the Contact Book
-        check_on_existing_number(self.contact_book, normal_number)
-
-        # check is name exist in the Contact Book
-        check_on_existing_name(self.contact_book, first_name, last_name)
+        validity_checks(digits, number, first_name, last_name, result, self.contact_book, normal_number)
 
         # Check phone number is it has only digits
         if not digits.isdigit():
