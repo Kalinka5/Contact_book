@@ -1,7 +1,7 @@
 from tkinter import ttk
 import tkinter as tk
 
-from Exceptions.invalid_contact import InvalidNumberException
+from Exceptions.validity_checks import check_on_invalid_number
 from Exceptions.validity_checks import validity_checks
 from Frames.Contacts.convert_number import convert_phone_number
 from Frames.Contacts.Edit_contact.confirmation_messagebox import confirmation_messagebox
@@ -102,19 +102,15 @@ class EditFrame(ttk.Frame):
         new_phone_number = self.text3.get()
 
         digits = new_phone_number.replace("-", "").replace("+", "").replace(" ", "").replace("(", "").replace(")", "")
+        check_on_invalid_number(digits, new_phone_number)
 
         # convert number in different formats
-        result, normal_number = convert_phone_number(digits)
+        normal_number = convert_phone_number(digits)
 
-        validity_checks(digits, new_phone_number, new_first_name, new_last_name, result,
-                        self.contact_book, normal_number)
+        validity_checks(digits, new_phone_number, new_first_name, new_last_name, self.contact_book, normal_number)
 
         # print confirmation messagebox "Are you sure that you want to edit contact?"
         answer = confirmation_messagebox(self.old_first_name, self.old_last_name, new_first_name, new_last_name)
-
-        # Check phone number is it has only digits
-        if not digits.isdigit():
-            raise InvalidNumberException(new_phone_number)
 
         if answer:
             # edit contact in the class ContactBook
