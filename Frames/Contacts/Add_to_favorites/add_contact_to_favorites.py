@@ -5,6 +5,7 @@ from Frames.Contacts.Add_to_favorites.confirmation_messagebox import confirmatio
 from Frames.Contacts.Add_to_favorites.add_to_FavoritesFrame import add_to_favorites_frame
 from Frames.Contacts.Add_to_favorites.update_contact import update_contact_favorites
 from Frames.Contacts.Add_to_favorites.successfully_messagebox import successfully_favorites
+from Frames.Contacts.Add_to_favorites.add_to_ContactsFrame import update_contacts_tree
 from Exceptions.validity_checks import check_on_existing_in_favorites
 from contact_book import ContactBook
 
@@ -14,9 +15,9 @@ def add_contact_to_favorites(contact_book: ContactBook, contacts_tree: ttk.Treev
                              favorites_tree: ttk.Treeview) -> None:
 
     item = contacts_tree.item(contacts_tree.focus())['values']
-    first_name = item[0]
-    last_name = item[1]
-    number = item[2]
+    first_name = item[1]
+    last_name = item[2]
+    number = item[3]
 
     check_on_existing_in_favorites(favorites_tree, first_name, last_name, number)
 
@@ -24,6 +25,9 @@ def add_contact_to_favorites(contact_book: ContactBook, contacts_tree: ttk.Treev
     answer = confirmation_favorites(first_name, last_name)
 
     if answer:
+        # Add ♥ in the first column of Contacts tree
+        update_contacts_tree(contacts_tree)
+
         # Add contact to FavoritesFrame
         add_to_favorites_frame(favorites_tree, first_name, last_name, number)
 

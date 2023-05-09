@@ -4,6 +4,7 @@ from tkinter import ttk
 from Frames.Favorites.confirmation_messagebox import confirmation_messagebox
 from Frames.Favorites.successfully_messagebox import successfully_messagebox
 from Frames.Favorites.delete_in_FavoritesFrame import delete_in_favorites_frame
+from Frames.Favorites.update_contact_in_ContactBook import update_contact_in_contact_book
 
 
 class FavoritesFrame(ttk.Frame):
@@ -68,7 +69,10 @@ class FavoritesFrame(ttk.Frame):
 
         if answer:
             # delete in the FavoritesFrame
-            delete_in_favorites_frame(self.favorites_tree, self.contact_book, phone_number)
+            delete_in_favorites_frame(self.favorites_tree)
+
+            # update in the ContactBook
+            update_contact_in_contact_book(self.contact_book, phone_number)
 
             # notify user that the contact has been deleted successfully
             successfully_messagebox(first_name, last_name)

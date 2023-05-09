@@ -90,8 +90,9 @@ class ContactBookGUI(tk.Tk):
 
                     if row["favorites"] == "True":
                         favorites.append(("♥", row['first_name'], row['last_name'], row['numbers']))
-
-                    contacts.append((row['first_name'], row['last_name'], row['numbers']))
+                        contacts.append(("♥", row['first_name'], row['last_name'], row['numbers']))
+                    else:
+                        contacts.append((" ", row['first_name'], row['last_name'], row['numbers']))
 
                 # add data to the Favorites Treeview
                 for contact in favorites:

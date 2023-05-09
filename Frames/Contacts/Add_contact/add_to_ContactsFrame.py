@@ -20,4 +20,4 @@ def add_to_contacts_frame(contacts_tree: ttk.Treeview, first_name: str, last_nam
 
     contacts_tree.insert('',
                          index,
-                         values=(first_name, last_name, normal_number))
+                         values=(" ", first_name, last_name, normal_number))

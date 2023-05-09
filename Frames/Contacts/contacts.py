@@ -21,11 +21,13 @@ class ContactsFrame(ttk.Frame):
     def __create_widgets(self):
         self.tab_control.add(self, text='Contacts')
 
-        columns = ('first_name', 'last_name', 'number')
+        columns = ('heart', 'first_name', 'last_name', 'number')
         self.contacts_tree = ttk.Treeview(self, columns=columns, show='headings')
+        self.contacts_tree.heading('heart', text='♥')
         self.contacts_tree.heading('first_name', text='First Name')
         self.contacts_tree.heading('last_name', text='Second Name')
         self.contacts_tree.heading('number', text='Number')
+        self.contacts_tree.column('heart', width=20, anchor=tk.CENTER)
         self.contacts_tree.column('first_name', width=100, anchor=tk.W)
         self.contacts_tree.column('last_name', width=100, anchor=tk.W)
         self.contacts_tree.column('number', width=200, anchor=tk.CENTER)
