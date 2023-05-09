@@ -32,6 +32,7 @@ class EditFrame(ttk.Frame):
 
     def __create_widgets(self):
         item = self.contacts_txt.item(self.contacts_txt.focus())['values']
+        self.heart = item[0]
         self.old_first_name = item[1]
         self.old_last_name = item[2]
         self.old_phone_number = item[3]
@@ -112,13 +113,13 @@ class EditFrame(ttk.Frame):
                                  new_phone_number, self.old_phone_number)
 
             # edit contact in the class ContactsFrame
-            edit_in_contacts_frame(self.contacts_txt, new_first_name, new_last_name, new_phone_number)
+            edit_in_contacts_frame(self.contacts_txt, new_first_name, new_last_name, new_phone_number, self.heart)
 
             # edit contact in the class DepartmentsFrame
             edit_in_departments_frame(self.contact_book, self.tree, new_first_name)
 
             # edit contact in the class FavoritesFrame
-            edit_in_favorites_frame(self.favorites, self.old_first_name, new_first_name, new_last_name,
+            edit_in_favorites_frame(self.favorites, self.old_phone_number, new_first_name, new_last_name,
                                     new_phone_number)
 
             # notify user that the contact has been edited successfully

@@ -5,8 +5,8 @@ from Frames.Contacts.Add_contact.add_to_ContactsFrame import add_to_contacts_fra
 
 
 def edit_in_contacts_frame(contacts_tree: ttk.Treeview, new_first_name: str, new_last_name: str,
-                           new_phone_number: str) -> None:
+                           new_phone_number: str, heart: str) -> None:
     """Change contact's firstname, lastname and phone number in treeview of ContactsFrame"""
 
     delete_in_contacts_frame(contacts_tree)
-    add_to_contacts_frame(contacts_tree, new_first_name, new_last_name, new_phone_number)
+    add_to_contacts_frame(contacts_tree, new_first_name, new_last_name, new_phone_number, heart)

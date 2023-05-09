@@ -1,13 +1,15 @@
 from tkinter import ttk
 
 
-def add_to_contacts_frame(contacts_tree: ttk.Treeview, first_name: str, last_name: str, normal_number: str) -> None:
+def add_to_contacts_frame(contacts_tree: ttk.Treeview, first_name: str, last_name: str,
+                          normal_number: str, heart="") -> None:
     """
     Add new contact into treeview of ContactsFrame
     :param contacts_tree: the treeview of ContactsFrame
     :param first_name: contact's firstname
     :param last_name: contact's lastname
     :param normal_number: contact's phone number
+    :param heart: is contact in favorites or not
     :return: None
     """
 
@@ -20,4 +22,4 @@ def add_to_contacts_frame(contacts_tree: ttk.Treeview, first_name: str, last_nam
 
     contacts_tree.insert('',
                          index,
-                         values=(" ", first_name, last_name, normal_number))
+                         values=(heart, first_name, last_name, normal_number))

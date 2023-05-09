@@ -1,7 +1,5 @@
 from tkinter import ttk
 
-from Frames.Favorites.favorites import FavoritesFrame
-
 
 def delete_in_favorites_frame(favorites_tree: ttk.Treeview, phone_number: str) -> None:
     """
@@ -11,7 +9,6 @@ def delete_in_favorites_frame(favorites_tree: ttk.Treeview, phone_number: str) -
     :return: None
     """
 
-    emoji = FavoritesFrame.emoji  # emoji in firstname in Favorites contacts
     # find contact's id in treeview of FavoritesFrame
     item_id = None
     for child in favorites_tree.get_children():
