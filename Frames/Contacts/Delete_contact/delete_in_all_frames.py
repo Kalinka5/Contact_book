@@ -10,9 +10,9 @@ from Frames.Contacts.Delete_contact.successfully_messagebox import successfully_
 def delete_contact_in_all_frames(contact_book, contacts_tree, departments_tree, favorites_tree):
     human = contacts_tree.item(contacts_tree.focus())['values']
 
-    first_name = human[0]
-    last_name = human[1]
-    number = human[2]
+    first_name = human[1]
+    last_name = human[2]
+    number = human[3]
 
     # print confirmation messagebox "Are you sure that you want to delete contact?"
     answer = confirmation_messagebox(first_name, last_name)

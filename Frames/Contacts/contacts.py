@@ -55,7 +55,7 @@ class ContactsFrame(ttk.Frame):
         self.b2 = ttk.Button(master=self.lf, text='Delete contact', command=self.delete_contact, cursor='hand2')
 
         # Button Rename contact
-        self.b3 = ttk.Button(master=self.lf, text='Edit contact', command=self.rename_contact, cursor='hand2')
+        self.b3 = ttk.Button(master=self.lf, text='Edit contact', command=self.edit_contact, cursor='hand2')
 
         # Button Add to favorites
         self.b4 = ttk.Button(master=self.lf, text='Add to favorites', command=self.add_to_favorites, cursor='hand2')
@@ -93,14 +93,9 @@ class ContactsFrame(ttk.Frame):
         self.b3.state(['disabled'])
         self.b4.state(['disabled'])
 
-    def rename_contact(self):
+    def edit_contact(self):
         EditFrame(self, self.contacts_tree, self.lf, self.scrollbar, self.contact_book,
-                  self.departments_tree, self.favorites_tree)
-
-        # make buttons "Add contact", "Delete contact", "Edit contact" disabled
-        self.b2.state(['disabled'])
-        self.b3.state(['disabled'])
-        self.b4.state(['disabled'])
+                  self.departments_tree, self.favorites_tree, self.b2, self.b3, self.b4)
 
     def add_to_favorites(self):
         add_contact_to_favorites(self.contact_book, self.contacts_tree, self.favorites_tree)

@@ -14,7 +14,7 @@ def add_to_contacts_frame(contacts_tree: ttk.Treeview, first_name: str, last_nam
     # find contact's index to insert it in alphabetical order
     index = 0
     while index < len(contacts_tree.get_children()):
-        if first_name.lower() < contacts_tree.item(contacts_tree.get_children()[index])['values'][0].lower():
+        if first_name.lower() < contacts_tree.item(contacts_tree.get_children()[index])['values'][1].lower():
             break
         index += 1
 
