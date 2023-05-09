@@ -20,11 +20,13 @@ class FavoritesFrame(ttk.Frame):
     def __create_widgets(self):
         self.tab_control.add(self, text='Favorites')
 
-        columns = ('first_name', 'last_name', 'number')
+        columns = ('heart', 'first_name', 'last_name', 'number')
         self.favorites_tree = ttk.Treeview(self, columns=columns, show='headings')
+        self.favorites_tree.heading('heart', text='♥')
         self.favorites_tree.heading('first_name', text='First Name')
         self.favorites_tree.heading('last_name', text='Second Name')
         self.favorites_tree.heading('number', text='Number')
+        self.favorites_tree.column('heart', width=20, anchor=tk.CENTER)
         self.favorites_tree.column('first_name', width=100, anchor=tk.W)
         self.favorites_tree.column('last_name', width=100, anchor=tk.W)
         self.favorites_tree.column('number', width=200, anchor=tk.CENTER)
@@ -57,9 +59,9 @@ class FavoritesFrame(ttk.Frame):
     def delete_from_favorites(self):
         human = self.favorites_tree.item(self.favorites_tree.focus())['values']
 
-        first_name = human[0][3:]  # delete "♥  "
-        last_name = human[1]
-        phone_number = human[2]
+        first_name = human[1]
+        last_name = human[2]
+        phone_number = human[3]
 
         # print confirmation messagebox "Are you sure that you want to delete contact from the Favorites?"
         answer = confirmation_messagebox(first_name, last_name)
