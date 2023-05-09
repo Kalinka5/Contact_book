@@ -1,21 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
 
-from Decorators.try_exceptions import try_exceptions
-from Exceptions.exist_contact import ContactExistInFavoritesException
 from Frames.Contacts.Add_contact.add_frame import AddFrame
 from Frames.Contacts.Edit_contact.edit_frame import EditFrame
-from Frames.Contacts.Delete_contact.delete_in_ContactBook import delete_in_contact_book
-from Frames.Contacts.Delete_contact.confirmation_messagebox import confirmation_messagebox
-from Frames.Contacts.Delete_contact.delete_in_ContactsFrame import delete_in_contacts_frame
-from Frames.Contacts.Delete_contact.search_index_departments import contact_values
-from Frames.Contacts.Delete_contact.delete_in_DepartmentsFrame import delete_in_departments_frame
-from Frames.Contacts.Delete_contact.delete_in_FavoritesFrame import delete_in_favorites_frame
-from Frames.Contacts.Delete_contact.successfully_messagebox import successfully_messagebox
-from Frames.Contacts.Add_to_favorites.confirmation_messagebox import confirmation_favorites
-from Frames.Contacts.Add_to_favorites.successfully_messagebox import successfully_favorites
-from Frames.Contacts.Add_to_favorites.add_to_FavoritesFrame import add_to_favorites_frame
-from Frames.Contacts.Add_to_favorites.update_contact import update_contact_favorites
+from Frames.Contacts.Delete_contact.delete_in_all_frames import delete_contact_in_all_frames
+from Frames.Contacts.Add_to_favorites.add_contact_to_favorites import add_contact_to_favorites
 
 
 class ContactsFrame(ttk.Frame):
@@ -95,64 +84,21 @@ class ContactsFrame(ttk.Frame):
                  self.contact_book, self.departments_tree, self.favorites_tree)
 
     def delete_contact(self):
-        human = self.contacts_tree.item(self.contacts_tree.focus())['values']
+        delete_contact_in_all_frames(self.contact_book, self.contacts_tree, self.departments_tree, self.favorites_tree)
 
-        first_name = human[0]
-        last_name = human[1]
-        number = human[2]
-
-        # print confirmation messagebox "Are you sure that you want to delete contact?"
-        answer = confirmation_messagebox(first_name, last_name)
-
-        if answer:
-            contact_index, contact_dep = contact_values(self.contact_book, first_name, last_name, number)
-
-            # Delete contact in ContactsFrame
-            delete_in_contacts_frame(self.contacts_tree)
-
-            # Delete contact in DepartmentsFrame
-            delete_in_departments_frame(self.departments_tree, contact_dep, first_name, last_name)
-
-            # Delete contact in FavoritesFrame
-            delete_in_favorites_frame(self.favorites_tree, number)
-
-            # Delete contact in the class Contact book
-            delete_in_contact_book(self.contact_book, contact_index)
-
-            # notify user that the contact has been deleted successfully
-            successfully_messagebox(first_name, last_name)
-
-            # make buttons "Add contact", "Delete contact", "Rename contact" disabled
-            self.b2.state(['disabled'])
-            self.b3.state(['disabled'])
-            self.b4.state(['disabled'])
+        # make buttons "Add contact", "Delete contact", "Rename contact" disabled
+        self.b2.state(['disabled'])
+        self.b3.state(['disabled'])
+        self.b4.state(['disabled'])
 
     def rename_contact(self):
-        EditFrame(self, self.contacts_tree, self.lf, self.scrollbar, self.contact_book, self.departments_tree,
-                  self.favorites_tree, self.b2, self.b3, self.b4)
+        EditFrame(self, self.contacts_tree, self.lf, self.scrollbar, self.contact_book,
+                  self.departments_tree, self.favorites_tree)
 
-    @try_exceptions
+        # make buttons "Add contact", "Delete contact", "Edit contact" disabled
+        self.b2.state(['disabled'])
+        self.b3.state(['disabled'])
+        self.b4.state(['disabled'])
+
     def add_to_favorites(self):
-        item = self.contacts_tree.item(self.contacts_tree.focus())['values']
-        first_name = item[0]
-        last_name = item[1]
-        number = item[2]
-
-        index = 0
-        while index < len(self.favorites_tree.get_children()):
-            if number == self.favorites_tree.item(self.favorites_tree.get_children()[index])['values'][2].lower():
-                raise ContactExistInFavoritesException(first_name, last_name)
-            index += 1
-
-        # print confirmation messagebox "Are you sure that you want to add contact to Favorites?"
-        answer = confirmation_favorites(first_name, last_name)
-
-        if answer:
-            # Add contact to FavoritesFrame
-            add_to_favorites_frame(self.favorites_tree, first_name, last_name, number)
-
-            # Update contact's favorites to True value
-            update_contact_favorites(self.contact_book, number)
-
-            # notify user that the contact has been deleted from Favorites successfully
-            successfully_favorites(first_name, last_name)
+        add_contact_to_favorites(self.contact_book, self.contacts_tree, self.favorites_tree)
