@@ -29,9 +29,9 @@ class EditFrame(ttk.Frame):
 
     def __create_widgets(self):
         item = self.contacts_txt.item(self.contacts_txt.focus())['values']
-        self.old_first_name = item[0]
-        self.old_last_name = item[1]
-        self.old_phone_number = item[2]
+        self.old_first_name = item[1]
+        self.old_last_name = item[2]
+        self.old_phone_number = item[3]
 
         self.grid(row=0, column=0, sticky='nsew')
 
@@ -47,36 +47,30 @@ class EditFrame(ttk.Frame):
         download_button.image = download_icon
         download_button.grid(row=0, column=1, sticky='e')
 
-        if item[1]:
-            lbl1 = ttk.Label(master=lf, text=f'You choose the contact \"{item[0]} {item[1]}\".', font=("BOLD", 10))
-        else:
-            lbl1 = ttk.Label(master=lf, text=f'You choose the contact \"{item[0]}\".', font=("BOLD", 10))
-        lbl1.grid(row=1, column=0, columnspan=2, padx=5, pady=5)
-
         lbl1 = ttk.Label(master=lf, text='New first name:', font=("BOLD", 10))
-        lbl1.grid(row=2, column=0, sticky='w', padx=5)
+        lbl1.grid(row=1, column=0, sticky='w', padx=5)
 
         self.text1 = tk.StringVar()
         t1 = ttk.Entry(master=lf, textvariable=self.text1)
         t1.insert(0, self.old_first_name)
         t1.focus()
-        t1.grid(row=3, column=0, padx=5)
+        t1.grid(row=2, column=0, padx=5)
 
         lbl2 = ttk.Label(master=lf, text='New last name:', font=("BOLD", 10))
-        lbl2.grid(row=2, column=1, sticky='w', padx=5)
+        lbl2.grid(row=1, column=1, sticky='w', padx=5)
 
         self.text2 = tk.StringVar()
         t2 = ttk.Entry(master=lf, textvariable=self.text2)
         t2.insert(0, self.old_last_name)
-        t2.grid(row=3, column=1, padx=5)
+        t2.grid(row=2, column=1, padx=5)
 
         lbl3 = ttk.Label(master=lf, text='New phone number:', font=("BOLD", 10))
-        lbl3.grid(row=4, column=0, sticky='e', padx=5, pady=10)
+        lbl3.grid(row=3, column=0, sticky='e', padx=5, pady=10)
 
         self.text3 = tk.StringVar()
         t3 = ttk.Entry(master=lf, textvariable=self.text3)
         t3.insert(0, self.old_phone_number)
-        t3.grid(row=4, column=1, sticky='w', padx=5, pady=15)
+        t3.grid(row=3, column=1, sticky='w', padx=5, pady=15)
 
         btn = ttk.Button(master=lf, text='Edit contact', command=self.edit, cursor='hand2')
         btn.grid(row=5, column=1)
