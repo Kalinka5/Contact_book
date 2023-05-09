@@ -38,14 +38,14 @@ class EditFrame(ttk.Frame):
         lf = ttk.LabelFrame(master=self, text='Edit Contact Window')
         lf.pack(anchor=tk.S, expand=True)
 
-        download_icon = tk.PhotoImage(file='Images/close.png')
-        download_button = ttk.Button(
+        close_icon = tk.PhotoImage(file='Images/close.png')
+        close_button = ttk.Button(
             lf,
-            image=download_icon,
+            image=close_icon,
             command=self.close_clicked
         )
-        download_button.image = download_icon
-        download_button.grid(row=0, column=1, sticky='e')
+        close_button.image = close_icon
+        close_button.grid(row=0, column=1, sticky='e')
 
         lbl1 = ttk.Label(master=lf, text='New first name:', font=("BOLD", 10))
         lbl1.grid(row=1, column=0, sticky='w', padx=5)
