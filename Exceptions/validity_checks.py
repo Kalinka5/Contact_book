@@ -1,8 +1,9 @@
 from tkinter import ttk
 
-from contact_book import ContactBook
+from contact_book import ContactBook, Contact
 from Exceptions.invalid_contact import InvalidNameException, InvalidNumberException, InvalidLengthNumberException
 from Exceptions.exist_contact import NumberExistException, NameExistException, ContactExistInFavoritesException
+from Exceptions.no_changes import ContactHasNoChanged
 
 
 def check_on_invalid_length_number(digits: str, number: str) -> None:
@@ -59,27 +60,36 @@ def check_on_existing_in_favorites(favorites_tree: ttk.Treeview, first_name: str
         index += 1
 
 
-def validity_checks(digits: str, number: str, first_name: str, last_name: str,
-                    contact_book: ContactBook, normal_number: str) -> None:
+def check_on_no_changes(old_contact: Contact, new_contact: Contact) -> None:
+    if old_contact == new_contact:
+        raise ContactHasNoChanged()
+
+
+def validity_checks(digits: str, number: str, contact_book: ContactBook,
+                    new_contact: Contact, old_contact=None) -> None:
     """
     All validity checks of contact's number, name, number's length, already existing in Contact Book name and number
     :param digits: phone number digits (without dashes, pluses, spaces, brackets)
     :param number: phone number that user insert to Contact Book
-    :param first_name: contact's firstname
-    :param last_name: contact's lastname
     :param contact_book: object of the class ContactBook
-    :param normal_number: formatted phone number by different countries format number
+    :param new_contact: object of contact with edited values
+    :param old_contact: object of contact with old values (parameter fo Edit frame)
     :return: None
     """
+
+    if old_contact is not None:
+        check_on_no_changes(old_contact, new_contact)
+
+        if old_contact.phone_number != new_contact.phone_number:
+            # check is number exist in the Contact Book
+            check_on_existing_number(contact_book, new_contact.phone_number)
+
+        if f"{old_contact.first_name} {old_contact.last_name}" != f"{new_contact.first_name} {new_contact.last_name}":
+            # check is name exist in the Contact Book
+            check_on_existing_name(contact_book, new_contact.first_name, new_contact.last_name)
 
     # check 6 < digits < 13
     check_on_invalid_length_number(digits, number)
 
     # check 1 < firstname < 16 and lastname < 13
-    check_on_invalid_name(first_name, last_name)
-
-    # check is number exist in the Contact Book
-    check_on_existing_number(contact_book, normal_number)
-
-    # check is name exist in the Contact Book
-    check_on_existing_name(contact_book, first_name, last_name)
+    check_on_invalid_name(new_contact.first_name, new_contact.last_name)

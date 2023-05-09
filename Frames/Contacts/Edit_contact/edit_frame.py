@@ -1,6 +1,7 @@
 from tkinter import ttk
 import tkinter as tk
 
+from contact_book import Contact
 from Exceptions.validity_checks import check_on_invalid_number
 from Exceptions.validity_checks import validity_checks
 from Frames.Contacts.convert_number import convert_phone_number
@@ -102,10 +103,13 @@ class EditFrame(ttk.Frame):
         # convert number in different formats
         normal_number = convert_phone_number(digits)
 
-        validity_checks(digits, new_phone_number, new_first_name, new_last_name, self.contact_book, normal_number)
+        old_contact = Contact(self.old_first_name, self.old_last_name, self.old_phone_number)
+        new_contact = Contact(new_first_name, new_last_name, normal_number)
+
+        validity_checks(digits, new_phone_number, self.contact_book, new_contact, old_contact)
 
         # print confirmation messagebox "Are you sure that you want to edit contact?"
-        answer = confirmation_messagebox(self.old_first_name, self.old_last_name, new_first_name, new_last_name)
+        answer = confirmation_messagebox(new_first_name, new_last_name)
 
         if answer:
             # edit contact in the class ContactBook
@@ -119,11 +123,11 @@ class EditFrame(ttk.Frame):
             edit_in_departments_frame(self.contact_book, self.tree, new_first_name)
 
             # edit contact in the class FavoritesFrame
-            edit_in_favorites_frame(self.favorites, self.old_phone_number, new_first_name, new_last_name,
-                                    new_phone_number)
+            edit_in_favorites_frame(self.favorites, self.old_phone_number, new_first_name,
+                                    new_last_name, new_phone_number)
 
             # notify user that the contact has been edited successfully
-            successfully_messagebox(self.old_first_name, self.old_last_name, new_first_name, new_last_name)
+            successfully_messagebox(new_first_name, new_last_name)
 
             # Open ContactsFrame again
             self.contacts_txt.tkraise()

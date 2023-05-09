@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
+from contact_book import Contact
 from Exceptions.validity_checks import check_on_invalid_number
 from Exceptions.invalid_contact import InvalidNumberException
 from Exceptions.validity_checks import validity_checks
@@ -117,7 +118,9 @@ class AddFrame(ttk.Frame):
         # convert number in different formats
         normal_number = convert_phone_number(digits)
 
-        validity_checks(digits, number, first_name, last_name, self.contact_book, normal_number)
+        new_contact = Contact(first_name, last_name, normal_number)
+
+        validity_checks(digits, number, self.contact_book, new_contact)
 
         # Check phone number is it has only digits
         if not digits.isdigit():

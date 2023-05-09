@@ -3,6 +3,7 @@ from tkinter import messagebox
 from Exceptions.invalid_contact import InvalidNameException, InvalidNumberException, InvalidLengthNumberException
 from Exceptions.exist_contact import NumberExistException, NameExistException, ContactExistInFavoritesException
 from Exceptions.not_ukrainian_code import NotUkrainianCode
+from Exceptions.no_changes import ContactHasNoChanged
 
 
 def try_exceptions(func):
@@ -19,11 +20,11 @@ def try_exceptions(func):
                                  message=inue)
         except NumberExistException as cee:
             print(cee)
-            messagebox.showwarning(title='Update Contact Book',
+            messagebox.showwarning(title='Exist warning',
                                    message="A contact with this number is already in the Contact book!")
         except NameExistException as nee:
             print(nee)
-            messagebox.showwarning(title='Update Contact Book',
+            messagebox.showwarning(title='Exist warning',
                                    message="A contact with this name is already in the Contact Book!")
         except NotUkrainianCode as nuc:
             print(nuc)
@@ -31,12 +32,15 @@ def try_exceptions(func):
                                    message=nuc)
         except InvalidLengthNumberException as ilne:
             print(ilne)
-            messagebox.showerror(title='Update Contact Book',
+            messagebox.showerror(title='Number error',
                                  message=ilne)
         except ContactExistInFavoritesException as ceife:
             print(ceife)
-            messagebox.showwarning(
-                title='Update Contact Book',
-                message=ceife)
+            messagebox.showwarning(title='Exist warning',
+                                   message=ceife)
+        except ContactHasNoChanged as chnc:
+            print(chnc)
+            messagebox.showwarning(title='No change warning',
+                                   message=chnc)
 
     return _wrapper
