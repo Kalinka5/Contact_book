@@ -15,7 +15,7 @@ from Decorators.try_exceptions import try_exceptions
 
 class EditFrame(ttk.Frame):
     def __init__(self, container, contacts_txt, contacts_lf, contacts_scrollbar,
-                 contact_book, tree, favorites, contacts_b2, contacts_b3, contacts_b4):
+                 contact_book, tree, favorites):
         super().__init__(container)
 
         self.contacts_txt = contacts_txt
@@ -24,9 +24,6 @@ class EditFrame(ttk.Frame):
         self.contact_book = contact_book
         self.tree = tree
         self.favorites = favorites
-        self.contacts_b2 = contacts_b2
-        self.contacts_b3 = contacts_b3
-        self.contacts_b4 = contacts_b4
 
         self.__create_widgets()
 
@@ -129,11 +126,6 @@ class EditFrame(ttk.Frame):
 
             # notify user that the contact has been edited successfully
             successfully_messagebox(self.old_first_name, self.old_last_name, new_first_name, new_last_name)
-
-            # make buttons "Add contact", "Delete contact", "Edit contact" disabled
-            self.contacts_b2.state(['disabled'])
-            self.contacts_b3.state(['disabled'])
-            self.contacts_b4.state(['disabled'])
 
             # Open ContactsFrame again
             self.contacts_txt.tkraise()
