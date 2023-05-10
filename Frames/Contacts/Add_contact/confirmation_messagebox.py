@@ -12,6 +12,6 @@ def confirmation_messagebox(new_contact: Contact) -> askyesno:
         full_name = new_contact.first_name
 
     answer = askyesno(title='Confirmation',
-                      message=f'Are you sure that you want to edit contact \"{full_name}\"?')
+                      message=f'Are you sure that you want to add contact \"{full_name}\"?')
 
     return answer

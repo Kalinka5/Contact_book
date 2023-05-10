@@ -5,8 +5,8 @@ from contact_book import Contact
 from Exceptions.validity_checks import check_on_invalid_number
 from Exceptions.validity_checks import validity_checks
 from Frames.Contacts.convert_number import convert_phone_number
+from Frames.Contacts.Add_contact.confirmation_messagebox import confirmation_messagebox
 from Frames.Contacts.Add_contact.add_to_ContactsFrame import add_to_contacts_frame
-from Frames.Contacts.Add_contact.add_to_ContactBook import add_to_contacts
 from Frames.Contacts.Add_contact.add_to_DepartmentsFrame import add_to_departments_frame
 from Frames.Contacts.Add_contact.successfully_messagebox import successfully_messagebox
 from Decorators.try_exceptions import try_exceptions
@@ -119,28 +119,31 @@ class AddFrame(ttk.Frame):
         # convert number in different formats
         normal_number = convert_phone_number(digits)
 
-        new_contact = Contact(first_name, last_name, normal_number)
+        new_contact = Contact(first_name, last_name, normal_number, department)
 
         validity_checks(digits, number, self.contact_book, new_contact)
 
-        # Add contact to class ContactBook
-        add_to_contacts(self.contact_book, department, first_name, last_name, normal_number)
+        answer = confirmation_messagebox(new_contact)
 
-        # Add new contact to ContactsFrame
-        add_to_contacts_frame(self.contacts_txt, first_name, last_name, normal_number)
+        if answer:
+            # Add contact to class ContactBook
+            self.contact_book.add_contact(new_contact)
 
-        # Add contact to DepartmentsFrame
-        add_to_departments_frame(self.tree, self.contact_book, department)
+            # Add new contact to ContactsFrame
+            add_to_contacts_frame(self.contacts_txt, new_contact)
 
-        # Clear all fields with data
-        self.text3.set("")
-        self.text4.set("")
-        self.text5.set("")
+            # Add contact to DepartmentsFrame
+            add_to_departments_frame(self.tree, self.contact_book, department)
 
-        # notify user that the contact has been added successfully
-        successfully_messagebox(first_name, last_name)
+            # Clear all fields with data
+            self.text3.set("")
+            self.text4.set("")
+            self.text5.set("")
 
-        # Open ContactsFrame again
-        self.contacts_txt.tkraise()
-        self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
-        self.contacts_lf.grid(row=1, column=0, sticky='ns')
+            # notify user that the contact has been added successfully
+            successfully_messagebox(new_contact)
+
+            # Open ContactsFrame again
+            self.contacts_txt.tkraise()
+            self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
+            self.contacts_lf.grid(row=1, column=0, sticky='ns')
