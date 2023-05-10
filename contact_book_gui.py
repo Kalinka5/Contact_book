@@ -9,7 +9,8 @@ from Frames.First_frame.first_frame import ImageFrame
 from Frames.Contacts.contacts import ContactsFrame
 from Frames.Departments.departments import DepartmentsFrame
 from Frames.Favorites.favorites import FavoritesFrame
-from contact_book import Contact, ContactBook
+from contact_book import ContactBook
+from contact import Contact
 
 
 class ContactBookGUI(tk.Tk):

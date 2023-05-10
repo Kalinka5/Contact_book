@@ -1,6 +1,6 @@
 from tkinter import ttk
 
-from contact_book import Contact
+from contact import Contact
 from Frames.Contacts.Delete_contact.delete_in_FavoritesFrame import delete_in_favorites_frame
 from Frames.Contacts.Add_to_favorites.add_to_FavoritesFrame import add_to_favorites_frame
 

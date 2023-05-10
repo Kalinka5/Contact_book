@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
-from contact_book import Contact
+from contact import Contact
 
 
 class DepartmentsFrame(ttk.Frame):

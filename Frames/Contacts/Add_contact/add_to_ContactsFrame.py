@@ -1,6 +1,6 @@
 from tkinter import ttk
 
-from contact_book import Contact
+from contact import Contact
 
 
 def add_to_contacts_frame(contacts_tree: ttk.Treeview, new_contact: Contact, heart="") -> None:

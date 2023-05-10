@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
-from contact_book import Contact
+from contact import Contact
 from Exceptions.validity_checks import check_on_invalid_number
 from Exceptions.validity_checks import validity_checks
 from Frames.Contacts.convert_number import convert_phone_number

@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 
-from contact_book import Contact, ContactBook
+from contact import Contact
+from contact_book import ContactBook
 from Frames.Departments.departments import DepartmentsFrame as Depart
 
 

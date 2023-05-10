@@ -1,6 +1,6 @@
 from tkinter.messagebox import askyesno
 
-from contact_book import Contact
+from contact import Contact
 
 
 def confirmation_messagebox(new_contact: Contact) -> askyesno:
