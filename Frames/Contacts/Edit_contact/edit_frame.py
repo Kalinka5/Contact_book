@@ -10,7 +10,6 @@ from Frames.Contacts.Edit_contact.successfully_messagebox import successfully_me
 from Frames.Contacts.Edit_contact.edit_in_ContactsFrame import edit_in_contacts_frame
 from Frames.Contacts.Edit_contact.edit_in_DeparmentsFrame import edit_in_departments_frame
 from Frames.Contacts.Edit_contact.edit_in_FavoritesFrame import edit_in_favorites_frame
-from Frames.Contacts.Edit_contact.edit_in_ContactBook import edit_in_contact_book
 from Decorators.try_exceptions import try_exceptions
 
 
@@ -103,31 +102,29 @@ class EditFrame(ttk.Frame):
         # convert number in different formats
         normal_number = convert_phone_number(digits)
 
-        old_contact = Contact(self.old_first_name, self.old_last_name, self.old_phone_number)
+        old_contact = self.contact_book.get_contact_by_phone_number(self.old_phone_number)
         new_contact = Contact(new_first_name, new_last_name, normal_number)
 
         validity_checks(digits, new_phone_number, self.contact_book, new_contact, old_contact)
 
         # print confirmation messagebox "Are you sure that you want to edit contact?"
-        answer = confirmation_messagebox(new_first_name, new_last_name)
+        answer = confirmation_messagebox(new_contact)
 
         if answer:
             # edit contact in the class ContactBook
-            edit_in_contact_book(self.contact_book, new_first_name, new_last_name,
-                                 new_phone_number, self.old_phone_number)
+            self.contact_book.edit_contact(old_contact, new_first_name, new_last_name, normal_number)
 
             # edit contact in the class ContactsFrame
-            edit_in_contacts_frame(self.contacts_txt, new_first_name, new_last_name, new_phone_number, self.heart)
+            edit_in_contacts_frame(self.contacts_txt, new_contact, self.heart)
 
             # edit contact in the class DepartmentsFrame
             edit_in_departments_frame(self.contact_book, self.tree, new_first_name)
 
             # edit contact in the class FavoritesFrame
-            edit_in_favorites_frame(self.favorites, self.old_phone_number, new_first_name,
-                                    new_last_name, new_phone_number)
+            edit_in_favorites_frame(self.favorites, self.old_phone_number, new_contact)
 
             # notify user that the contact has been edited successfully
-            successfully_messagebox(new_first_name, new_last_name)
+            successfully_messagebox(new_contact)
 
             # Open ContactsFrame again
             self.contacts_txt.tkraise()

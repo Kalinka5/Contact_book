@@ -1,16 +1,18 @@
 from tkinter.messagebox import askyesno
 
+from contact_book import Contact
 
-def confirmation_messagebox(new_first_name: str, new_last_name: str) -> askyesno:
+
+def confirmation_messagebox(new_contact: Contact) -> askyesno:
     """Print confirmation messagebox to rename contact"""
 
-    if new_last_name:
-        answer = askyesno(title='Confirmation',
-                          message=f'Are you sure that you want to edit contact \"{new_first_name} {new_last_name}\"?')
-        print(f'Are you sure that you want to edit contact \"{new_first_name} {new_last_name}\"?')
+    if new_contact.last_name:
+        full_name = f"{new_contact.first_name} {new_contact.last_name}"
     else:
-        answer = askyesno(title='Confirmation',
-                          message=f'Are you sure that you want to edit contact \"{new_first_name}\"?')
-        print(f'Are you sure that you want to edit contact \"{new_first_name}\"?')
+        full_name = new_contact.first_name
+
+    answer = askyesno(title='Confirmation',
+                      message=f'Are you sure that you want to edit contact \"{full_name}\"?')
+    print(f'Are you sure that you want to edit contact \"{full_name}\"?')
 
     return answer

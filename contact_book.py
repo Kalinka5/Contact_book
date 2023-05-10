@@ -42,6 +42,16 @@ class ContactBook(OutputContact):
 
         return generator()
 
+    def get_contact_by_phone_number(self, phone_number):
+        # search index of contact to edit him by his index
+        index_txt = None
+        for n, user in enumerate(self.contacts):
+            if phone_number == user.phone_number:
+                index_txt = n
+
+        contact = self.contacts[index_txt]
+        return contact
+
     def add_contact(self, contact):
         self.contacts.append(contact)
 

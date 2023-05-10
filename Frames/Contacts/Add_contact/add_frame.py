@@ -3,7 +3,6 @@ from tkinter import ttk
 
 from contact_book import Contact
 from Exceptions.validity_checks import check_on_invalid_number
-from Exceptions.invalid_contact import InvalidNumberException
 from Exceptions.validity_checks import validity_checks
 from Frames.Contacts.convert_number import convert_phone_number
 from Frames.Contacts.Add_contact.add_to_ContactsFrame import add_to_contacts_frame
@@ -111,6 +110,8 @@ class AddFrame(ttk.Frame):
             first_name = "Mr/Mrs"
         last_name = self.text4.get().title()
         number = self.text5.get()
+        # need as parameter in add_to_contacts() and add_to_departments_frame()
+        department = self.departments.get()
 
         digits = number.replace("-", "").replace("+", "").replace(" ", "").replace("(", "").replace(")", "")
         check_on_invalid_number(digits, number)
@@ -122,31 +123,24 @@ class AddFrame(ttk.Frame):
 
         validity_checks(digits, number, self.contact_book, new_contact)
 
-        # Check phone number is it has only digits
-        if not digits.isdigit():
-            raise InvalidNumberException(number)
-        else:
-            # need as parameter in add_to_contacts() and add_to_departments_frame()
-            department = self.departments.get()
+        # Add contact to class ContactBook
+        add_to_contacts(self.contact_book, department, first_name, last_name, normal_number)
 
-            # Add contact to class ContactBook
-            add_to_contacts(self.contact_book, department, first_name, last_name, normal_number)
+        # Add new contact to ContactsFrame
+        add_to_contacts_frame(self.contacts_txt, first_name, last_name, normal_number)
 
-            # Add new contact to ContactsFrame
-            add_to_contacts_frame(self.contacts_txt, first_name, last_name, normal_number)
+        # Add contact to DepartmentsFrame
+        add_to_departments_frame(self.tree, self.contact_book, department)
 
-            # Add contact to DepartmentsFrame
-            add_to_departments_frame(self.tree, self.contact_book, department)
+        # Clear all fields with data
+        self.text3.set("")
+        self.text4.set("")
+        self.text5.set("")
 
-            # Clear all fields with data
-            self.text3.set("")
-            self.text4.set("")
-            self.text5.set("")
+        # notify user that the contact has been added successfully
+        successfully_messagebox(first_name, last_name)
 
-            # notify user that the contact has been added successfully
-            successfully_messagebox(first_name, last_name)
-
-            # Open ContactsFrame again
-            self.contacts_txt.tkraise()
-            self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
-            self.contacts_lf.grid(row=1, column=0, sticky='ns')
+        # Open ContactsFrame again
+        self.contacts_txt.tkraise()
+        self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
+        self.contacts_lf.grid(row=1, column=0, sticky='ns')
