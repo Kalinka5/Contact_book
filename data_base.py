@@ -79,7 +79,7 @@ class DataBase:
             print("Update one row in a Database successfully...")
 
     def add_to_favorites(self, phone_number):
-        # update one row in a table
+        # Update favorites to True
         with self.connection.cursor() as cursor:
             cursor.execute(
                 f"""
@@ -89,7 +89,20 @@ class DataBase:
                 """
             )
 
-            print("Update contact's favorites in a Database successfully...")
+            print("Update contact's favorites to True in a Database successfully...")
+
+    def delete_from_favorites(self, phone_number):
+        # Update favorites to False
+        with self.connection.cursor() as cursor:
+            cursor.execute(
+                f"""
+                        UPDATE "Contact_data" 
+                        SET favorites = False
+                        WHERE phone_number = '{phone_number}';
+                        """
+            )
+
+            print("Update contact's favorites to False in a Database successfully...")
 
     def close_connection(self):
         self.connection.close()

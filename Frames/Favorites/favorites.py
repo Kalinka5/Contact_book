@@ -10,11 +10,12 @@ from Frames.Favorites.update_contact_in_ContactBook import update_contact_in_con
 class FavoritesFrame(ttk.Frame):
     emoji = "♥  "
 
-    def __init__(self, container, tab_control, contact_book):
+    def __init__(self, container, tab_control, contact_book, data_base):
         super().__init__(container)
 
         self.tab_control = tab_control
         self.contact_book = contact_book
+        self.data_base = data_base
 
         self.__create_widgets()
 
@@ -73,6 +74,9 @@ class FavoritesFrame(ttk.Frame):
 
             # update in the ContactBook
             update_contact_in_contact_book(self.contact_book, phone_number)
+
+            # update favorites in a database
+            self.data_base.delete_from_favorites(phone_number)
 
             # notify user that the contact has been deleted successfully
             successfully_messagebox(first_name, last_name)

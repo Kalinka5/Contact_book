@@ -47,7 +47,8 @@ class ContactBookGUI(tk.Tk):
 
         favorites_frame = FavoritesFrame(self,
                                          self.tab_control,
-                                         self.contact_book)
+                                         self.contact_book,
+                                         self.data_base)
 
         contacts_frame = ContactsFrame(self,
                                        self.tab_control,
