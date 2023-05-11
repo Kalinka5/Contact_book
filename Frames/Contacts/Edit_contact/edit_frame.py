@@ -129,7 +129,7 @@ class EditFrame(ttk.Frame):
             edit_in_favorites_frame(self.favorites, self.old_phone_number, new_contact)
 
             # edit contact in a database
-            self.data_base.update_one_row(new_contact, self.old_phone_number)
+            self.data_base.edit_contact(new_contact, self.old_phone_number)
 
             # notify user that the contact has been edited successfully
             successfully_messagebox(new_contact)

@@ -11,15 +11,15 @@ from contact_book import ContactBook
 
 
 @try_exceptions
-def add_contact_to_favorites(contact_book: ContactBook, contacts_tree: ttk.Treeview,
+def add_contact_to_favorites(contact_book: ContactBook, data_base, contacts_tree: ttk.Treeview,
                              favorites_tree: ttk.Treeview) -> None:
 
     item = contacts_tree.item(contacts_tree.focus())['values']
     first_name = item[1]
     last_name = item[2]
-    number = item[3]
+    phone_number = item[3]
 
-    check_on_existing_in_favorites(favorites_tree, first_name, last_name, number)
+    check_on_existing_in_favorites(favorites_tree, first_name, last_name, phone_number)
 
     # print confirmation messagebox "Are you sure that you want to add contact to Favorites?"
     answer = confirmation_favorites(first_name, last_name)
@@ -29,10 +29,13 @@ def add_contact_to_favorites(contact_book: ContactBook, contacts_tree: ttk.Treev
         update_contacts_tree(contacts_tree)
 
         # Add contact to FavoritesFrame
-        add_to_favorites_frame(favorites_tree, first_name, last_name, number)
+        add_to_favorites_frame(favorites_tree, first_name, last_name, phone_number)
 
         # Update contact's favorites to True value
-        update_contact_favorites(contact_book, number)
+        update_contact_favorites(contact_book, phone_number)
+
+        # Update in a database
+        data_base.add_to_favorites(phone_number)
 
         # notify user that the contact has been deleted from Favorites successfully
         successfully_favorites(first_name, last_name)

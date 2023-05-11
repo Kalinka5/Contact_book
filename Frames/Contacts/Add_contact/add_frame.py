@@ -137,7 +137,7 @@ class AddFrame(ttk.Frame):
             add_to_departments_frame(self.tree, self.contact_book, department)
 
             # Add contact to database
-            self.data_base.insert_data(new_contact)
+            self.data_base.add_contact(new_contact)
 
             # Clear all fields with data
             self.text3.set("")

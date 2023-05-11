@@ -100,4 +100,4 @@ class ContactsFrame(ttk.Frame):
                   self.departments_tree, self.favorites_tree, self.b2, self.b3, self.b4)
 
     def add_to_favorites(self):
-        add_contact_to_favorites(self.contact_book, self.contacts_tree, self.favorites_tree)
+        add_contact_to_favorites(self.contact_book, self.data_base, self.contacts_tree, self.favorites_tree)

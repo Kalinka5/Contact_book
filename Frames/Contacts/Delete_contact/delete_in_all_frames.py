@@ -33,7 +33,7 @@ def delete_contact_in_all_frames(contact_book, contacts_tree, data_base, departm
         delete_in_contact_book(contact_book, contact_index)
 
         # Delete contact from database
-        data_base.delete_one_row(phone_number)
+        data_base.delete_contact(phone_number)
 
         # notify user that the contact has been deleted successfully
         successfully_messagebox(first_name, last_name)

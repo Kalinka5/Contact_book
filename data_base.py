@@ -35,7 +35,7 @@ class DataBase:
 
         return all_data
 
-    def insert_data(self, new_contact: Contact):
+    def add_contact(self, new_contact: Contact):
         # insert data into a table
         with self.connection.cursor() as cursor:
             cursor.execute(
@@ -53,7 +53,7 @@ class DataBase:
 
             print("Data was successfully inserted...")
 
-    def delete_one_row(self, phone_number):
+    def delete_contact(self, phone_number):
         # delete one row from a table
         with self.connection.cursor() as cursor:
             cursor.execute(
@@ -65,7 +65,7 @@ class DataBase:
 
             print("Deleted one row from Database successfully...")
 
-    def update_one_row(self, new_contact: Contact, old_number):
+    def edit_contact(self, new_contact: Contact, old_number):
         # update one row in a table
         with self.connection.cursor() as cursor:
             cursor.execute(
@@ -79,6 +79,19 @@ class DataBase:
             )
 
             print("Update one row in a Database successfully...")
+
+    def add_to_favorites(self, phone_number):
+        # update one row in a table
+        with self.connection.cursor() as cursor:
+            cursor.execute(
+                f"""
+                UPDATE "Contact_data" 
+                SET favorites = True
+                WHERE phone_number = '{phone_number}';
+                """
+            )
+
+            print("Update contact's favorites in a Database successfully...")
 
     def close_connection(self):
         self.connection.close()
