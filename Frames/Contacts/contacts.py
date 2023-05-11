@@ -96,7 +96,7 @@ class ContactsFrame(ttk.Frame):
         self.b4.state(['disabled'])
 
     def edit_contact(self):
-        EditFrame(self, self.contacts_tree, self.lf, self.scrollbar, self.contact_book,
+        EditFrame(self, self.contacts_tree, self.lf, self.scrollbar, self.contact_book, self.data_base,
                   self.departments_tree, self.favorites_tree, self.b2, self.b3, self.b4)
 
     def add_to_favorites(self):

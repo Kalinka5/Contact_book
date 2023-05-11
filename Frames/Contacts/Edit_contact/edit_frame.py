@@ -15,13 +15,14 @@ from Decorators.try_exceptions import try_exceptions
 
 class EditFrame(ttk.Frame):
     def __init__(self, container, contacts_txt, contacts_lf, contacts_scrollbar,
-                 contact_book, tree, favorites, contacts_b2, contacts_b3, contacts_b4):
+                 contact_book, data_base, tree, favorites, contacts_b2, contacts_b3, contacts_b4):
         super().__init__(container)
 
         self.contacts_txt = contacts_txt
         self.contacts_lf = contacts_lf
         self.contacts_scrollbar = contacts_scrollbar
         self.contact_book = contact_book
+        self.data_base = data_base
         self.tree = tree
         self.favorites = favorites
         self.contacts_b2 = contacts_b2
@@ -103,7 +104,11 @@ class EditFrame(ttk.Frame):
         normal_number = convert_phone_number(digits)
 
         old_contact = self.contact_book.get_contact_by_phone_number(self.old_phone_number)
-        new_contact = Contact(new_first_name, new_last_name, normal_number)
+        new_contact = Contact(new_first_name,
+                              new_last_name,
+                              normal_number,
+                              old_contact.department,
+                              old_contact.favorites)
 
         validity_checks(digits, new_phone_number, self.contact_book, new_contact, old_contact)
 
@@ -122,6 +127,9 @@ class EditFrame(ttk.Frame):
 
             # edit contact in the class FavoritesFrame
             edit_in_favorites_frame(self.favorites, self.old_phone_number, new_contact)
+
+            # edit contact in a database
+            self.data_base.update_one_row(new_contact, self.old_phone_number)
 
             # notify user that the contact has been edited successfully
             successfully_messagebox(new_contact)
