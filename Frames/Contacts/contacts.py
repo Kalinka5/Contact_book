@@ -87,7 +87,8 @@ class ContactsFrame(ttk.Frame):
                  self.contact_book, self.data_base, self.departments_tree, self.favorites_tree)
 
     def delete_contact(self):
-        delete_contact_in_all_frames(self.contact_book, self.contacts_tree, self.departments_tree, self.favorites_tree)
+        delete_contact_in_all_frames(self.contact_book, self.contacts_tree, self.data_base,
+                                     self.departments_tree, self.favorites_tree)
 
         # make buttons "Add contact", "Delete contact", "Rename contact" disabled
         self.b2.state(['disabled'])
