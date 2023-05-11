@@ -1,6 +1,7 @@
 from tkinter import ttk
 
-from contact_book import ContactBook, Contact
+from contact import Contact
+from contact_book import ContactBook
 from Exceptions.invalid_contact import InvalidNameException, InvalidNumberException, InvalidLengthNumberException
 from Exceptions.exist_contact import NumberExistException, NameExistException, ContactExistInFavoritesException
 from Exceptions.no_changes import ContactHasNoChanged
