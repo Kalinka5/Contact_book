@@ -8,11 +8,12 @@ from Frames.Contacts.Add_to_favorites.add_contact_to_favorites import add_contac
 
 
 class ContactsFrame(ttk.Frame):
-    def __init__(self, container, tab_control, contact_book, tree, favorites):
+    def __init__(self, container, tab_control, contact_book, data_base, tree, favorites):
         super().__init__(container)
 
         self.tab_control = tab_control
         self.contact_book = contact_book
+        self.data_base = data_base
         self.departments_tree = tree
         self.favorites_tree = favorites
 
@@ -83,7 +84,7 @@ class ContactsFrame(ttk.Frame):
 
     def add_contact(self):
         AddFrame(self, self.contacts_tree, self.lf, self.scrollbar,
-                 self.contact_book, self.departments_tree, self.favorites_tree)
+                 self.contact_book, self.data_base, self.departments_tree, self.favorites_tree)
 
     def delete_contact(self):
         delete_contact_in_all_frames(self.contact_book, self.contacts_tree, self.departments_tree, self.favorites_tree)

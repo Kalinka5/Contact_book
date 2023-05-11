@@ -16,7 +16,7 @@ if __name__ == '__main__':
                                              contact[3],
                                              contact[4]))
 
-    contact_book_gui = ContactBookGUI(contact_book)
+    contact_book_gui = ContactBookGUI(contact_book, data_base)
     contact_book_gui.mainloop()
 
     data_base.close_connection()

@@ -7,7 +7,7 @@ from contact import Contact
 def successfully_messagebox(new_contact: Contact) -> None:
     """Notify user that the adding of a new contact has been successfully"""
 
-    if new_contact.last_name == "":
+    if new_contact.last_name:
         full_name = f"{new_contact.first_name} {new_contact.last_name}"
     else:
         full_name = new_contact.first_name

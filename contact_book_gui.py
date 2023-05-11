@@ -9,7 +9,7 @@ from contact import Contact
 
 
 class ContactBookGUI(tk.Tk):
-    def __init__(self, contact_book):
+    def __init__(self, contact_book, data_base):
         print("Open Contact book.")
         super().__init__()
 
@@ -33,6 +33,7 @@ class ContactBookGUI(tk.Tk):
 
         self.data = []
         self.contact_book = contact_book
+        self.data_base = data_base
         self.tab_control = ttk.Notebook(self)
         self.tab_control.pack(expand=1, fill='both')
 
@@ -51,6 +52,7 @@ class ContactBookGUI(tk.Tk):
         contacts_frame = ContactsFrame(self,
                                        self.tab_control,
                                        self.contact_book,
+                                       self.data_base,
                                        departments_frame.tree,
                                        favorites_frame.favorites_tree)
 

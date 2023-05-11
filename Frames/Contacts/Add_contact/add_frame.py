@@ -15,13 +15,14 @@ from Decorators.try_exceptions import try_exceptions
 class AddFrame(ttk.Frame):
 
     def __init__(self, container, contacts_txt, contacts_lf, contacts_scrollbar,
-                 contact_book, tree, favorites):
+                 contact_book, data_base, tree, favorites):
         super().__init__(container)
 
         self.contacts_txt = contacts_txt
         self.contacts_lf = contacts_lf
         self.contacts_scrollbar = contacts_scrollbar
         self.contact_book = contact_book
+        self.data_base = data_base
         self.tree = tree
         self.favorites = favorites
 
@@ -119,7 +120,7 @@ class AddFrame(ttk.Frame):
         # convert number in different formats
         normal_number = convert_phone_number(digits)
 
-        new_contact = Contact(first_name, last_name, normal_number, department)
+        new_contact = Contact(first_name, last_name, normal_number, department, favorites=False)
 
         validity_checks(digits, number, self.contact_book, new_contact)
 
@@ -134,6 +135,9 @@ class AddFrame(ttk.Frame):
 
             # Add contact to DepartmentsFrame
             add_to_departments_frame(self.tree, self.contact_book, department)
+
+            # Add contact to database
+            self.data_base.insert_data(new_contact)
 
             # Clear all fields with data
             self.text3.set("")
