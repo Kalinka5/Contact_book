@@ -72,9 +72,7 @@ class DataBase:
                 f"""UPDATE "Contact_data" 
                 SET first_name = '{new_contact.first_name}',
                     last_name = '{new_contact.last_name}',
-                    phone_number = '{new_contact.phone_number}',
-                    department = '{new_contact.department}', 
-                    favorites = {new_contact.favorites}
+                    phone_number = '{new_contact.phone_number}'
                 WHERE phone_number = '{old_number}';"""
             )
 

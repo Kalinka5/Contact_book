@@ -104,11 +104,7 @@ class EditFrame(ttk.Frame):
         normal_number = convert_phone_number(digits)
 
         old_contact = self.contact_book.get_contact_by_phone_number(self.old_phone_number)
-        new_contact = Contact(new_first_name,
-                              new_last_name,
-                              normal_number,
-                              old_contact.department,
-                              old_contact.favorites)
+        new_contact = Contact(new_first_name, new_last_name, normal_number)
 
         validity_checks(digits, new_phone_number, self.contact_book, new_contact, old_contact)
 

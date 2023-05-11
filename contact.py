@@ -6,7 +6,7 @@ class Contact:
     first_name: str
     last_name: str
     phone_number: str
-    department: str
+    department: str = ""
     favorites: bool = False
     iid: int = 0
 
