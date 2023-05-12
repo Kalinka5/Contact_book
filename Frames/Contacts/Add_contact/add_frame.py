@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 
+from Contact_book.contact_book import ContactBook
 from Contact_book.contact import Contact
+from data_base import DataBase
 from Exceptions.validity_checks import check_on_invalid_number
 from Exceptions.validity_checks import validity_checks
 from Frames.Contacts.convert_number import convert_phone_number
@@ -14,16 +16,17 @@ from Decorators.try_exceptions import try_exceptions
 
 class AddFrame(ttk.Frame):
 
-    def __init__(self, container, contacts_txt, contacts_lf, contacts_scrollbar,
-                 contact_book, data_base, tree, favorites):
+    def __init__(self, container: ttk.Frame, contacts_lf: ttk.LabelFrame, contacts_scrollbar: ttk.Scrollbar,
+                 contact_book: ContactBook, data_base: DataBase, contacts_tree: ttk.Treeview,
+                 departments_tree: ttk.Treeview, favorites: ttk.Treeview):
         super().__init__(container)
 
-        self.contacts_txt = contacts_txt
+        self.contacts_txt = contacts_tree
         self.contacts_lf = contacts_lf
         self.contacts_scrollbar = contacts_scrollbar
         self.contact_book = contact_book
         self.data_base = data_base
-        self.tree = tree
+        self.tree = departments_tree
         self.favorites = favorites
 
         self.__create_widgets()

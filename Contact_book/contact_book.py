@@ -1,4 +1,5 @@
 from Contact_book.output_contacts import OutputContact
+from Contact_book.contact import Contact
 
 
 class ContactBook(OutputContact):
@@ -19,8 +20,9 @@ class ContactBook(OutputContact):
 
         return generator()
 
-    def get_contact_by_phone_number(self, phone_number):
-        # search index of contact to edit him by his index
+    def get_contact_by_phone_number(self, phone_number: str) -> Contact:
+        """Search index of contact and return him at the end"""
+
         index_txt = None
         for n, user in enumerate(self.contacts):
             if phone_number == user.phone_number:
@@ -29,13 +31,13 @@ class ContactBook(OutputContact):
         contact = self.contacts[index_txt]
         return contact
 
-    def add_contact(self, contact):
+    def add_contact(self, contact: Contact):
         self.contacts.append(contact)
 
-    def delete_contact(self, contact):
+    def delete_contact(self, contact: Contact):
         self.contacts.remove(contact)
 
-    def edit_contact(self, contact, new_first_name, new_last_name, new_phone_number):
+    def edit_contact(self, contact: Contact, new_first_name: str, new_last_name: str, new_phone_number: str):
         contact.first_name = new_first_name
         contact.last_name = new_last_name
         contact.phone_number = new_phone_number

@@ -53,7 +53,7 @@ class DataBase:
 
             print("Data was successfully inserted...")
 
-    def delete_contact(self, phone_number):
+    def delete_contact(self, phone_number: str):
         # delete one row from a table
         with self.connection.cursor() as cursor:
             cursor.execute(
@@ -65,7 +65,7 @@ class DataBase:
 
             print("Deleted one row from Database successfully...")
 
-    def edit_contact(self, new_contact: Contact, old_number):
+    def edit_contact(self, new_contact: Contact, old_phone_number: str):
         # update one row in a table
         with self.connection.cursor() as cursor:
             cursor.execute(
@@ -73,12 +73,12 @@ class DataBase:
                 SET first_name = '{new_contact.first_name}',
                     last_name = '{new_contact.last_name}',
                     phone_number = '{new_contact.phone_number}'
-                WHERE phone_number = '{old_number}';"""
+                WHERE phone_number = '{old_phone_number}';"""
             )
 
             print("Update one row in a Database successfully...")
 
-    def add_to_favorites(self, phone_number):
+    def add_to_favorites(self, phone_number: str):
         # Update favorites to True
         with self.connection.cursor() as cursor:
             cursor.execute(
@@ -91,7 +91,7 @@ class DataBase:
 
             print("Update contact's favorites to True in a Database successfully...")
 
-    def delete_from_favorites(self, phone_number):
+    def delete_from_favorites(self, phone_number: str):
         # Update favorites to False
         with self.connection.cursor() as cursor:
             cursor.execute(

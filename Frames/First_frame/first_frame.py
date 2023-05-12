@@ -3,7 +3,7 @@ import tkinter as tk
 
 
 class ImageFrame(ttk.Frame):
-    def __init__(self, container, tab_control):
+    def __init__(self, container: tk.Tk, tab_control: ttk.Notebook):
         super().__init__(container)
         self.tab_control = tab_control
         self.__create_widgets()

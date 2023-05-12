@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 
+from Contact_book.contact_book import ContactBook
+from data_base import DataBase
 from Frames.Favorites.confirmation_messagebox import confirmation_messagebox
 from Frames.Favorites.successfully_messagebox import successfully_messagebox
 from Frames.Favorites.delete_in_FavoritesFrame import delete_in_favorites_frame
@@ -10,7 +12,7 @@ from Frames.Favorites.update_contact_in_ContactBook import update_contact_in_con
 class FavoritesFrame(ttk.Frame):
     emoji = "♥  "
 
-    def __init__(self, container, tab_control, contact_book, data_base):
+    def __init__(self, container: tk.Tk, tab_control: ttk.Notebook, contact_book: ContactBook, data_base: DataBase):
         super().__init__(container)
 
         self.tab_control = tab_control

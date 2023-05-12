@@ -5,10 +5,13 @@ from Frames.Contacts.Add_contact.add_frame import AddFrame
 from Frames.Contacts.Edit_contact.edit_frame import EditFrame
 from Frames.Contacts.Delete_contact.delete_in_all_frames import delete_contact_in_all_frames
 from Frames.Contacts.Add_to_favorites.add_contact_to_favorites import add_contact_to_favorites
+from Contact_book.contact_book import ContactBook
+from data_base import DataBase
 
 
 class ContactsFrame(ttk.Frame):
-    def __init__(self, container, tab_control, contact_book, data_base, tree, favorites):
+    def __init__(self, container: tk.Tk, tab_control: ttk.Notebook, contact_book: ContactBook,
+                 data_base: DataBase, tree: ttk.Treeview, favorites: ttk.Treeview):
         super().__init__(container)
 
         self.tab_control = tab_control
@@ -83,11 +86,11 @@ class ContactsFrame(ttk.Frame):
         self.b4.state(['!disabled'])
 
     def add_contact(self):
-        AddFrame(self, self.contacts_tree, self.lf, self.scrollbar,
-                 self.contact_book, self.data_base, self.departments_tree, self.favorites_tree)
+        AddFrame(self, self.lf, self.scrollbar, self.contact_book, self.data_base,
+                 self.contacts_tree, self.departments_tree, self.favorites_tree)
 
     def delete_contact(self):
-        delete_contact_in_all_frames(self.contact_book, self.contacts_tree, self.data_base,
+        delete_contact_in_all_frames(self.contact_book, self.data_base, self.contacts_tree,
                                      self.departments_tree, self.favorites_tree)
 
         # make buttons "Add contact", "Delete contact", "Rename contact" disabled
@@ -96,7 +99,7 @@ class ContactsFrame(ttk.Frame):
         self.b4.state(['disabled'])
 
     def edit_contact(self):
-        EditFrame(self, self.contacts_tree, self.lf, self.scrollbar, self.contact_book, self.data_base,
+        EditFrame(self, self.lf, self.scrollbar, self.contact_book, self.data_base, self.contacts_tree,
                   self.departments_tree, self.favorites_tree, self.b2, self.b3, self.b4)
 
     def add_to_favorites(self):

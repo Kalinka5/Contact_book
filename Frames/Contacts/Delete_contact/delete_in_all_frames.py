@@ -1,3 +1,7 @@
+from tkinter import ttk
+
+from Contact_book.contact_book import ContactBook
+from data_base import DataBase
 from Frames.Contacts.Delete_contact.confirmation_messagebox import confirmation_messagebox
 from Frames.Contacts.Delete_contact.delete_in_ContactBook import delete_in_contact_book
 from Frames.Contacts.Delete_contact.delete_in_ContactsFrame import delete_in_contacts_frame
@@ -7,7 +11,9 @@ from Frames.Contacts.Delete_contact.search_index_departments import contact_valu
 from Frames.Contacts.Delete_contact.successfully_messagebox import successfully_messagebox
 
 
-def delete_contact_in_all_frames(contact_book, contacts_tree, data_base, departments_tree, favorites_tree):
+def delete_contact_in_all_frames(contact_book: ContactBook, data_base: DataBase,  contacts_tree: ttk.Treeview,
+                                 departments_tree: ttk.Treeview, favorites_tree: ttk.Treeview):
+
     human = contacts_tree.item(contacts_tree.focus())['values']
 
     first_name = human[1]
