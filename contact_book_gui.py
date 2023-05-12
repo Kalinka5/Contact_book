@@ -45,19 +45,19 @@ class ContactBookGUI(tk.Tk):
 
         ImageFrame(self, self.tab_control)
 
-        departments_frame = DepartmentsFrame(self, self.tab_control)
+        self.departments_frame = DepartmentsFrame(self, self.tab_control)
 
-        favorites_frame = FavoritesFrame(self,
-                                         self.tab_control,
-                                         self.contact_book,
-                                         self.data_base)
+        self.favorites_frame = FavoritesFrame(self,
+                                              self.tab_control,
+                                              self.contact_book,
+                                              self.data_base)
 
-        contacts_frame = ContactsFrame(self,
-                                       self.tab_control,
-                                       self.contact_book,
-                                       self.data_base,
-                                       departments_frame.tree,
-                                       favorites_frame.favorites_tree)
+        self.contacts_frame = ContactsFrame(self,
+                                            self.tab_control,
+                                            self.contact_book,
+                                            self.data_base,
+                                            self.departments_frame.tree,
+                                            self.favorites_frame.favorites_tree)
 
         # Read data from csv file
         favorites = []
@@ -66,14 +66,14 @@ class ContactBookGUI(tk.Tk):
         amount_all_contacts = len(self.contact_book)
 
         for contact in self.contact_book:
-            departments_frame.tree.insert('',
-                                          tk.END,
-                                          text=f'{contact.first_name} {contact.last_name}',
-                                          iid=str(Contact.iid),
-                                          open=False)
-            departments_frame.tree.move(str(Contact.iid),
-                                        departments_frame.dict_departments[contact.department],
-                                        amount_all_contacts)
+            self.departments_frame.tree.insert('',
+                                               tk.END,
+                                               text=f'{contact.first_name} {contact.last_name}',
+                                               iid=str(Contact.iid),
+                                               open=False)
+            self.departments_frame.tree.move(str(Contact.iid),
+                                             self.departments_frame.dict_departments[contact.department],
+                                             amount_all_contacts)
             Contact.iid += 1
 
             if contact.favorites:
@@ -84,8 +84,8 @@ class ContactBookGUI(tk.Tk):
 
         # add data to the Favorites Treeview
         for contact in favorites:
-            favorites_frame.favorites_tree.insert('', tk.END, values=contact)
+            self.favorites_frame.favorites_tree.insert('', tk.END, values=contact)
 
         # add data to the Contacts Treeview
         for contact in contacts:
-            contacts_frame.contacts_tree.insert('', tk.END, values=contact)
+            self.contacts_frame.contacts_tree.insert('', tk.END, values=contact)

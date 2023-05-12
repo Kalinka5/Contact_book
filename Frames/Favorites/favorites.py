@@ -3,6 +3,7 @@ from tkinter import ttk
 
 from Contact_book.contact_book import ContactBook
 from data_base import DataBase
+from Frames.Favorites.delete_in_ContactsFrame import delete_in_contacts_frame
 from Frames.Favorites.confirmation_messagebox import confirmation_messagebox
 from Frames.Favorites.successfully_messagebox import successfully_messagebox
 from Frames.Favorites.delete_in_FavoritesFrame import delete_in_favorites_frame
@@ -12,9 +13,10 @@ from Frames.Favorites.update_contact_in_ContactBook import update_contact_in_con
 class FavoritesFrame(ttk.Frame):
     emoji = "♥  "
 
-    def __init__(self, container: tk.Tk, tab_control: ttk.Notebook, contact_book: ContactBook, data_base: DataBase):
+    def __init__(self, container, tab_control: ttk.Notebook, contact_book: ContactBook, data_base: DataBase):
         super().__init__(container)
 
+        self.parent = container
         self.tab_control = tab_control
         self.contact_book = contact_book
         self.data_base = data_base
@@ -76,6 +78,9 @@ class FavoritesFrame(ttk.Frame):
 
             # update in the ContactBook
             update_contact_in_contact_book(self.contact_book, phone_number)
+
+            # update in ContactsFrame
+            delete_in_contacts_frame(self.parent.contacts_frame.contacts_tree, phone_number)
 
             # update favorites in a database
             self.data_base.delete_from_favorites(phone_number)

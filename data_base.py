@@ -97,10 +97,10 @@ class DataBase:
         with self.connection.cursor() as cursor:
             cursor.execute(
                 f"""
-                        UPDATE "Contact_data" 
-                        SET favorites = False
-                        WHERE phone_number = '{phone_number}';
-                        """
+                UPDATE "Contact_data" 
+                SET favorites = False
+                WHERE phone_number = '{phone_number}';
+                """
             )
 
             print("Update contact's favorites to False in a Database successfully...")
