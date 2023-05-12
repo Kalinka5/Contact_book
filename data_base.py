@@ -1,12 +1,13 @@
 import psycopg2
 
+from credentials import data_base_values
 from Contact_book.contact import Contact
 
-DB_NAME = "Contact_Book"
-DB_USER = "postgres"
-DB_PASS = "K@1ina44D"
-DB_HOST = "localhost"
-DB_PORT = "5432"  # we can don't use this, because it is standard port
+DB_NAME = data_base_values["DB_NAME"]
+DB_USER = data_base_values["DB_USER"]
+DB_PASS = data_base_values["DB_PASS"]
+DB_HOST = data_base_values["DB_HOST"]
+DB_PORT = data_base_values["DB_PORT"]  # we can don't use this, because it is standard port
 
 
 class DataBase:
