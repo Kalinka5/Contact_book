@@ -1,4 +1,4 @@
-from output_contacts import OutputContact
+from Contact_book.output_contacts import OutputContact
 
 
 class ContactBook(OutputContact):

@@ -1,6 +1,6 @@
 from tkinter import messagebox
 
-from contact import Contact
+from Contact_book.contact import Contact
 
 
 def successfully_messagebox(new_contact: Contact) -> None:

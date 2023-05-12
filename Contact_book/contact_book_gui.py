@@ -5,7 +5,7 @@ from Frames.First_frame.first_frame import ImageFrame
 from Frames.Contacts.contacts import ContactsFrame
 from Frames.Departments.departments import DepartmentsFrame
 from Frames.Favorites.favorites import FavoritesFrame
-from contact import Contact
+from Contact_book.contact import Contact
 
 
 class ContactBookGUI(tk.Tk):

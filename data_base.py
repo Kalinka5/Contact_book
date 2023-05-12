@@ -1,6 +1,6 @@
 import psycopg2
 
-from contact import Contact
+from Contact_book.contact import Contact
 
 DB_NAME = "Contact_Book"
 DB_USER = "postgres"

@@ -1,4 +1,4 @@
-from contact_book import ContactBook
+from Contact_book.contact_book import ContactBook
 
 
 def contact_values(contact_book: ContactBook, first_name: str, last_name: str, number: str) -> tuple[int, str]:

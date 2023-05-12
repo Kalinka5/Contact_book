@@ -1,4 +1,4 @@
-from contact_book import ContactBook
+from Contact_book.contact_book import ContactBook
 
 
 def delete_in_contact_book(contact_book: ContactBook, contact_index: int) -> None:

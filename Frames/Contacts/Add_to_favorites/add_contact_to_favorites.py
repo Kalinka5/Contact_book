@@ -7,7 +7,7 @@ from Frames.Contacts.Add_to_favorites.update_contact import update_contact_favor
 from Frames.Contacts.Add_to_favorites.successfully_messagebox import successfully_favorites
 from Frames.Contacts.Add_to_favorites.add_to_ContactsFrame import update_contacts_tree
 from Exceptions.validity_checks import check_on_existing_in_favorites
-from contact_book import ContactBook
+from Contact_book.contact_book import ContactBook
 
 
 @try_exceptions

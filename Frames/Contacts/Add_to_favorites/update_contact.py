@@ -1,4 +1,4 @@
-from contact_book import ContactBook
+from Contact_book.contact_book import ContactBook
 
 
 def update_contact_favorites(contact_book: ContactBook, number: str) -> None:

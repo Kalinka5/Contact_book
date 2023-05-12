@@ -1,6 +1,6 @@
 from tkinter import ttk
 
-from contact_book import ContactBook
+from Contact_book.contact_book import ContactBook
 from Frames.Contacts.Add_contact.add_to_DepartmentsFrame import add_to_departments_frame
 
 

@@ -1,4 +1,4 @@
-from contact_book import ContactBook
+from Contact_book.contact_book import ContactBook
 
 
 def update_contact_in_contact_book(contact_book: ContactBook, phone_number: str):
