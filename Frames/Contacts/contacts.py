@@ -121,6 +121,7 @@ class ContactsFrame(ttk.Frame):
 
                 self.contacts_tree.insert('', tk.END, values=insert_contact)
                 contact_exist = True
+        self.t1.unbind("<KeyRelease>")
 
         if contact_exist is False:
             print(f"No results for \"{letters}\"!\nCheck the spelling or try changing the query.")
@@ -139,6 +140,7 @@ class ContactsFrame(ttk.Frame):
             self.text1.set("")
             self.t1.focus()
             self.btn.state(['disabled'])
+            self.t1.bind("<KeyRelease>", lambda event: self.check_entry_content())
 
     def cancel(self):
         self.contacts_tree.delete(*self.contacts_tree.get_children())
@@ -153,6 +155,7 @@ class ContactsFrame(ttk.Frame):
 
         self.text1.set("")
         self.btn.state(['disabled'])
+        self.t1.bind("<KeyRelease>", lambda event: self.check_entry_content())
 
     def get_buttons_enable(self, contact):
         # remove the disabled flag
