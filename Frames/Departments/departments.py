@@ -20,18 +20,18 @@ class DepartmentsFrame(ttk.Frame):
         self.columnconfigure(0, weight=1)
 
         # create a treeview
-        self.tree = ttk.Treeview(self)
-        self.tree.heading('#0', text='Departments', anchor=tk.W)
+        self.departments_tree = ttk.Treeview(self)
+        self.departments_tree.heading('#0', text='Departments', anchor=tk.W)
         headers = ('Work', 'Classmates', 'Friends', 'Relatives', 'Stars')
 
         for head in headers:
-            self.tree.insert('', tk.END, text=head, iid=str(Contact.iid), open=False)
+            self.departments_tree.insert('', tk.END, text=head, iid=str(Contact.iid), open=False)
             Contact.iid += 1
 
         # place the Treeview widget on the root window
-        self.tree.grid(row=0, column=0, sticky=tk.NSEW)
+        self.departments_tree.grid(row=0, column=0, sticky=tk.NSEW)
 
         # add a scrollbar
-        scrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL, command=self.tree.yview)
-        self.tree.configure(yscroll=scrollbar.set)
+        scrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL, command=self.departments_tree.yview)
+        self.departments_tree.configure(yscroll=scrollbar.set)
         scrollbar.grid(row=0, column=1, sticky='ns')

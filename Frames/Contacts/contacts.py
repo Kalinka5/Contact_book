@@ -100,7 +100,7 @@ class ContactsFrame(ttk.Frame):
 
     def edit_contact(self):
         EditFrame(self, self.lf, self.scrollbar, self.contact_book, self.data_base, self.contacts_tree,
-                  self.departments_tree, self.favorites_tree, self.b2, self.b3, self.b4)
+                  self.departments_tree, self.favorites_tree)
 
     def add_to_favorites(self):
         add_contact_to_favorites(self.contact_book, self.data_base, self.contacts_tree, self.favorites_tree)

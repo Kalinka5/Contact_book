@@ -16,12 +16,12 @@ from Decorators.try_exceptions import try_exceptions
 
 
 class EditFrame(ttk.Frame):
-    def __init__(self, container: ttk.Frame, contacts_lf: ttk.LabelFrame, contacts_scrollbar: ttk.Scrollbar,
+    def __init__(self, parent_container, contacts_lf: ttk.LabelFrame, contacts_scrollbar: ttk.Scrollbar,
                  contact_book: ContactBook, data_base: DataBase, contacts_tree: ttk.Treeview,
-                 departments_tree: ttk.Treeview, favorites: ttk.Treeview, contacts_b2: ttk.Button,
-                 contacts_b3: ttk.Button, contacts_b4: ttk.Button):
-        super().__init__(container)
+                 departments_tree: ttk.Treeview, favorites: ttk.Treeview):
+        super().__init__(parent_container)
 
+        self.parent = parent_container
         self.contacts_txt = contacts_tree
         self.contacts_lf = contacts_lf
         self.contacts_scrollbar = contacts_scrollbar
@@ -29,15 +29,14 @@ class EditFrame(ttk.Frame):
         self.data_base = data_base
         self.tree = departments_tree
         self.favorites = favorites
-        self.contacts_b2 = contacts_b2
-        self.contacts_b3 = contacts_b3
-        self.contacts_b4 = contacts_b4
+        self.contacts_b2 = self.parent.b2
+        self.contacts_b3 = self.parent.b3
+        self.contacts_b4 = self.parent.b4
 
         self.__create_widgets()
 
     def __create_widgets(self):
         item = self.contacts_txt.item(self.contacts_txt.focus())['values']
-        self.heart = item[0]
         self.old_first_name = item[1]
         self.old_last_name = item[2]
         self.old_phone_number = item[3]
@@ -120,7 +119,7 @@ class EditFrame(ttk.Frame):
             self.contact_book.edit_contact(old_contact, new_first_name, new_last_name, normal_number)
 
             # edit contact in the class ContactsFrame
-            edit_in_contacts_frame(self.contacts_txt, new_contact, self.heart)
+            edit_in_contacts_frame(self.contacts_txt, new_contact)
 
             # edit contact in the class DepartmentsFrame
             edit_in_departments_frame(self.contact_book, self.tree, new_first_name)

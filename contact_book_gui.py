@@ -56,24 +56,24 @@ class ContactBookGUI(tk.Tk):
                                             self.tab_control,
                                             self.contact_book,
                                             self.data_base,
-                                            self.departments_frame.tree,
+                                            self.departments_frame.departments_tree,
                                             self.favorites_frame.favorites_tree)
 
-        # Read data from csv file
+        # Read data from ContactBook
         favorites = []
         contacts = []
 
         amount_all_contacts = len(self.contact_book)
 
         for contact in self.contact_book:
-            self.departments_frame.tree.insert('',
-                                               tk.END,
-                                               text=f'{contact.first_name} {contact.last_name}',
-                                               iid=str(Contact.iid),
-                                               open=False)
-            self.departments_frame.tree.move(str(Contact.iid),
-                                             self.departments_frame.dict_departments[contact.department],
-                                             amount_all_contacts)
+            self.departments_frame.departments_tree.insert('',
+                                                           tk.END,
+                                                           text=f'{contact.first_name} {contact.last_name}',
+                                                           iid=str(Contact.iid),
+                                                           open=False)
+            self.departments_frame.departments_tree.move(str(Contact.iid),
+                                                         self.departments_frame.dict_departments[contact.department],
+                                                         amount_all_contacts)
             Contact.iid += 1
 
             if contact.favorites:
