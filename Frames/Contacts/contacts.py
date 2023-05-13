@@ -107,13 +107,13 @@ class ContactsFrame(ttk.Frame):
             self.btn.state(['disabled'])
 
     def search(self):
-        letters = self.text1.get().capitalize()
+        letters = self.text1.get().title()
         contact_exist = False
 
         self.contacts_tree.delete(*self.contacts_tree.get_children())
 
         for contact in self.contact_book:
-            if letters in contact.first_name:
+            if letters in f"{contact.first_name} {contact.last_name}":
                 if contact.favorites:
                     insert_contact = ("♥", contact.first_name, contact.last_name, contact.phone_number)
                 else:
