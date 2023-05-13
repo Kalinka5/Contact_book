@@ -1,14 +1,17 @@
 from tkinter.messagebox import askyesno
 
+from Contact_book.contact import Contact
 
-def confirmation_messagebox(first_name: str, last_name: str) -> askyesno:
+
+def confirmation_messagebox(contact: Contact) -> askyesno:
     """Print confirmation messagebox to delete contact"""
 
-    if last_name == "":
-        answer = askyesno(title='Confirmation',
-                          message=f'Are you sure that you want to delete \"{first_name}\"?')
+    if contact.last_name:
+        full_name = f"{contact.first_name} {contact.last_name}"
     else:
-        answer = askyesno(title='Confirmation',
-                          message=f'Are you sure that you want to delete \"{first_name} {last_name}\"?')
+        full_name = contact.first_name
+
+    answer = askyesno(title='Confirmation',
+                      message=f'Are you sure that you want to delete \"{full_name}\"?')
 
     return answer
