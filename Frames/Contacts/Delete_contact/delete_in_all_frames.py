@@ -9,12 +9,13 @@ from Frames.Contacts.Delete_contact.delete_in_FavoritesFrame import delete_in_fa
 from Frames.Contacts.Delete_contact.successfully_messagebox import successfully_messagebox
 
 
-def delete_contact_in_all_frames(contact_book: ContactBook, data_base: DataBase,  contacts_tree: ttk.Treeview,
-                                 departments_tree: ttk.Treeview, favorites_tree: ttk.Treeview):
+def delete_contact_in_all_frames(favorites_frame, contact_book: ContactBook, data_base: DataBase,
+                                 contacts_tree: ttk.Treeview, departments_tree: ttk.Treeview,
+                                 favorites_tree: ttk.Treeview):
 
     human = contacts_tree.item(contacts_tree.focus())['values']
     phone_number = human[3]
-    
+
     contact = contact_book.get_contact_by_phone_number(phone_number)
 
     # print confirmation messagebox "Are you sure that you want to delete contact?"
@@ -28,7 +29,7 @@ def delete_contact_in_all_frames(contact_book: ContactBook, data_base: DataBase,
         delete_in_departments_frame(departments_tree, contact)
 
         # Delete contact in FavoritesFrame
-        delete_in_favorites_frame(favorites_tree, contact.phone_number)
+        delete_in_favorites_frame(favorites_frame, favorites_tree, contact.phone_number)
 
         # Delete contact in the class Contact book
         contact_book.delete_contact(contact)

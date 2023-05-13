@@ -10,10 +10,11 @@ from data_base import DataBase
 
 
 class ContactsFrame(ttk.Frame):
-    def __init__(self, container: tk.Tk, tab_control: ttk.Notebook, contact_book: ContactBook,
+    def __init__(self, parent_container, tab_control: ttk.Notebook, contact_book: ContactBook,
                  data_base: DataBase, tree: ttk.Treeview, favorites: ttk.Treeview):
-        super().__init__(container)
+        super().__init__(parent_container)
 
+        self.favorites_frame = parent_container.favorites_frame
         self.tab_control = tab_control
         self.contact_book = contact_book
         self.data_base = data_base
@@ -90,7 +91,7 @@ class ContactsFrame(ttk.Frame):
                  self.contacts_tree, self.departments_tree, self.favorites_tree)
 
     def delete_contact(self):
-        delete_contact_in_all_frames(self.contact_book, self.data_base, self.contacts_tree,
+        delete_contact_in_all_frames(self.favorites_frame, self.contact_book, self.data_base, self.contacts_tree,
                                      self.departments_tree, self.favorites_tree)
 
         # make buttons "Add contact", "Delete contact", "Rename contact" disabled

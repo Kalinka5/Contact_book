@@ -22,13 +22,14 @@ class EditFrame(ttk.Frame):
         super().__init__(parent_container)
 
         self.parent = parent_container
+        self.favorites_frame = self.parent.favorites_frame
         self.contacts_txt = contacts_tree
         self.contacts_lf = contacts_lf
         self.contacts_scrollbar = contacts_scrollbar
         self.contact_book = contact_book
         self.data_base = data_base
-        self.tree = departments_tree
-        self.favorites = favorites
+        self.departments_tree = departments_tree
+        self.favorites_tree = favorites
         self.contacts_b2 = self.parent.b2
         self.contacts_b3 = self.parent.b3
         self.contacts_b4 = self.parent.b4
@@ -122,10 +123,10 @@ class EditFrame(ttk.Frame):
             edit_in_contacts_frame(self.contacts_txt, new_contact)
 
             # edit contact in the class DepartmentsFrame
-            edit_in_departments_frame(self.contact_book, self.tree, new_first_name)
+            edit_in_departments_frame(self.contact_book, self.departments_tree, new_first_name)
 
             # edit contact in the class FavoritesFrame
-            edit_in_favorites_frame(self.favorites, self.old_phone_number, new_contact)
+            edit_in_favorites_frame(self.favorites_frame, self.favorites_tree, self.old_phone_number, new_contact)
 
             # edit contact in a database
             self.data_base.edit_contact(new_contact, self.old_phone_number)

@@ -13,10 +13,10 @@ from Frames.Favorites.update_contact_in_ContactBook import update_contact_in_con
 class FavoritesFrame(ttk.Frame):
     emoji = "♥  "
 
-    def __init__(self, container, tab_control: ttk.Notebook, contact_book: ContactBook, data_base: DataBase):
-        super().__init__(container)
+    def __init__(self, parent_container, tab_control: ttk.Notebook, contact_book: ContactBook, data_base: DataBase):
+        super().__init__(parent_container)
 
-        self.parent = container
+        self.parent = parent_container
         self.tab_control = tab_control
         self.contact_book = contact_book
         self.data_base = data_base
@@ -61,6 +61,17 @@ class FavoritesFrame(ttk.Frame):
     def get_button_enable(self, contact):
         # remove the disabled flag
         self.b1.state(['!disabled'])
+
+    def get_contact_id_by_phone_number(self, phone_number: str):
+        """Find contact's id in treeview of FavoritesFrame"""
+
+        item_id = None
+        for child in self.favorites_tree.get_children():
+            if self.favorites_tree.set(child, "number") == phone_number:
+                item_id = child
+                break
+
+        return item_id
 
     def delete_from_favorites(self):
         human = self.favorites_tree.item(self.favorites_tree.focus())['values']
