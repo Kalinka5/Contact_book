@@ -1,16 +1,18 @@
 from tkinter.messagebox import askyesno
 
+from Contact_book.contact import Contact
 
-def confirmation_favorites(first_name: str, last_name: str) -> askyesno:
+
+def confirmation_favorites(contact: Contact) -> askyesno:
     """Print confirmation messagebox to add contact to Favorites"""
 
-    if last_name == "":
-        answer = askyesno(
-            title='Confirmation',
-            message=f'Are you sure that you want to add \"{first_name}\" to the Favorites?')
+    if contact.last_name:
+        full_name = f"{contact.first_name} {contact.last_name}"
     else:
-        answer = askyesno(
-            title='Confirmation',
-            message=f'Are you sure that you want to add \"{first_name} {last_name}\" to the Favorites?')
+        full_name = contact.first_name
+
+    answer = askyesno(
+        title='Confirmation',
+        message=f'Are you sure that you want to add \"{full_name}\" to the Favorites?')
 
     return answer
