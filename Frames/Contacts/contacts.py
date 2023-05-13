@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 
 from Frames.Contacts.Add_contact.add_frame import AddFrame
 from Frames.Contacts.Edit_contact.edit_frame import EditFrame
@@ -26,6 +27,28 @@ class ContactsFrame(ttk.Frame):
     def __create_widgets(self):
         self.tab_control.add(self, text='Contacts')
 
+        lbl1 = ttk.Label(master=self, text='Search contact:', font=("BOLD", 10))
+        lbl1.grid(row=0, column=0, sticky='e')
+
+        self.text1 = tk.StringVar()
+        self.t1 = ttk.Entry(master=self, textvariable=self.text1)
+        self.t1.bind("<KeyRelease>", lambda event: self.check_entry_content())
+        self.t1.focus()
+        self.t1.grid(row=0, column=1, sticky='e')
+
+        search_icon = tk.PhotoImage(file='Images/search.png')
+        close_button = ttk.Button(
+            master=self,
+            image=search_icon,
+            command=self.search
+        )
+        close_button.image = search_icon
+        close_button.grid(row=0, column=2, sticky='w')
+
+        self.btn = ttk.Button(master=self, text='Cancel', command=self.cancel, cursor='hand2')
+        self.btn.grid(row=0, column=3, sticky='w')
+        self.btn.state(['disabled'])
+
         columns = ('heart', 'first_name', 'last_name', 'number')
         self.contacts_tree = ttk.Treeview(self, columns=columns, show='headings')
         self.contacts_tree.heading('heart', text='♥')
@@ -39,19 +62,16 @@ class ContactsFrame(ttk.Frame):
 
         self.contacts_tree.bind('<<TreeviewSelect>>', self.get_buttons_enable)
 
-        # Create contacts to store data for Contacts Treeview
-        self.contacts = []
-
-        self.contacts_tree.grid(row=0, column=0, sticky='nsew')
+        self.contacts_tree.grid(row=1, column=0, columnspan=4, sticky='nsew')
 
         # add a scrollbar to Contacts Treeview
         self.scrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL, command=self.contacts_tree.yview)
         self.contacts_tree.configure(yscroll=self.scrollbar.set)
-        self.scrollbar.grid(row=0, column=1, sticky='ns')
+        self.scrollbar.grid(row=1, column=4, sticky='ns')
 
         # Create Label Frame with 3 buttons
         self.lf = ttk.LabelFrame(self, text='Interaction')
-        self.lf.grid(row=1, column=0, sticky='ns', pady=10)
+        self.lf.grid(row=2, column=0, columnspan=5, sticky='ns', pady=10)
 
         # Button Add contact
         self.b1 = ttk.Button(master=self.lf, text='Add contact', command=self.add_contact, cursor='hand2')
@@ -79,6 +99,60 @@ class ContactsFrame(ttk.Frame):
         # Location of button Add to favorites
         self.b4.grid(row=1, column=3, sticky='ns')
         self.b4.state(['disabled'])
+
+    def check_entry_content(self):
+        if self.t1.get():
+            self.btn.state(['!disabled'])
+        else:
+            self.btn.state(['disabled'])
+
+    def search(self):
+        letters = self.text1.get().capitalize()
+        contact_exist = False
+
+        self.contacts_tree.delete(*self.contacts_tree.get_children())
+
+        for contact in self.contact_book:
+            if letters in contact.first_name:
+                if contact.favorites:
+                    insert_contact = ("♥", contact.first_name, contact.last_name, contact.phone_number)
+                else:
+                    insert_contact = ("", contact.first_name, contact.last_name, contact.phone_number)
+
+                self.contacts_tree.insert('', tk.END, values=insert_contact)
+                contact_exist = True
+
+        if contact_exist is False:
+            print(f"No results for \"{letters}\"!\nCheck the spelling or try changing the query.")
+            messagebox.showerror(title='No results error',
+                                 message=f"No results for \"{letters}\"!\n"
+                                         f"Check the spelling or try changing the query.")
+
+            for contact in self.contact_book:
+                if contact.favorites:
+                    insert_contact = ("♥", contact.first_name, contact.last_name, contact.phone_number)
+                else:
+                    insert_contact = ("", contact.first_name, contact.last_name, contact.phone_number)
+
+                self.contacts_tree.insert('', tk.END, values=insert_contact)
+
+            self.text1.set("")
+            self.t1.focus()
+            self.btn.state(['disabled'])
+
+    def cancel(self):
+        self.contacts_tree.delete(*self.contacts_tree.get_children())
+
+        for contact in self.contact_book:
+            if contact.favorites:
+                insert_contact = ("♥", contact.first_name, contact.last_name, contact.phone_number)
+            else:
+                insert_contact = ("", contact.first_name, contact.last_name, contact.phone_number)
+
+            self.contacts_tree.insert('', tk.END, values=insert_contact)
+
+        self.text1.set("")
+        self.btn.state(['disabled'])
 
     def get_buttons_enable(self, contact):
         # remove the disabled flag
