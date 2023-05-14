@@ -28,28 +28,28 @@ class ContactsFrame(ttk.Frame):
         self.tab_control.add(self, text='Contacts')
 
         # Create Label Frame with Search contact
-        self.lf1 = ttk.Frame(self)
-        self.lf1.grid(row=0, column=0, columnspan=2, pady=10)
+        self.fr1 = ttk.Frame(self)
+        self.fr1.grid(row=0, column=0, columnspan=2, pady=10)
 
-        lbl1 = ttk.Label(master=self.lf1, text='Search contact:', font=("BOLD", 10))
+        lbl1 = ttk.Label(master=self.fr1, text='Search contact:', font=("BOLD", 10))
         lbl1.grid(row=0, column=0, sticky='nsew', padx=10)
 
         self.text1 = tk.StringVar()
-        self.t1 = ttk.Entry(master=self.lf1, textvariable=self.text1)
+        self.t1 = ttk.Entry(master=self.fr1, textvariable=self.text1)
         self.t1.bind("<KeyRelease>", lambda event: self.check_entry_content())
         self.t1.focus()
         self.t1.grid(row=0, column=1, sticky='nsew')
 
         search_icon = tk.PhotoImage(file='Images/search.png')
         close_button = ttk.Button(
-            master=self.lf1,
+            master=self.fr1,
             image=search_icon,
             command=self.search
         )
         close_button.image = search_icon
         close_button.grid(row=0, column=2, sticky='nsew')
 
-        self.btn = ttk.Button(master=self.lf1, text='Cancel', command=self.cancel, cursor='hand2')
+        self.btn = ttk.Button(master=self.fr1, text='Cancel', command=self.cancel, cursor='hand2')
         self.btn.grid(row=0, column=3, sticky='nsew', padx=10)
         self.btn.state(['disabled'])
 
@@ -83,20 +83,20 @@ class ContactsFrame(ttk.Frame):
             self.contacts_tree.insert('', tk.END, values=insert_contact)
 
         # Create Label Frame with 3 buttons
-        self.lf = ttk.LabelFrame(self, text='Interaction')
-        self.lf.grid(row=2, column=0, columnspan=2, sticky='ns', pady=10)
+        self.lf1 = ttk.LabelFrame(self, text='Interaction')
+        self.lf1.grid(row=2, column=0, columnspan=2, sticky='ns', pady=10)
 
         # Button Add contact
-        self.b1 = ttk.Button(master=self.lf, text='Add contact', command=self.add_contact, cursor='hand2')
+        self.b1 = ttk.Button(master=self.lf1, text='Add contact', command=self.add_contact, cursor='hand2')
 
         # Button Delete contact
-        self.b2 = ttk.Button(master=self.lf, text='Delete contact', command=self.delete_contact, cursor='hand2')
+        self.b2 = ttk.Button(master=self.lf1, text='Delete contact', command=self.delete_contact, cursor='hand2')
 
         # Button Rename contact
-        self.b3 = ttk.Button(master=self.lf, text='Edit contact', command=self.edit_contact, cursor='hand2')
+        self.b3 = ttk.Button(master=self.lf1, text='Edit contact', command=self.edit_contact, cursor='hand2')
 
         # Button Add to favorites
-        self.b4 = ttk.Button(master=self.lf, text='Add to favorites', command=self.add_to_favorites, cursor='hand2')
+        self.b4 = ttk.Button(master=self.lf1, text='Add to favorites', command=self.add_to_favorites, cursor='hand2')
 
         # Location of button Add contact
         self.b1.grid(row=0, column=0, sticky='ns')
@@ -177,7 +177,7 @@ class ContactsFrame(ttk.Frame):
         self.b4.state(['!disabled'])
 
     def add_contact(self):
-        AddFrame(self, self.lf, self.scrollbar, self.contact_book, self.data_base,
+        AddFrame(self, self.fr1, self.lf1, self.scrollbar, self.contact_book, self.data_base,
                  self.contacts_tree, self.departments_tree, self.favorites_tree)
 
     def delete_contact(self):
@@ -190,7 +190,7 @@ class ContactsFrame(ttk.Frame):
         self.b4.state(['disabled'])
 
     def edit_contact(self):
-        EditFrame(self, self.lf, self.scrollbar, self.contact_book, self.data_base, self.contacts_tree,
+        EditFrame(self, self.fr1, self.lf1, self.scrollbar, self.contact_book, self.data_base, self.contacts_tree,
                   self.departments_tree, self.favorites_tree)
 
     def add_to_favorites(self):

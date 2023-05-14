@@ -16,13 +16,14 @@ from Decorators.try_exceptions import try_exceptions
 
 class AddFrame(ttk.Frame):
 
-    def __init__(self, container: ttk.Frame, contacts_lf: ttk.LabelFrame, contacts_scrollbar: ttk.Scrollbar,
-                 contact_book: ContactBook, data_base: DataBase, contacts_tree: ttk.Treeview,
-                 departments_tree: ttk.Treeview, favorites: ttk.Treeview):
+    def __init__(self, container: ttk.Frame, search_fr: ttk.Frame, buttons_lf: ttk.LabelFrame,
+                 contacts_scrollbar: ttk.Scrollbar, contact_book: ContactBook, data_base: DataBase,
+                 contacts_tree: ttk.Treeview, departments_tree: ttk.Treeview, favorites: ttk.Treeview):
         super().__init__(container)
 
         self.contacts_txt = contacts_tree
-        self.contacts_lf = contacts_lf
+        self.search_fr = search_fr
+        self.buttons_lf = buttons_lf
         self.contacts_scrollbar = contacts_scrollbar
         self.contact_book = contact_book
         self.data_base = data_base
@@ -32,7 +33,7 @@ class AddFrame(ttk.Frame):
         self.__create_widgets()
 
     def __create_widgets(self):
-        self.grid(row=1, column=0, columnspan=4, sticky='nsew')
+        self.grid(row=1, column=0, sticky='nsew')
 
         lf = ttk.LabelFrame(master=self, text='Add Contact Window')
         lf.pack(anchor=tk.S, expand=True)
@@ -87,7 +88,8 @@ class AddFrame(ttk.Frame):
 
         self.tkraise()
         self.contacts_scrollbar.grid_forget()
-        self.contacts_lf.grid_forget()
+        self.search_fr.grid_forget()
+        self.buttons_lf.grid_forget()
 
     def get_button_enable(self, department):
         """Remove disabled flag from the button 'Add contact'
@@ -100,8 +102,9 @@ class AddFrame(ttk.Frame):
         """When click on red close button, returns list of contacts(ContactsFrame)"""
 
         self.contacts_txt.tkraise()
-        self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
-        self.contacts_lf.grid(row=1, column=0, sticky='ns')
+        self.contacts_scrollbar.grid(row=1, column=1, sticky='ns')
+        self.search_fr.grid(row=0, column=0, columnspan=2, pady=10)
+        self.buttons_lf.grid(row=2, column=0, columnspan=2, sticky='ns', pady=10)
 
     @try_exceptions
     def add(self) -> None:
@@ -153,4 +156,4 @@ class AddFrame(ttk.Frame):
             # Open ContactsFrame again
             self.contacts_txt.tkraise()
             self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
-            self.contacts_lf.grid(row=1, column=0, sticky='ns')
+            self.buttons_lf.grid(row=1, column=0, sticky='ns')
