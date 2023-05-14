@@ -27,26 +27,30 @@ class ContactsFrame(ttk.Frame):
     def __create_widgets(self):
         self.tab_control.add(self, text='Contacts')
 
-        lbl1 = ttk.Label(master=self, text='Search contact:', font=("BOLD", 10))
-        lbl1.grid(row=0, column=0, sticky='e')
+        # Create Label Frame with Search contact
+        self.lf1 = ttk.Frame(self)
+        self.lf1.grid(row=0, column=0, columnspan=2, pady=10)
+
+        lbl1 = ttk.Label(master=self.lf1, text='Search contact:', font=("BOLD", 10))
+        lbl1.grid(row=0, column=0, sticky='nsew', padx=10)
 
         self.text1 = tk.StringVar()
-        self.t1 = ttk.Entry(master=self, textvariable=self.text1)
+        self.t1 = ttk.Entry(master=self.lf1, textvariable=self.text1)
         self.t1.bind("<KeyRelease>", lambda event: self.check_entry_content())
         self.t1.focus()
-        self.t1.grid(row=0, column=1, sticky='e')
+        self.t1.grid(row=0, column=1, sticky='nsew')
 
         search_icon = tk.PhotoImage(file='Images/search.png')
         close_button = ttk.Button(
-            master=self,
+            master=self.lf1,
             image=search_icon,
             command=self.search
         )
         close_button.image = search_icon
-        close_button.grid(row=0, column=2, sticky='w')
+        close_button.grid(row=0, column=2, sticky='nsew')
 
-        self.btn = ttk.Button(master=self, text='Cancel', command=self.cancel, cursor='hand2')
-        self.btn.grid(row=0, column=3, sticky='w')
+        self.btn = ttk.Button(master=self.lf1, text='Cancel', command=self.cancel, cursor='hand2')
+        self.btn.grid(row=0, column=3, sticky='nsew', padx=10)
         self.btn.state(['disabled'])
 
         columns = ('heart', 'first_name', 'last_name', 'number')
@@ -62,12 +66,12 @@ class ContactsFrame(ttk.Frame):
 
         self.contacts_tree.bind('<<TreeviewSelect>>', self.get_buttons_enable)
 
-        self.contacts_tree.grid(row=1, column=0, columnspan=4, sticky='nsew')
+        self.contacts_tree.grid(row=1, column=0, sticky='nsew')
 
         # add a scrollbar to Contacts Treeview
         self.scrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL, command=self.contacts_tree.yview)
         self.contacts_tree.configure(yscroll=self.scrollbar.set)
-        self.scrollbar.grid(row=1, column=4, sticky='ns')
+        self.scrollbar.grid(row=1, column=1, sticky='ns')
 
         # fill the Contacts tree
         for contact in self.contact_book:
@@ -80,7 +84,7 @@ class ContactsFrame(ttk.Frame):
 
         # Create Label Frame with 3 buttons
         self.lf = ttk.LabelFrame(self, text='Interaction')
-        self.lf.grid(row=2, column=0, columnspan=5, sticky='ns', pady=10)
+        self.lf.grid(row=2, column=0, columnspan=2, sticky='ns', pady=10)
 
         # Button Add contact
         self.b1 = ttk.Button(master=self.lf, text='Add contact', command=self.add_contact, cursor='hand2')
@@ -95,18 +99,18 @@ class ContactsFrame(ttk.Frame):
         self.b4 = ttk.Button(master=self.lf, text='Add to favorites', command=self.add_to_favorites, cursor='hand2')
 
         # Location of button Add contact
-        self.b1.grid(row=1, column=0, sticky='ns')
+        self.b1.grid(row=0, column=0, sticky='ns')
 
         # Location of button Delete contact
-        self.b2.grid(row=1, column=1, sticky='ns')
+        self.b2.grid(row=0, column=1, sticky='ns')
         self.b2.state(['disabled'])
 
         # Location of button Rename contact
-        self.b3.grid(row=1, column=2, sticky='ns')
+        self.b3.grid(row=0, column=2, sticky='ns')
         self.b3.state(['disabled'])
 
         # Location of button Add to favorites
-        self.b4.grid(row=1, column=3, sticky='ns')
+        self.b4.grid(row=0, column=3, sticky='ns')
         self.b4.state(['disabled'])
 
     def check_entry_content(self):

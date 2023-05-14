@@ -39,12 +39,12 @@ class FavoritesFrame(ttk.Frame):
 
         self.favorites_tree.bind('<<TreeviewSelect>>', self.get_button_enable)
 
-        self.favorites_tree.grid(row=0, column=0, sticky='nsew')
+        self.favorites_tree.grid(row=0, column=0, sticky='nsew', pady=25)
 
         # add a scrollbar to Contacts Treeview
         self.scrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL, command=self.favorites_tree.yview)
         self.favorites_tree.configure(yscroll=self.scrollbar.set)
-        self.scrollbar.grid(row=0, column=1, sticky='ns')
+        self.scrollbar.grid(row=0, column=1, sticky='ns', pady=25)
 
         # Fill the Favorites tree
         for contact in self.contact_book:
@@ -55,7 +55,7 @@ class FavoritesFrame(ttk.Frame):
 
         # Create Label Frame with button "Delete from Favorites"
         self.lf = ttk.LabelFrame(self, text='Interaction')
-        self.lf.grid(row=1, column=0, sticky='ns', pady=10)
+        self.lf.grid(row=1, column=0, sticky='ns')
 
         self.b1 = ttk.Button(master=self.lf,
                              text='Delete from Favorites',

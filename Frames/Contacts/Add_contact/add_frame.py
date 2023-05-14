@@ -32,7 +32,7 @@ class AddFrame(ttk.Frame):
         self.__create_widgets()
 
     def __create_widgets(self):
-        self.grid(row=0, column=0, sticky='nsew')
+        self.grid(row=1, column=0, columnspan=4, sticky='nsew')
 
         lf = ttk.LabelFrame(master=self, text='Add Contact Window')
         lf.pack(anchor=tk.S, expand=True)

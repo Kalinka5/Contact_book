@@ -16,5 +16,5 @@ class ImageFrame(ttk.Frame):
         label1.image = test
         label1.place(x=60, y=40)
 
-        lbl1 = ttk.Label(master=self, text="Your Contact book", foreground='red', font=("Helvetica", 20))
-        lbl1.place(x=110, y=230)
+        lbl1 = ttk.Label(master=self, text="Your Contact book", foreground='red', font=("Helvetica", 30))
+        lbl1.place(x=50, y=230)

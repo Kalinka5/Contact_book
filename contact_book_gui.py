@@ -16,7 +16,7 @@ class ContactBookGUI(tk.Tk):
 
         self.title('Contact book')
         self.window_width = 430
-        self.window_height = 340
+        self.window_height = 365
 
         # get the screen dimension
         self.screen_width = self.winfo_screenwidth()
