@@ -1,6 +1,7 @@
 from tkinter import messagebox
 
-from Exceptions.invalid_contact import InvalidNameException, InvalidNumberException, InvalidLengthNumberException
+from Exceptions.invalid_contact import InvalidNameException, InvalidNameQuotesException, InvalidNumberException,\
+    InvalidLengthNumberException
 from Exceptions.exist_contact import NumberExistException, NameExistException, ContactExistInFavoritesException
 from Exceptions.not_ukrainian_code import NotUkrainianCode
 from Exceptions.no_changes import ContactHasNoChanged
@@ -14,6 +15,10 @@ def try_exceptions(func):
             print(ine)
             messagebox.showerror(title='Name error',
                                  message=ine)
+        except InvalidNameQuotesException as inqe:
+            print(inqe)
+            messagebox.showerror(title='Name error',
+                                 message=inqe)
         except InvalidNumberException as inue:
             print(inue)
             messagebox.showerror(title='Number error',

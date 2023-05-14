@@ -2,7 +2,8 @@ from tkinter import ttk
 
 from Contact_book.contact import Contact
 from Contact_book.contact_book import ContactBook
-from Exceptions.invalid_contact import InvalidNameException, InvalidNumberException, InvalidLengthNumberException
+from Exceptions.invalid_contact import InvalidNameException, InvalidNameQuotesException, InvalidNumberException, \
+    InvalidLengthNumberException
 from Exceptions.exist_contact import NumberExistException, NameExistException, ContactExistInFavoritesException
 from Exceptions.no_changes import ContactHasNoChanged
 
@@ -25,6 +26,16 @@ def check_on_invalid_name(first_name: str, last_name: str) -> None:
 
     if len(last_name) > 12:
         raise InvalidNameException(last_name)
+
+
+def check_on_quotes_in_name(first_name: str, last_name: str) -> None:
+    """Check existing quotes in firstname and lastname"""
+
+    if "'" in first_name or '"' in first_name:
+        raise InvalidNameQuotesException(first_name)
+
+    if "'" in last_name or '"' in last_name:
+        raise InvalidNameQuotesException(last_name)
 
 
 def check_on_invalid_number(digits: str, new_phone_number: str) -> None:
@@ -94,3 +105,5 @@ def validity_checks(digits: str, number: str, contact_book: ContactBook,
 
     # check 1 < firstname < 16 and lastname < 13
     check_on_invalid_name(new_contact.first_name, new_contact.last_name)
+
+    check_on_quotes_in_name(new_contact.first_name, new_contact.last_name)

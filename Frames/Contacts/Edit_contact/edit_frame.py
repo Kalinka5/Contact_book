@@ -142,7 +142,8 @@ class EditFrame(ttk.Frame):
             # Open ContactsFrame again
             self.contacts_txt.tkraise()
             self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
-            self.buttons_lf.grid(row=1, column=0, sticky='ns')
+            self.search_fr.grid(row=0, column=0, columnspan=2, pady=10)
+            self.buttons_lf.grid(row=2, column=0, columnspan=2, sticky='ns', pady=10)
 
             # make buttons "Add contact", "Delete contact", "Edit contact" disabled
             self.contacts_b2.state(['disabled'])

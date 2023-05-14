@@ -8,6 +8,16 @@ class InvalidNameException(Exception):
                "Name length should be from 1 to 12.\n"
 
 
+class InvalidNameQuotesException(Exception):
+    def __init__(self, name):
+        self.name = name
+
+    #  print exception
+    def __str__(self):
+        return f"Invalid value of contact name: \"{self.name}\".\n" \
+               "Name should be without quotes.\n"
+
+
 class InvalidNumberException(Exception):
     def __init__(self, number):
         self.number = number
