@@ -2,14 +2,16 @@ import tkinter as tk
 from tkinter import ttk
 
 from Contact_book.contact import Contact
+from Contact_book.contact_book import ContactBook
 
 
 class DepartmentsFrame(ttk.Frame):
     dict_departments = {'Work': "0", 'Classmates': "1", 'Friends': "2", 'Relatives': "3", 'Stars': "4"}
 
-    def __init__(self, container: tk.Tk, tab_control: ttk.Notebook):
+    def __init__(self, container: tk.Tk, tab_control: ttk.Notebook, contact_book: ContactBook):
         super().__init__(container)
         self.tab_control = tab_control
+        self.contact_book = contact_book
         self.__create_widgets()
 
     def __create_widgets(self):
@@ -35,3 +37,17 @@ class DepartmentsFrame(ttk.Frame):
         scrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL, command=self.departments_tree.yview)
         self.departments_tree.configure(yscroll=scrollbar.set)
         scrollbar.grid(row=0, column=1, sticky='ns')
+
+        # Fill the departments tree
+        amount_all_contacts = len(self.contact_book)
+
+        for contact in self.contact_book:
+            self.departments_tree.insert('',
+                                         tk.END,
+                                         text=f'{contact.first_name} {contact.last_name}',
+                                         iid=str(Contact.iid),
+                                         open=False)
+            self.departments_tree.move(str(Contact.iid),
+                                       self.dict_departments[contact.department],
+                                       amount_all_contacts)
+            Contact.iid += 1

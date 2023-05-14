@@ -69,6 +69,15 @@ class ContactsFrame(ttk.Frame):
         self.contacts_tree.configure(yscroll=self.scrollbar.set)
         self.scrollbar.grid(row=1, column=4, sticky='ns')
 
+        # fill the Contacts tree
+        for contact in self.contact_book:
+            if contact.favorites:
+                insert_contact = ("♥", contact.first_name, contact.last_name, contact.phone_number)
+            else:
+                insert_contact = ("", contact.first_name, contact.last_name, contact.phone_number)
+
+            self.contacts_tree.insert('', tk.END, values=insert_contact)
+
         # Create Label Frame with 3 buttons
         self.lf = ttk.LabelFrame(self, text='Interaction')
         self.lf.grid(row=2, column=0, columnspan=5, sticky='ns', pady=10)

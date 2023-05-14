@@ -5,7 +5,6 @@ from Frames.First_frame.first_frame import ImageFrame
 from Frames.Contacts.contacts import ContactsFrame
 from Frames.Departments.departments import DepartmentsFrame
 from Frames.Favorites.favorites import FavoritesFrame
-from Contact_book.contact import Contact
 from Contact_book.contact_book import ContactBook
 from data_base import DataBase
 
@@ -45,7 +44,7 @@ class ContactBookGUI(tk.Tk):
 
         ImageFrame(self, self.tab_control)
 
-        self.departments_frame = DepartmentsFrame(self, self.tab_control)
+        self.departments_frame = DepartmentsFrame(self, self.tab_control, self.contact_book)
 
         self.favorites_frame = FavoritesFrame(self,
                                               self.tab_control,
@@ -58,34 +57,3 @@ class ContactBookGUI(tk.Tk):
                                             self.data_base,
                                             self.departments_frame.departments_tree,
                                             self.favorites_frame.favorites_tree)
-
-        # Read data from ContactBook
-        favorites = []
-        contacts = []
-
-        amount_all_contacts = len(self.contact_book)
-
-        for contact in self.contact_book:
-            self.departments_frame.departments_tree.insert('',
-                                                           tk.END,
-                                                           text=f'{contact.first_name} {contact.last_name}',
-                                                           iid=str(Contact.iid),
-                                                           open=False)
-            self.departments_frame.departments_tree.move(str(Contact.iid),
-                                                         self.departments_frame.dict_departments[contact.department],
-                                                         amount_all_contacts)
-            Contact.iid += 1
-
-            if contact.favorites:
-                favorites.append(("♥", contact.first_name, contact.last_name, contact.phone_number))
-                contacts.append(("♥", contact.first_name, contact.last_name, contact.phone_number))
-            else:
-                contacts.append(("", contact.first_name, contact.last_name, contact.phone_number))
-
-        # add data to the Favorites Treeview
-        for contact in favorites:
-            self.favorites_frame.favorites_tree.insert('', tk.END, values=contact)
-
-        # add data to the Contacts Treeview
-        for contact in contacts:
-            self.contacts_frame.contacts_tree.insert('', tk.END, values=contact)

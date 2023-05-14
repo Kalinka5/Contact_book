@@ -46,7 +46,14 @@ class FavoritesFrame(ttk.Frame):
         self.favorites_tree.configure(yscroll=self.scrollbar.set)
         self.scrollbar.grid(row=0, column=1, sticky='ns')
 
-        # Create Label Frame with 3 buttons
+        # Fill the Favorites tree
+        for contact in self.contact_book:
+            if contact.favorites:
+                insert_contact = ("♥", contact.first_name, contact.last_name, contact.phone_number)
+
+                self.favorites_tree.insert('', tk.END, values=insert_contact)
+
+        # Create Label Frame with button "Delete from Favorites"
         self.lf = ttk.LabelFrame(self, text='Interaction')
         self.lf.grid(row=1, column=0, sticky='ns', pady=10)
 
