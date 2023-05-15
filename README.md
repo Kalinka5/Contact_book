@@ -26,6 +26,9 @@
   <li>Start the application:<p>python3 main.py</p></li>
 </ol>
 
+<h2 align="center">𝕌𝕤𝕒𝕘𝕖</h2>
+
+
 <h2 align="center">𝕋𝕖𝕔𝕙𝕟𝕠𝕝𝕠𝕘𝕚𝕖𝕤 𝕌𝕤𝕖𝕕</h2>
 
 <ul>
