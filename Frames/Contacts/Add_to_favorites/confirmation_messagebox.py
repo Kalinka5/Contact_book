@@ -4,7 +4,7 @@ from Contact_book.contact import Contact
 
 
 def confirmation_favorites(contact: Contact) -> askyesno:
-    """Print confirmation messagebox to add contact to Favorites"""
+    """Print confirmation messagebox of adding contact to a Favorites"""
 
     if contact.last_name:
         full_name = f"{contact.first_name} {contact.last_name}"

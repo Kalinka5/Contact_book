@@ -4,7 +4,7 @@ from Contact_book.contact import Contact
 
 
 def confirmation_messagebox(contact: Contact) -> askyesno:
-    """Print confirmation messagebox to delete contact"""
+    """Print confirmation messagebox of deleting contact"""
 
     if contact.last_name:
         full_name = f"{contact.first_name} {contact.last_name}"

@@ -20,7 +20,7 @@ class DataBase:
             database=DB_NAME
         )
         self.connection.autocommit = True
-        print("Database connected successfully...")
+        print("[INFO] Database connected successfully...")
 
     def get_data(self):
         # get data from a table
@@ -32,7 +32,7 @@ class DataBase:
             )
 
             all_data = cursor.fetchall()
-            print("Download all data from Database...")
+            print("[INFO] Download all data from Database...\n")
 
         return all_data
 
@@ -52,7 +52,7 @@ class DataBase:
                 """
             )
 
-            print("Data was successfully inserted...")
+            print("[INFO] Data was successfully inserted...\n")
 
     def delete_contact(self, phone_number: str):
         # delete one row from a table
@@ -64,7 +64,7 @@ class DataBase:
                 """
             )
 
-            print("Deleted one row from Database successfully...")
+            print("[INFO] Deleted one row from Database successfully...\n")
 
     def edit_contact(self, new_contact: Contact, old_phone_number: str):
         # update one row in a table
@@ -77,7 +77,7 @@ class DataBase:
                 WHERE phone_number = '{old_phone_number}';"""
             )
 
-            print("Update one row in a Database successfully...")
+            print("[INFO] Update one row in a Database successfully...\n")
 
     def add_to_favorites(self, phone_number: str):
         # Update favorites to True
@@ -90,7 +90,7 @@ class DataBase:
                 """
             )
 
-            print("Update contact's favorites to True in a Database successfully...")
+            print("[INFO] Update contact's favorites to True in a Database successfully...\n")
 
     def delete_from_favorites(self, phone_number: str):
         # Update favorites to False
@@ -103,8 +103,8 @@ class DataBase:
                 """
             )
 
-            print("Update contact's favorites to False in a Database successfully...")
+            print("[INFO] Update contact's favorites to False in a Database successfully...\n")
 
     def close_connection(self):
         self.connection.close()
-        print("Database connection closed...")
+        print("[INFO] Database connection closed...\n")

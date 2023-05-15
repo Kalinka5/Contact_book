@@ -4,6 +4,7 @@ from tkinter import ttk
 from Contact_book.contact_book import ContactBook
 from Contact_book.contact import Contact
 from data_base import DataBase
+from Decorators.try_exceptions import try_exceptions
 from Exceptions.validity_checks import check_on_invalid_number
 from Exceptions.validity_checks import validity_checks
 from Frames.Contacts.convert_number import convert_phone_number
@@ -11,24 +12,23 @@ from Frames.Contacts.Add_contact.confirmation_messagebox import confirmation_mes
 from Frames.Contacts.Add_contact.add_to_ContactsFrame import add_to_contacts_frame
 from Frames.Contacts.Add_contact.add_to_DepartmentsFrame import add_to_departments_frame
 from Frames.Contacts.Add_contact.successfully_messagebox import successfully_messagebox
-from Decorators.try_exceptions import try_exceptions
 
 
 class AddFrame(ttk.Frame):
 
-    def __init__(self, container: ttk.Frame, search_fr: ttk.Frame, buttons_lf: ttk.LabelFrame,
+    def __init__(self, parent_container, search_fr: ttk.Frame, buttons_lf: ttk.LabelFrame,
                  contacts_scrollbar: ttk.Scrollbar, contact_book: ContactBook, data_base: DataBase,
-                 contacts_tree: ttk.Treeview, departments_tree: ttk.Treeview, favorites: ttk.Treeview):
-        super().__init__(container)
+                 contacts_tree: ttk.Treeview, departments_tree: ttk.Treeview, favorites_tree: ttk.Treeview):
+        super().__init__(parent_container)
 
-        self.contacts_txt = contacts_tree
         self.search_fr = search_fr
         self.buttons_lf = buttons_lf
         self.contacts_scrollbar = contacts_scrollbar
         self.contact_book = contact_book
         self.data_base = data_base
-        self.tree = departments_tree
-        self.favorites = favorites
+        self.contacts_tree = contacts_tree
+        self.departments_tree = departments_tree
+        self.favorites_tree = favorites_tree
 
         self.__create_widgets()
 
@@ -101,14 +101,17 @@ class AddFrame(ttk.Frame):
     def close_clicked(self) -> None:
         """When click on red close button, returns list of contacts(ContactsFrame)"""
 
-        self.contacts_txt.tkraise()
+        self.contacts_tree.tkraise()
         self.contacts_scrollbar.grid(row=1, column=1, sticky='ns')
         self.search_fr.grid(row=0, column=0, columnspan=2, pady=10)
         self.buttons_lf.grid(row=2, column=0, columnspan=2, sticky='ns', pady=10)
 
     @try_exceptions
     def add(self) -> None:
-        """Checks new contact's values for errors. Add new contact to class Contacts, ContactsFrame, DepartmentsFrame"""
+        """
+        Checks new contact's values for errors.
+        Add new contact to class ContactBook, ContactsFrame, DepartmentsFrame
+        """
 
         # convert firstname and lastname with big letter at the beginning
         first_name = self.text3.get().title()
@@ -117,7 +120,6 @@ class AddFrame(ttk.Frame):
             first_name = "Mr/Mrs"
         last_name = self.text4.get().title()
         number = self.text5.get()
-        # need as parameter in add_to_contacts() and add_to_departments_frame()
         department = self.departments.get()
 
         digits = number.replace("-", "").replace("+", "").replace(" ", "").replace("(", "").replace(")", "")
@@ -126,23 +128,31 @@ class AddFrame(ttk.Frame):
         # convert number in different formats
         normal_number = convert_phone_number(digits)
 
-        new_contact = Contact(first_name, last_name, normal_number, department, favorites=False)
+        new_contact = Contact(first_name=first_name,
+                              last_name=last_name,
+                              phone_number=normal_number,
+                              department=department,
+                              favorites=False)
 
-        validity_checks(digits, number, self.contact_book, new_contact)
+        # pass all validity checks of contact's values
+        validity_checks(digits=digits,
+                        number=number,
+                        contact_book=self.contact_book,
+                        new_contact=new_contact)
 
+        # "Are you sure that you want to add contact?"
         answer = confirmation_messagebox(new_contact)
-
         if answer:
-            # Add contact to class ContactBook
+            # Add new contact to class ContactBook
             self.contact_book.add_contact(new_contact)
 
             # Add new contact to ContactsFrame
-            add_to_contacts_frame(self.contacts_txt, new_contact)
+            add_to_contacts_frame(self.contacts_tree, new_contact)
 
-            # Add contact to DepartmentsFrame
-            add_to_departments_frame(self.tree, self.contact_book, department)
+            # Add new contact to DepartmentsFrame
+            add_to_departments_frame(self.departments_tree, self.contact_book, department)
 
-            # Add contact to database
+            # Add new contact to database
             self.data_base.add_contact(new_contact)
 
             # Clear all fields with data
@@ -154,7 +164,7 @@ class AddFrame(ttk.Frame):
             successfully_messagebox(new_contact)
 
             # Open ContactsFrame again
-            self.contacts_txt.tkraise()
+            self.contacts_tree.tkraise()
             self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
             self.search_fr.grid(row=0, column=0, columnspan=2, pady=10)
             self.buttons_lf.grid(row=2, column=0, columnspan=2, sticky='ns', pady=10)

@@ -2,24 +2,24 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
+from Contact_book.contact_book import ContactBook
+from data_base import DataBase
 from Frames.Contacts.Add_contact.add_frame import AddFrame
 from Frames.Contacts.Edit_contact.edit_frame import EditFrame
 from Frames.Contacts.Delete_contact.delete_in_all_frames import delete_contact_in_all_frames
 from Frames.Contacts.Add_to_favorites.add_contact_to_favorites import add_contact_to_favorites
-from Contact_book.contact_book import ContactBook
-from data_base import DataBase
 
 
 class ContactsFrame(ttk.Frame):
     def __init__(self, parent_container, tab_control: ttk.Notebook, contact_book: ContactBook,
-                 data_base: DataBase, tree: ttk.Treeview, favorites: ttk.Treeview):
+                 data_base: DataBase, departments_tree: ttk.Treeview, favorites: ttk.Treeview):
         super().__init__(parent_container)
 
         self.favorites_frame = parent_container.favorites_frame
         self.tab_control = tab_control
         self.contact_book = contact_book
         self.data_base = data_base
-        self.departments_tree = tree
+        self.departments_tree = departments_tree
         self.favorites_tree = favorites
 
         self.__create_widgets()
@@ -53,6 +53,7 @@ class ContactsFrame(ttk.Frame):
         self.btn.grid(row=0, column=3, sticky='nsew', padx=10)
         self.btn.state(['disabled'])
 
+        # Create Contacts tree
         columns = ('heart', 'first_name', 'last_name', 'number')
         self.contacts_tree = ttk.Treeview(self, columns=columns, show='headings')
         self.contacts_tree.heading('heart', text='♥')
@@ -68,7 +69,7 @@ class ContactsFrame(ttk.Frame):
 
         self.contacts_tree.grid(row=1, column=0, sticky='nsew')
 
-        # add a scrollbar to Contacts Treeview
+        # add a scrollbar
         self.scrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL, command=self.contacts_tree.yview)
         self.contacts_tree.configure(yscroll=self.scrollbar.set)
         self.scrollbar.grid(row=1, column=1, sticky='ns')
@@ -82,20 +83,13 @@ class ContactsFrame(ttk.Frame):
 
             self.contacts_tree.insert('', tk.END, values=insert_contact)
 
-        # Create Label Frame with 3 buttons
+        # Create Label Frame with 4 buttons
         self.lf1 = ttk.LabelFrame(self, text='Interaction')
         self.lf1.grid(row=2, column=0, columnspan=2, sticky='ns', pady=10)
 
-        # Button Add contact
         self.b1 = ttk.Button(master=self.lf1, text='Add contact', command=self.add_contact, cursor='hand2')
-
-        # Button Delete contact
         self.b2 = ttk.Button(master=self.lf1, text='Delete contact', command=self.delete_contact, cursor='hand2')
-
-        # Button Rename contact
         self.b3 = ttk.Button(master=self.lf1, text='Edit contact', command=self.edit_contact, cursor='hand2')
-
-        # Button Add to favorites
         self.b4 = ttk.Button(master=self.lf1, text='Add to favorites', command=self.add_to_favorites, cursor='hand2')
 
         # Location of button Add contact
@@ -114,6 +108,8 @@ class ContactsFrame(ttk.Frame):
         self.b4.state(['disabled'])
 
     def check_entry_content(self):
+        """Make button "Cancel" enable when user write something in the Search field"""
+
         if self.t1.get():
             self.btn.state(['!disabled'])
         else:
@@ -136,6 +132,7 @@ class ContactsFrame(ttk.Frame):
                 contact_exist = True
         self.t1.unbind("<KeyRelease>")
 
+        # If Contacts tree doesn't have contact with searched name - raise error
         if contact_exist is False:
             print(f"No results for \"{letters}\"!\nCheck the spelling or try changing the query.")
             messagebox.showerror(title='No results error',
@@ -156,6 +153,8 @@ class ContactsFrame(ttk.Frame):
             self.t1.bind("<KeyRelease>", lambda event: self.check_entry_content())
 
     def cancel(self):
+        """When user click the "Cancel" button"""
+
         self.contacts_tree.delete(*self.contacts_tree.get_children())
 
         for contact in self.contact_book:

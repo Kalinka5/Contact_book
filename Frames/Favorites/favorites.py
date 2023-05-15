@@ -11,7 +11,7 @@ from Frames.Favorites.update_contact_in_ContactBook import update_contact_in_con
 
 
 class FavoritesFrame(ttk.Frame):
-    emoji = "♥  "
+    emoji = "♥  "  # Maybe for Departments tree
 
     def __init__(self, parent_container, tab_control: ttk.Notebook, contact_book: ContactBook, data_base: DataBase):
         super().__init__(parent_container)
@@ -26,6 +26,7 @@ class FavoritesFrame(ttk.Frame):
     def __create_widgets(self):
         self.tab_control.add(self, text='Favorites')
 
+        # Create a Favorites treeview
         columns = ('heart', 'first_name', 'last_name', 'number')
         self.favorites_tree = ttk.Treeview(self, columns=columns, show='headings')
         self.favorites_tree.heading('heart', text='♥')
@@ -41,7 +42,7 @@ class FavoritesFrame(ttk.Frame):
 
         self.favorites_tree.grid(row=0, column=0, sticky='nsew', pady=25)
 
-        # add a scrollbar to Contacts Treeview
+        # add a scrollbar
         self.scrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL, command=self.favorites_tree.yview)
         self.favorites_tree.configure(yscroll=self.scrollbar.set)
         self.scrollbar.grid(row=0, column=1, sticky='ns', pady=25)
@@ -66,7 +67,8 @@ class FavoritesFrame(ttk.Frame):
         self.b1.state(['disabled'])
 
     def get_button_enable(self, contact):
-        # remove the disabled flag
+        """Remove the disabled flag in the "Delete from Favorites" button"""
+
         self.b1.state(['!disabled'])
 
     def get_contact_id_by_phone_number(self, phone_number: str):
@@ -89,7 +91,6 @@ class FavoritesFrame(ttk.Frame):
 
         # print confirmation messagebox "Are you sure that you want to delete contact from the Favorites?"
         answer = confirmation_messagebox(first_name, last_name)
-
         if answer:
             # delete in the FavoritesFrame
             delete_in_favorites_frame(self.favorites_tree)

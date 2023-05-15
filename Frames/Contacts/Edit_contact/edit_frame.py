@@ -23,12 +23,12 @@ class EditFrame(ttk.Frame):
 
         self.parent = parent_container
         self.favorites_frame = self.parent.favorites_frame
-        self.contacts_txt = contacts_tree
         self.search_fr = search_fr
         self.buttons_lf = buttons_lf
         self.contacts_scrollbar = contacts_scrollbar
         self.contact_book = contact_book
         self.data_base = data_base
+        self.contacts_tree = contacts_tree
         self.departments_tree = departments_tree
         self.favorites_tree = favorites
         self.contacts_b2 = self.parent.b2
@@ -38,7 +38,7 @@ class EditFrame(ttk.Frame):
         self.__create_widgets()
 
     def __create_widgets(self):
-        item = self.contacts_txt.item(self.contacts_txt.focus())['values']
+        item = self.contacts_tree.item(self.contacts_tree.focus())['values']
         self.old_first_name = item[1]
         self.old_last_name = item[2]
         self.old_phone_number = item[3]
@@ -93,7 +93,7 @@ class EditFrame(ttk.Frame):
     def close_clicked(self) -> None:
         """When click on red close button, returns list of contacts(ContactsFrame)"""
 
-        self.contacts_txt.tkraise()
+        self.contacts_tree.tkraise()
         self.contacts_scrollbar.grid(row=1, column=1, sticky='ns')
         self.search_fr.grid(row=0, column=0, columnspan=2, pady=10)
         self.buttons_lf.grid(row=2, column=0, columnspan=2, sticky='ns', pady=10)
@@ -125,10 +125,10 @@ class EditFrame(ttk.Frame):
             self.contact_book.edit_contact(old_contact, new_first_name, new_last_name, normal_number)
 
             # edit contact in the class ContactsFrame
-            edit_in_contacts_frame(self.contacts_txt, new_contact)
+            edit_in_contacts_frame(self.contacts_tree, new_contact)
 
             # edit contact in the class DepartmentsFrame
-            edit_in_departments_frame(self.contact_book, self.departments_tree, new_first_name)
+            edit_in_departments_frame(self.contact_book, self.departments_tree, new_contact.phone_number)
 
             # edit contact in the class FavoritesFrame
             edit_in_favorites_frame(self.favorites_frame, self.favorites_tree, self.old_phone_number, new_contact)
@@ -140,7 +140,7 @@ class EditFrame(ttk.Frame):
             successfully_messagebox(new_contact)
 
             # Open ContactsFrame again
-            self.contacts_txt.tkraise()
+            self.contacts_tree.tkraise()
             self.contacts_scrollbar.grid(row=0, column=1, sticky='ns')
             self.search_fr.grid(row=0, column=0, columnspan=2, pady=10)
             self.buttons_lf.grid(row=2, column=0, columnspan=2, sticky='ns', pady=10)

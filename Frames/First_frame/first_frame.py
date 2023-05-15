@@ -11,7 +11,7 @@ class ImageFrame(ttk.Frame):
     def __create_widgets(self):
         self.tab_control.add(self, text='Contact Book')
 
-        test = tk.PhotoImage(name='telephone', file="Images/telephone2.png")
+        test = tk.PhotoImage(name='telephone', file="Images/telephone.png")
         label1 = ttk.Label(master=self, image=test)
         label1.image = test
         label1.place(x=60, y=40)

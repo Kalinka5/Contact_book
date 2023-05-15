@@ -8,8 +8,8 @@ from Contact_book.contact_book import ContactBook
 class DepartmentsFrame(ttk.Frame):
     dict_departments = {'Work': "0", 'Classmates': "1", 'Friends': "2", 'Relatives': "3", 'Stars': "4"}
 
-    def __init__(self, container: tk.Tk, tab_control: ttk.Notebook, contact_book: ContactBook):
-        super().__init__(container)
+    def __init__(self, parent_container, tab_control: ttk.Notebook, contact_book: ContactBook):
+        super().__init__(parent_container)
         self.tab_control = tab_control
         self.contact_book = contact_book
         self.__create_widgets()
@@ -21,7 +21,7 @@ class DepartmentsFrame(ttk.Frame):
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
 
-        # create a treeview
+        # create a Departments treeview
         self.departments_tree = ttk.Treeview(self)
         self.departments_tree.heading('#0', text='Departments', anchor=tk.W)
         headers = ('Work', 'Classmates', 'Friends', 'Relatives', 'Stars')
@@ -30,7 +30,6 @@ class DepartmentsFrame(ttk.Frame):
             self.departments_tree.insert('', tk.END, text=head, iid=str(Contact.iid), open=False)
             Contact.iid += 1
 
-        # place the Treeview widget on the root window
         self.departments_tree.grid(row=0, column=0, sticky=tk.NSEW)
 
         # add a scrollbar

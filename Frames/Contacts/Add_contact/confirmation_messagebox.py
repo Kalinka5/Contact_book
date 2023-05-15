@@ -4,7 +4,7 @@ from Contact_book.contact import Contact
 
 
 def confirmation_messagebox(new_contact: Contact) -> askyesno:
-    """Print confirmation messagebox to rename contact"""
+    """Print confirmation messagebox of adding contact"""
 
     if new_contact.last_name:
         full_name = f"{new_contact.first_name} {new_contact.last_name}"

@@ -7,6 +7,7 @@ from Exceptions.not_ukrainian_code import NotUkrainianCode
 from Exceptions.no_changes import ContactHasNoChanged
 
 
+# decorator to catch exception in Add frame and Edit frame
 def try_exceptions(func):
     def _wrapper(*args, **kwargs):
         try:

@@ -3,6 +3,9 @@ class OutputContact:
         result = "Your Contact Book:\n\n"
         contact_book = sorted(getattr(self, "contacts"))
         for contact in contact_book:
-            result += f"{contact.first_name} {contact.last_name} {contact.phone_number}\n"
+            if contact.last_name:
+                result += f"{contact.first_name.ljust(13)} {contact.last_name.ljust(13)} {contact.phone_number}\n"
+            else:
+                result += f"{contact.first_name.ljust(27)} {contact.phone_number}\n"
 
         return result

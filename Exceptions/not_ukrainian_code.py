@@ -1,4 +1,5 @@
 class NotUkrainianCode(Exception):
+    """If user enter phone number, which doesn't start with ukrainian code - raise exception"""
     def __init__(self, code):
         self.code = code
 
