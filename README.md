@@ -28,9 +28,9 @@
 <h2 align="center">𝕀𝕟𝕤𝕥𝕒𝕝𝕝𝕒𝕥𝕚𝕠𝕟</h2>
 
 <ol>
-  <li>Clone the repository:<p>git clone https://github.com/Kalinka5/Contact_book.git</p></li>
-  <li>Install the requirements:<p>pip install -r requirements.txt</p></li>
-  <li>Start the application:<p>python3 main.py</p></li>
+  <li>Clone the repository:<p><b>git clone https://github.com/Kalinka5/Contact_book.git</b></p></li>
+  <li>Install the requirements:<p><b>pip install -e .</b></p></li>
+  <li>Start the application:<p><b>python3 main.py</b></p></li>
 </ol>
 
 <h2 align="center">𝕌𝕤𝕒𝕘𝕖</h2>
