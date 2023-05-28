@@ -22,7 +22,7 @@ def add_contact_to_favorites(contact_book: ContactBook, data_base, contacts_tree
     phone_number = item[3]
     contact = Contact(first_name, last_name, phone_number)
 
-    check_on_existing_in_favorites(favorites_tree, contact)
+    check_on_existing_in_favorites(contact_book, contact)
 
     # print confirmation messagebox "Are you sure that you want to add contact to Favorites?"
     answer = confirmation_favorites(contact)

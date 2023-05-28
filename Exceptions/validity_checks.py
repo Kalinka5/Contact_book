@@ -1,5 +1,3 @@
-from tkinter import ttk
-
 from Contact_book.contact import Contact
 from Contact_book.contact_book import ContactBook
 from Exceptions.invalid_contact import InvalidNameException, InvalidNameQuotesException, InvalidNumberException, \
@@ -61,14 +59,12 @@ def check_on_existing_name(contact_book: ContactBook, first_name: str, last_name
             raise NameExistException()
 
 
-def check_on_existing_in_favorites(favorites_tree: ttk.Treeview, contact: Contact) -> None:
+def check_on_existing_in_favorites(contact_book: ContactBook, contact: Contact) -> None:
     """Check if contact is already exist in Favorites - raise exception"""
 
-    index = 0
-    while index < len(favorites_tree.get_children()):
-        if contact.phone_number == favorites_tree.item(favorites_tree.get_children()[index])['values'][3]:
-            raise ContactExistInFavoritesException(contact.first_name, contact.last_name)
-        index += 1
+    search_contact = contact_book.get_contact_by_phone_number(contact.phone_number)
+    if search_contact.favorites is True:
+        raise ContactExistInFavoritesException(contact.first_name, contact.last_name)
 
 
 def check_values_changes(old_contact: Contact, new_contact: Contact) -> None:
