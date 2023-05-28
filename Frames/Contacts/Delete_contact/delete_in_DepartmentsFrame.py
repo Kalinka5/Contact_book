@@ -1,6 +1,7 @@
 from tkinter import ttk
 
 from Contact_book.contact import Contact
+
 from Frames.Departments.departments import DepartmentsFrame as Depart
 
 

@@ -1,8 +1,9 @@
 from Contact_book.contact import Contact
 from Contact_book.contact_book import ContactBook
-from Exceptions.invalid_contact import InvalidNameException, InvalidNameQuotesException, InvalidNumberException, \
-    InvalidLengthNumberException
-from Exceptions.exist_contact import NumberExistException, NameExistException, ContactExistInFavoritesException
+
+from Exceptions.exist_contact import ContactExistInFavoritesException, NameExistException, NumberExistException
+from Exceptions.invalid_contact import InvalidLengthNumberException, InvalidNameException, InvalidNameQuotesException, \
+    InvalidNumberException
 from Exceptions.no_changes import ContactHasNoChanged
 
 

@@ -1,9 +1,10 @@
 import unittest
 
-from Contact_book.contact_book import ContactBook
 from Contact_book.contact import Contact
-from Exceptions.validity_checks import check_on_existing_name
+from Contact_book.contact_book import ContactBook
+
 from Exceptions.exist_contact import NameExistException
+from Exceptions.validity_checks import check_on_existing_name
 
 
 class TestExistingFullName(unittest.TestCase):

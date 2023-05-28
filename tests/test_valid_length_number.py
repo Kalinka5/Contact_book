@@ -1,7 +1,7 @@
 import unittest
 
-from Exceptions.validity_checks import check_on_invalid_length_number
 from Exceptions.invalid_contact import InvalidLengthNumberException
+from Exceptions.validity_checks import check_on_invalid_length_number
 
 
 class TestLengthNumber(unittest.TestCase):

@@ -1,8 +1,9 @@
 import unittest
 
 from Contact_book.contact import Contact
-from Exceptions.validity_checks import check_values_changes
+
 from Exceptions.no_changes import ContactHasNoChanged
+from Exceptions.validity_checks import check_values_changes
 
 
 class TestEditChanged(unittest.TestCase):

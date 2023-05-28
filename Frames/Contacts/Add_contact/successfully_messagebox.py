@@ -1,4 +1,3 @@
-import tkinter as tk
 from tkinter import messagebox
 
 from Contact_book.contact import Contact
@@ -12,6 +11,6 @@ def successfully_messagebox(new_contact: Contact) -> None:
     else:
         full_name = new_contact.first_name
 
-    tk.messagebox.showinfo(title='Update Contact Book',
-                           message=f"\"{full_name}\" was successfully added.")
+    messagebox.showinfo(title='Update Contact Book',
+                        message=f"\"{full_name}\" was successfully added.")
     print(f"\"{full_name}\" was successfully added to your Contact Book.\n")

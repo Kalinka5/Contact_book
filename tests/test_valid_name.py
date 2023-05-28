@@ -1,7 +1,7 @@
 import unittest
 
-from Exceptions.validity_checks import check_on_invalid_name
 from Exceptions.invalid_contact import InvalidNameException
+from Exceptions.validity_checks import check_on_invalid_name
 
 
 class TestValidName(unittest.TestCase):

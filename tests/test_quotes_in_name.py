@@ -1,7 +1,7 @@
 import unittest
 
-from Exceptions.validity_checks import check_on_quotes_in_name
 from Exceptions.invalid_contact import InvalidNameQuotesException
+from Exceptions.validity_checks import check_on_quotes_in_name
 
 
 class TestQuotesInName(unittest.TestCase):

@@ -1,7 +1,8 @@
-import psycopg2
+from Contact_book.contact import Contact
 
 from credentials import data_base_values
-from Contact_book.contact import Contact
+
+import psycopg2
 
 DB_NAME = data_base_values["DB_NAME"]
 DB_USER = data_base_values["DB_USER"]
@@ -41,14 +42,14 @@ class DataBase:
         with self.connection.cursor() as cursor:
             cursor.execute(
                 f"""
-                INSERT INTO "Contact_data" 
-                    (first_name, last_name, phone_number, department, favorites) 
+                INSERT INTO "Contact_data"
+                (first_name, last_name, phone_number, department, favorites)
                 VALUES
-                    ('{new_contact.first_name}', 
-                    '{new_contact.last_name}', 
-                    '{new_contact.phone_number}', 
-                    '{new_contact.department}', 
-                    {new_contact.favorites});
+                ('{new_contact.first_name}',
+                '{new_contact.last_name}',
+                '{new_contact.phone_number}',
+                '{new_contact.department}',
+                {new_contact.favorites});
                 """
             )
 
@@ -59,7 +60,7 @@ class DataBase:
         with self.connection.cursor() as cursor:
             cursor.execute(
                 f"""
-                DELETE FROM "Contact_data" 
+                DELETE FROM "Contact_data"
                 WHERE phone_number='{phone_number}';
                 """
             )
@@ -70,11 +71,13 @@ class DataBase:
         # update one row in a table
         with self.connection.cursor() as cursor:
             cursor.execute(
-                f"""UPDATE "Contact_data" 
+                f"""
+                UPDATE "Contact_data"
                 SET first_name = '{new_contact.first_name}',
-                    last_name = '{new_contact.last_name}',
-                    phone_number = '{new_contact.phone_number}'
-                WHERE phone_number = '{old_phone_number}';"""
+                last_name = '{new_contact.last_name}',
+                phone_number = '{new_contact.phone_number}'
+                WHERE phone_number = '{old_phone_number}';
+                """
             )
 
             print("[INFO] Update one row in a Database successfully...\n")
@@ -84,7 +87,7 @@ class DataBase:
         with self.connection.cursor() as cursor:
             cursor.execute(
                 f"""
-                UPDATE "Contact_data" 
+                UPDATE "Contact_data"
                 SET favorites = True
                 WHERE phone_number = '{phone_number}';
                 """
@@ -97,7 +100,7 @@ class DataBase:
         with self.connection.cursor() as cursor:
             cursor.execute(
                 f"""
-                UPDATE "Contact_data" 
+                UPDATE "Contact_data"
                 SET favorites = False
                 WHERE phone_number = '{phone_number}';
                 """

@@ -1,9 +1,10 @@
 import unittest
 
-from Contact_book.contact_book import ContactBook
 from Contact_book.contact import Contact
-from Exceptions.validity_checks import check_on_existing_in_favorites
+from Contact_book.contact_book import ContactBook
+
 from Exceptions.exist_contact import ContactExistInFavoritesException
+from Exceptions.validity_checks import check_on_existing_in_favorites
 
 
 class TestContactExistInFavorites(unittest.TestCase):

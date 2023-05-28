@@ -1,7 +1,7 @@
 import unittest
 
-from Exceptions.validity_checks import check_on_invalid_number
 from Exceptions.invalid_contact import InvalidNumberException
+from Exceptions.validity_checks import check_on_invalid_number
 
 
 class TestValidNumber(unittest.TestCase):

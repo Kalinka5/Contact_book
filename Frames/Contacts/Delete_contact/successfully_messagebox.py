@@ -1,5 +1,4 @@
-import tkinter as tk
-from tkinter.messagebox import askyesno
+from tkinter import messagebox
 
 from Contact_book.contact import Contact
 
@@ -12,6 +11,6 @@ def successfully_messagebox(contact: Contact) -> None:
     else:
         full_name = contact.first_name
 
-    tk.messagebox.showinfo(title='Update Contact Book',
-                           message=f"\"{full_name}\" was successfully deleted.")
+    messagebox.showinfo(title='Update Contact Book',
+                        message=f"\"{full_name}\" was successfully deleted.")
     print(f"Deleting \"{full_name}\" from your Contact Book was successfully.\n")

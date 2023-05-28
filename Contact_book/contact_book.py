@@ -1,5 +1,5 @@
-from Contact_book.output_contacts import OutputContact
 from Contact_book.contact import Contact
+from Contact_book.output_contacts import OutputContact
 
 
 class ContactBook(OutputContact):

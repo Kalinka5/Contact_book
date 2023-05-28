@@ -1,6 +1,8 @@
-from contact_book_gui import ContactBookGUI
-from Contact_book.contact_book import ContactBook
 from Contact_book.contact import Contact
+from Contact_book.contact_book import ContactBook
+
+from contact_book_gui import ContactBookGUI
+
 from data_base import DataBase
 
 

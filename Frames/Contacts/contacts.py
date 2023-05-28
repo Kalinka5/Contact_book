@@ -1,13 +1,15 @@
 import tkinter as tk
-from tkinter import ttk
 from tkinter import messagebox
+from tkinter import ttk
 
 from Contact_book.contact_book import ContactBook
-from data_base import DataBase
+
 from Frames.Contacts.Add_contact.add_frame import AddFrame
-from Frames.Contacts.Edit_contact.edit_frame import EditFrame
-from Frames.Contacts.Delete_contact.delete_in_all_frames import delete_contact_in_all_frames
 from Frames.Contacts.Add_to_favorites.add_contact_to_favorites import add_contact_to_favorites
+from Frames.Contacts.Delete_contact.delete_in_all_frames import delete_contact_in_all_frames
+from Frames.Contacts.Edit_contact.edit_frame import EditFrame
+
+from data_base import DataBase
 
 
 class ContactsFrame(ttk.Frame):

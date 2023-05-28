@@ -1,12 +1,14 @@
 from tkinter import ttk
 
 from Contact_book.contact_book import ContactBook
-from data_base import DataBase
+
 from Frames.Contacts.Delete_contact.confirmation_messagebox import confirmation_messagebox
 from Frames.Contacts.Delete_contact.delete_in_ContactsFrame import delete_in_contacts_frame
 from Frames.Contacts.Delete_contact.delete_in_DepartmentsFrame import delete_in_departments_frame
 from Frames.Contacts.Delete_contact.delete_in_FavoritesFrame import delete_in_favorites_frame
 from Frames.Contacts.Delete_contact.successfully_messagebox import successfully_messagebox
+
+from data_base import DataBase
 
 
 def delete_contact_in_all_frames(favorites_frame, contact_book: ContactBook, data_base: DataBase,

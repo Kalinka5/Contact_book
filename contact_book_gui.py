@@ -2,11 +2,13 @@ import tkinter as tk
 from tkinter import ttk
 
 from Contact_book.contact_book import ContactBook
-from data_base import DataBase
-from Frames.First_frame.first_frame import ImageFrame
+
 from Frames.Contacts.contacts import ContactsFrame
 from Frames.Departments.departments import DepartmentsFrame
 from Frames.Favorites.favorites import FavoritesFrame
+from Frames.First_frame.first_frame import ImageFrame
+
+from data_base import DataBase
 
 
 class ContactBookGUI(tk.Tk):
