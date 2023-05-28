@@ -3,4 +3,5 @@ __pycache__/
 
 credentials.py
 Gifs/
+test/__pycache__/
 
