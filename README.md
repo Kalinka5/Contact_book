@@ -1,6 +1,5 @@
 ![Python](https://img.shields.io/pypi/pyversions/psycopg2-binary?color=green&style=plastic)
 ![Pypi](https://img.shields.io/pypi/v/psycopg2-binary?color=orange)
-![Stars](https://img.shields.io/github/stars/Kalinka5/Contact_book?style=social)
 ![License](https://img.shields.io/github/license/Kalinka5/Contact_book?color=blue)
 ![Tests](https://github.com/Kalinka5/Contact_book/actions/workflows/tests.yml/badge.svg)
 
