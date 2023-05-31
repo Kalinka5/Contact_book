@@ -12,11 +12,11 @@ if __name__ == '__main__':
 
     contact_book = ContactBook()
     for contact in contacts:
-        contact_book.contacts.append(Contact(contact[0],
-                                             contact[1],
-                                             contact[2],
-                                             contact[3],
-                                             contact[4]))
+        contact_book.add_contact(Contact(contact[0],
+                                         contact[1],
+                                         contact[2],
+                                         contact[3],
+                                         contact[4]))
 
     contact_book_gui = ContactBookGUI(contact_book, data_base)
     contact_book_gui.mainloop()
