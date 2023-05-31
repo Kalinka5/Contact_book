@@ -14,6 +14,10 @@ class TestContactBook(unittest.TestCase):
         self.contact_book.__contacts = [contact]
         self.assertNotIn(contact, self.contact_book)
 
+    def test_method_get_contacts(self):
+        result = self.contact_book.get_contacts
+        self.assertEqual(result, [])
+
     def test_method_add_contact(self):
         contact = Contact('Tom', 'Hardy', '111111')
         self.contact_book.add_contact(contact)
