@@ -23,3 +23,13 @@ class TestContactExistInFavorites(unittest.TestCase):
         contact = Contact("Test1", "User1", "111111")
         with self.assertRaises(ContactExistInFavoritesException):
             check_on_existing_in_favorites(self.contact_book, contact)
+
+    def test_method_str_with_fullname(self):
+        exception = ContactExistInFavoritesException('Tom', 'Hardy')
+        result = 'A contact \"Tom Hardy\" is already in the Favorites!'
+        self.assertEqual(exception.__str__(), result)
+
+    def test_method_str_with_only_firstname(self):
+        exception = ContactExistInFavoritesException('Tom', '')
+        result = 'A contact \"Tom\" is already in the Favorites!'
+        self.assertEqual(exception.__str__(), result)

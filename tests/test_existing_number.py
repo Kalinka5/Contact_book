@@ -23,3 +23,8 @@ class TestExistingNumber(unittest.TestCase):
     def test_number_doesnt_exist_in_contact_book(self):
         normal_number = "444444"
         check_on_existing_number(self.contact_book, normal_number)
+
+    def test_method_str(self):
+        exception = NumberExistException()
+        result = 'A contact with this number is already in the Contact book!'
+        self.assertEqual(exception.__str__(), result)

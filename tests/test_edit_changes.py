@@ -33,3 +33,8 @@ class TestEditChanged(unittest.TestCase):
         old_contact = Contact("Test", "User", "111111")
         new_contact = Contact("Test", "User", "222222")
         check_values_changes(old_contact, new_contact)
+
+    def test_method_str(self):
+        exception = ContactHasNoChanged()
+        result = 'The contact has not been changed!'
+        self.assertEqual(exception.__str__(), result)

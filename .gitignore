@@ -1,7 +1,8 @@
 __pycache__/
+test/__pycache__/
 .idea/
+
+.coverage
 
 credentials.py
 Gifs/
-test/__pycache__/
-

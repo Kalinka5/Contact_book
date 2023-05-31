@@ -99,3 +99,16 @@ class TestQuotesInName(unittest.TestCase):
         first_name = 'Tom'
         last_name = 'Hardy'
         check_on_quotes_in_name(first_name, last_name)
+
+    def test_method_str_with_double_quotes(self):
+        # Programme need resolve bug!
+        exception = InvalidNameQuotesException('""')
+        result = 'Invalid value of contact name: \"""\".\n' \
+                 'Name should be without quotes.\n'
+        self.assertEqual(exception.__str__(), result)
+
+    def test_method_str_with_single_quotes(self):
+        exception = InvalidNameQuotesException("''")
+        result = "Invalid value of contact name: \"''\".\n" \
+                 "Name should be without quotes.\n"
+        self.assertEqual(exception.__str__(), result)

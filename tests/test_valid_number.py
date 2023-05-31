@@ -57,3 +57,10 @@ class TestValidNumber(unittest.TestCase):
         digits = '111111'
         new_phone_number = '111111'
         check_on_invalid_number(digits, new_phone_number)
+
+    def test_method_str(self):
+        exception = InvalidNumberException('123abc')
+        result = "Invalid value of phone number: \"123abc\".\n" \
+                 "Number should contain only integers and dashes.\n" \
+                 "Number example: \"0-(00)-000-0000\" or \"0000000000\".\n"
+        self.assertEqual(exception.__str__(), result)

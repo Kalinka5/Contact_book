@@ -45,3 +45,8 @@ class TestExistingFullName(unittest.TestCase):
         first_name = 'Tom'
         last_name = 'Hardy'
         check_on_existing_name(self.contact_book, first_name, last_name)
+
+    def test_method_str(self):
+        exception = NameExistException()
+        result = 'A contact with this name is already in the Contact Book!'
+        self.assertEqual(exception.__str__(), result)

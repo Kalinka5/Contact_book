@@ -38,3 +38,9 @@ class TestValidName(unittest.TestCase):
         first_name = 'Tom'
         last_name = 'Hardy'
         check_on_invalid_name(first_name, last_name)
+
+    def test_method_str(self):
+        exception = InvalidNameException('Aaaaaaaaaaaaaaa')
+        result = "Invalid value of contact name: \"Aaaaaaaaaaaaaaa\".\n" \
+                 "Name length should be from 1 to 12.\n"
+        self.assertEqual(exception.__str__(), result)
